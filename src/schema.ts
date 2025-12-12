@@ -1,12 +1,18 @@
 import type { Key } from './store/key'
 
+export type FlatValue<S extends SchemaType> =
+  S[typeof TypeInformation]['FlatValue']
+
+export type JSONValue<S extends SchemaType> =
+  S[typeof TypeInformation]['JSONValue']
+
 interface UnionSchema<Options extends SchemaType[] = SchemaType[]>
   extends SchemaType {
   kind: 'union'
   options: Options
   [TypeInformation]: {
     FlatValue: Key
-    JSONValue: Options[number][typeof TypeInformation]['JSONValue']
+    JSONValue: JSONValue<Options[number]>
   }
 }
 
