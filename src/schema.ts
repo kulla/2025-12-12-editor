@@ -1,9 +1,11 @@
+import type { Key } from './store/key'
+
 interface UnionSchema<Options extends SchemaType[] = SchemaType[]>
   extends SchemaType {
   kind: 'union'
   options: Options
   [TypeInformation]: {
-    FlatValue: Options[number][typeof TypeInformation]['FlatValue']
+    FlatValue: Key
     JSONValue: Options[number][typeof TypeInformation]['JSONValue']
   }
 }
