@@ -1,20 +1,26 @@
-type Schema<T extends keyof SchemaDefinitions> = SchemaType & {
-  kind: T
-  [TypeInformation]: SchemaDefinitions[T]
+interface UnionSchema<Options extends SchemaType[] = SchemaType[]>
+  extends SchemaType {
+  kind: 'union'
+  options: Options
+  [TypeInformation]: {
+    FlatValue: Options[number][typeof TypeInformation]['FlatValue']
+    JSONValue: Options[number][typeof TypeInformation]['JSONValue']
+  }
 }
 
-interface SchemaDefinitions {
-  boolean: {
-    FlatValue: boolean
-    JSONValue: boolean
-  }
-  string: {
+interface StringSchema extends SchemaType {
+  kind: 'string'
+  [TypeInformation]: {
     FlatValue: string
     JSONValue: string
   }
-  union: {
-    FlatValue: unknown
-    JSONValue: unknown
+}
+
+interface BooleanSchema extends SchemaType {
+  kind: 'boolean'
+  [TypeInformation]: {
+    FlatValue: boolean
+    JSONValue: boolean
   }
 }
 
