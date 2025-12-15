@@ -6,27 +6,30 @@ export type FlatValue<S extends SchemaType> =
 export type JSONValue<S extends SchemaType> =
   S[typeof TypeInformation]['JSONValue']
 
-const schemaFactory = <I extends SchemaDefinition>(
-  kind: I['kind'],
-): Factory<SchemaInput<I>, SchemaOutput<I>> => ({
-  create: ({ name, ...parameters }) => {
+const schemaFactory = <I extends SchemaDefinition>(): Factory<
+  SchemaInput<I>,
+  SchemaOutput<I>
+> => ({
+  create: ({ kind, name, ...parameters }) => {
     return { kind, name, ...parameters } as SchemaOutput<I>
   },
 })
 
-export const boolean = schemaFactory<{
-  kind: 'boolean'
-  FlatValue: boolean
-  JSONValue: boolean
-  Parameters: {}
-}>('boolean')
+export const boolean = (name: string) =>
+  schemaFactory<{
+    kind: 'boolean'
+    FlatValue: boolean
+    JSONValue: boolean
+    Parameters: {}
+  }>().create({ kind: 'boolean', name })
 
-export const string = schemaFactory<{
-  kind: 'string'
-  FlatValue: string
-  JSONValue: string
-  Parameters: {}
-}>('string')
+export const string = (name: string) =>
+  schemaFactory<{
+    kind: 'string'
+    FlatValue: string
+    JSONValue: string
+    Parameters: {}
+  }>().create({ kind: 'string', name })
 
 export const union = <S extends SchemaType>(schemas: S[]) => {
   return schemaFactory<{
@@ -36,7 +39,8 @@ export const union = <S extends SchemaType>(schemas: S[]) => {
     Parameters: {
       options: S[]
     }
-  }>('union').create({
+  }>().create({
+    kind: 'union',
     name: `union_of_${schemas.map((s) => s.name).join('_or_')}`,
     options: schemas,
   })
@@ -59,6 +63,7 @@ declare const TypeInformation: unique symbol
 
 type SchemaInput<I extends SchemaDefinition> = I['Parameters'] & {
   name: string
+  kind: I['kind']
 }
 
 type SchemaOutput<I extends SchemaDefinition> = SchemaType &
