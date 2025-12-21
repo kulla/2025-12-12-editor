@@ -28,6 +28,10 @@ interface Factory<I, O> {
   create(input: I): O
 }
 
+interface Guard<V> {
+  is(value: unknown): value is V
+}
+
 type SchemaInput<I extends SchemaDefinition> = I['Parameters'] & {
   name: string
 }
@@ -43,36 +47,38 @@ type SchemaOutput<I extends SchemaDefinition> = SchemaType &
 
 const schemaFactory = <I extends SchemaDefinition>(): Factory<
   I['kind'],
-  Factory<SchemaInput<I>, SchemaOutput<I>>
+  Factory<SchemaInput<I>, SchemaOutput<I>> & Guard<SchemaOutput<I>>
 > => ({
   create(kind) {
     return {
       create({ name, ...parameters }) {
         return { kind, name, ...parameters } as SchemaOutput<I>
       },
+      is(value): value is SchemaOutput<I> {
+        return (
+          typeof value === 'object' &&
+          value !== null &&
+          'kind' in value &&
+          value.kind === kind
+        )
+      },
     }
   },
 })
 
-export const boolean = (name: string) =>
-  schemaFactory<{
-    kind: 'boolean'
-    FlatValue: boolean
-    JSONValue: boolean
-    Parameters: {}
-  }>()
-    .create('boolean')
-    .create({ name })
+export const boolean = schemaFactory<{
+  kind: 'boolean'
+  FlatValue: boolean
+  JSONValue: boolean
+  Parameters: {}
+}>().create('boolean')
 
-export const string = (name: string) =>
-  schemaFactory<{
-    kind: 'string'
-    FlatValue: string
-    JSONValue: string
-    Parameters: {}
-  }>()
-    .create('string')
-    .create({ name })
+export const string = schemaFactory<{
+  kind: 'string'
+  FlatValue: string
+  JSONValue: string
+  Parameters: {}
+}>().create('string')
 
 export const union = <S extends SchemaType>(schemas: S[]) => {
   return schemaFactory<{
@@ -90,6 +96,7 @@ export const union = <S extends SchemaType>(schemas: S[]) => {
     })
 }
 
-const BooleanSchema = boolean('boolean')
-const StringSchema = string('string')
+const BooleanSchema = boolean.create({ name: 'boolean' })
+const StringSchema = string.create({ name: 'string' })
 const UnionSchema = union([BooleanSchema, StringSchema])
+const isBoolean = boolean.is(BooleanSchema)
