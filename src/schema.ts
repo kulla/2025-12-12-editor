@@ -1,11 +1,46 @@
 import type { Key } from './store/key'
 
+declare const TypeInformation: unique symbol
+
+export interface SchemaType {
+  kind: string
+  name: string
+  [TypeInformation]: {
+    FlatValue: unknown
+    JSONValue: unknown
+  }
+}
+
 export type FlatValue<S extends SchemaType> =
   S[typeof TypeInformation]['FlatValue']
 
 export type JSONValue<S extends SchemaType> =
   S[typeof TypeInformation]['JSONValue']
 
+interface SchemaDefinition {
+  kind: string
+  FlatValue: unknown
+  JSONValue: unknown
+  Parameters: {}
+}
+
+interface Factory<I, O> {
+  create(input: I): O
+}
+
+type SchemaInput<I extends SchemaDefinition> = I['Parameters'] & {
+  name: string
+  kind: I['kind']
+}
+
+type SchemaOutput<I extends SchemaDefinition> = SchemaType &
+  I['Parameters'] & {
+    kind: I['kind']
+    [TypeInformation]: {
+      FlatValue: I['FlatValue']
+      JSONValue: I['JSONValue']
+    }
+  }
 const schemaFactory = <I extends SchemaDefinition>(): Factory<
   SchemaInput<I>,
   SchemaOutput<I>
@@ -49,39 +84,3 @@ export const union = <S extends SchemaType>(schemas: S[]) => {
 const BooleanSchema = boolean('boolean')
 const StringSchema = string('string')
 const UnionSchema = union([BooleanSchema, StringSchema])
-
-export interface SchemaType {
-  kind: string
-  name: string
-  [TypeInformation]: {
-    FlatValue: unknown
-    JSONValue: unknown
-  }
-}
-
-declare const TypeInformation: unique symbol
-
-type SchemaInput<I extends SchemaDefinition> = I['Parameters'] & {
-  name: string
-  kind: I['kind']
-}
-
-type SchemaOutput<I extends SchemaDefinition> = SchemaType &
-  I['Parameters'] & {
-    kind: I['kind']
-    [TypeInformation]: {
-      FlatValue: I['FlatValue']
-      JSONValue: I['JSONValue']
-    }
-  }
-
-interface SchemaDefinition {
-  kind: string
-  FlatValue: unknown
-  JSONValue: unknown
-  Parameters: {}
-}
-
-interface Factory<I, O> {
-  create(input: I): O
-}
