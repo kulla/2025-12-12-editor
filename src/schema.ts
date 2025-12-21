@@ -30,7 +30,6 @@ interface Factory<I, O> {
 
 type SchemaInput<I extends SchemaDefinition> = I['Parameters'] & {
   name: string
-  kind: I['kind']
 }
 
 type SchemaOutput<I extends SchemaDefinition> = SchemaType &
@@ -42,12 +41,11 @@ type SchemaOutput<I extends SchemaDefinition> = SchemaType &
     }
   }
 
-function createSchemaFactory<I extends SchemaDefinition>(): Factory<
-  SchemaInput<I>,
-  SchemaOutput<I>
-> {
+function createSchemaFactory<I extends SchemaDefinition>(
+  kind: I['kind'],
+): Factory<SchemaInput<I>, SchemaOutput<I>> {
   return {
-    create({ kind, name, ...parameters }) {
+    create({ name, ...parameters }) {
       return { kind, name, ...parameters } as SchemaOutput<I>
     },
   }
@@ -59,7 +57,7 @@ export const boolean = (name: string) =>
     FlatValue: boolean
     JSONValue: boolean
     Parameters: {}
-  }>().create({ kind: 'boolean', name })
+  }>('boolean').create({ name })
 
 export const string = (name: string) =>
   createSchemaFactory<{
@@ -67,7 +65,7 @@ export const string = (name: string) =>
     FlatValue: string
     JSONValue: string
     Parameters: {}
-  }>().create({ kind: 'string', name })
+  }>('string').create({ name })
 
 export const union = <S extends SchemaType>(schemas: S[]) => {
   return createSchemaFactory<{
@@ -77,8 +75,7 @@ export const union = <S extends SchemaType>(schemas: S[]) => {
     Parameters: {
       options: S[]
     }
-  }>().create({
-    kind: 'union',
+  }>('union').create({
     name: `union_of_${schemas.map((s) => s.name).join('_or_')}`,
     options: schemas,
   })
