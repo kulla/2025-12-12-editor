@@ -46,8 +46,8 @@ export const union = <S extends SchemaType>(schemas: S[]) => {
   })
 }
 
-const BooleanSchema = boolean.create({ name: 'isActive' })
-const StringSchema = string.create({ name: 'username' })
+const BooleanSchema = boolean('boolean')
+const StringSchema = string('string')
 const UnionSchema = union([BooleanSchema, StringSchema])
 
 export interface SchemaType {
