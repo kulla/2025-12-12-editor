@@ -41,44 +41,53 @@ type SchemaOutput<I extends SchemaDefinition> = SchemaType &
     }
   }
 
-function createSchemaFactory<I extends SchemaDefinition>(
-  kind: I['kind'],
-): Factory<SchemaInput<I>, SchemaOutput<I>> {
-  return {
-    create({ name, ...parameters }) {
-      return { kind, name, ...parameters } as SchemaOutput<I>
-    },
-  }
-}
+const schemaFactory = <I extends SchemaDefinition>(): Factory<
+  I['kind'],
+  Factory<SchemaInput<I>, SchemaOutput<I>>
+> => ({
+  create(kind) {
+    return {
+      create({ name, ...parameters }) {
+        return { kind, name, ...parameters } as SchemaOutput<I>
+      },
+    }
+  },
+})
 
 export const boolean = (name: string) =>
-  createSchemaFactory<{
+  schemaFactory<{
     kind: 'boolean'
     FlatValue: boolean
     JSONValue: boolean
     Parameters: {}
-  }>('boolean').create({ name })
+  }>()
+    .create('boolean')
+    .create({ name })
 
 export const string = (name: string) =>
-  createSchemaFactory<{
+  schemaFactory<{
     kind: 'string'
     FlatValue: string
     JSONValue: string
     Parameters: {}
-  }>('string').create({ name })
+  }>()
+    .create('string')
+    .create({ name })
 
 export const union = <S extends SchemaType>(schemas: S[]) => {
-  return createSchemaFactory<{
+  return schemaFactory<{
     kind: 'union'
     FlatValue: Key
     JSONValue: JSONValue<S>
     Parameters: {
       options: S[]
     }
-  }>('union').create({
-    name: `union_of_${schemas.map((s) => s.name).join('_or_')}`,
-    options: schemas,
-  })
+  }>()
+    .create('union')
+    .create({
+      name: `union_of_${schemas.map((s) => s.name).join('_or_')}`,
+      options: schemas,
+    })
 }
 
 const BooleanSchema = boolean('boolean')
