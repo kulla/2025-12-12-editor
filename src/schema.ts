@@ -41,17 +41,20 @@ type SchemaOutput<I extends SchemaDefinition> = SchemaType &
       JSONValue: I['JSONValue']
     }
   }
-const schemaFactory = <I extends SchemaDefinition>(): Factory<
+
+function createSchemaFactory<I extends SchemaDefinition>(): Factory<
   SchemaInput<I>,
   SchemaOutput<I>
-> => ({
-  create: ({ kind, name, ...parameters }) => {
-    return { kind, name, ...parameters } as SchemaOutput<I>
-  },
-})
+> {
+  return {
+    create({ kind, name, ...parameters }) {
+      return { kind, name, ...parameters } as SchemaOutput<I>
+    },
+  }
+}
 
 export const boolean = (name: string) =>
-  schemaFactory<{
+  createSchemaFactory<{
     kind: 'boolean'
     FlatValue: boolean
     JSONValue: boolean
@@ -59,7 +62,7 @@ export const boolean = (name: string) =>
   }>().create({ kind: 'boolean', name })
 
 export const string = (name: string) =>
-  schemaFactory<{
+  createSchemaFactory<{
     kind: 'string'
     FlatValue: string
     JSONValue: string
@@ -67,7 +70,7 @@ export const string = (name: string) =>
   }>().create({ kind: 'string', name })
 
 export const union = <S extends SchemaType>(schemas: S[]) => {
-  return schemaFactory<{
+  return createSchemaFactory<{
     kind: 'union'
     FlatValue: Key
     JSONValue: JSONValue<S>
