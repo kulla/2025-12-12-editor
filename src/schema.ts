@@ -33,15 +33,20 @@ interface BooleanSchema
     JSONValue: boolean
   }> {}
 
+function createSchemaGuard<S extends Schema>(kind: string): Guard.Guard<S> {
+  return (value: unknown): value is S => {
+    return (
+      typeof value === 'object' &&
+      value !== null &&
+      'kind' in value &&
+      value.kind === kind
+    )
+  }
+}
+
 export const boolean = {
   create(name: string): BooleanSchema {
     return { kind: 'boolean', name, isFlatValue: Guard.boolean }
   },
-  is: (value: unknown): value is BooleanSchema => {
-    return (
-      typeof value === 'object' &&
-      value !== null &&
-      (value as Schema).kind === 'boolean'
-    )
-  },
+  is: createSchemaGuard<BooleanSchema>('boolean'),
 }
