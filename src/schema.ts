@@ -24,3 +24,26 @@ export type FlatValue<S extends Schema> =
 export type JSONValue<S extends Schema> =
   NonNullable<S[typeof TypeInformation]>['JSONValue']
 
+interface BooleanSchema extends Schema<{
+  kind: 'boolean'
+  FlatValue: boolean
+  JSONValue: boolean
+}> {}
+
+export const boolean = {
+  create(): BooleanSchema {
+    return {
+      kind: 'boolean',
+      name: 'Boolean',
+      isFlatValue: (value: unknown): value is boolean =>
+        typeof value === 'boolean',
+    }
+  },
+  is: (value: unknown): value is BooleanSchema => {
+    return (
+      typeof value === 'object' &&
+      value !== null &&
+      (value as Schema).kind === 'boolean'
+    )
+  }
+}
