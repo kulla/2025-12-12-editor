@@ -86,3 +86,19 @@ export const union = {
   },
   is: createSchemaGuard<UnionSchema>('union'),
 }
+
+const BooleanSchema = boolean.create({ name: 'Boolean' })
+const StringSchema = string.create({ name: 'String' })
+const UnionSchema = union.create({
+  name: 'BooleanOrString',
+  options: [BooleanSchema, StringSchema],
+  getOption(value) {
+    if (typeof value === 'boolean') {
+      return BooleanSchema
+    } else {
+      return StringSchema
+    }
+  },
+})
+
+export type UnionJsonType = JSONValue<typeof UnionSchema>
