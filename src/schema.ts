@@ -1,6 +1,7 @@
-import { LoroList, LoroMap } from 'loro-crdt'
+import type { LoroList, LoroMap } from 'loro-crdt'
 import { isKey, type Key } from './store/key'
-import { type Guard, isArrayOf, isBoolean, isInstanceOf } from './utils/guard'
+import { type Guard, isBoolean } from './utils/guard'
+import { isLoroList, isLoroMap } from './utils/loro'
 
 declare const TypeInformation: unique symbol
 
@@ -97,7 +98,7 @@ export function createBooleanSchema(
 export function createRichTextSchema(
   args: Arguments<RichTextSchema>,
 ): RichTextSchema {
-  return { kind: 'richText', isFlatValue: isInstanceOf(LoroMap), ...args }
+  return { kind: 'richText', isFlatValue: isLoroMap, ...args }
 }
 
 export function createUnionSchema<S extends Schema[]>(
@@ -112,7 +113,7 @@ export function createArraySchema<S extends Schema>(
   return {
     kind: 'array',
     isFlatValue(value): value is LoroList<Key> {
-      return isInstanceOf(LoroList)(value) && value.toArray().every(isKey)
+      return isLoroList(value) && value.toArray().every(isKey)
     },
     ...args,
   }
@@ -124,7 +125,7 @@ export function createObjectSchema<Props extends Record<string, Schema>>(
   return {
     kind: 'object',
     isFlatValue(value): value is LoroMap<{ [K in keyof Props]: Key }> {
-      return isInstanceOf(LoroMap)(value) && value.values().every(isKey)
+      return isLoroMap(value) && value.values().every(isKey)
     },
     ...args,
   }
