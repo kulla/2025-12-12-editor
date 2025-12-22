@@ -1,2 +1,3 @@
 export type { Branded } from './branded'
-export * as Guard from './guard'
+export type { Guard } from './guard'
+export * as G from './guard'

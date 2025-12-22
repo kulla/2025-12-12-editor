@@ -1,5 +1,5 @@
 import { isKey, type Key } from './store/key'
-import { Guard } from './utils'
+import { G, type Guard } from './utils'
 
 declare const TypeInformation: unique symbol
 
@@ -12,7 +12,7 @@ interface SchemaDef {
 export interface Schema<D extends SchemaDef = SchemaDef> {
   kind: D['kind']
   name: string
-  isFlatValue: Guard.Guard<D['FlatValue']>
+  isFlatValue: Guard<D['FlatValue']>
   [TypeInformation]?: {
     FlatValue: D['FlatValue']
     JSONValue: D['JSONValue']
@@ -32,7 +32,7 @@ type Arguments<S extends Schema> = Omit<
   'kind' | typeof TypeInformation | 'isFlatValue'
 >
 
-function createSchemaGuard<S extends Schema>(kind: string): Guard.Guard<S> {
+function createSchemaGuard<S extends Schema>(kind: string): Guard<S> {
   return (value: unknown): value is S => {
     return (
       typeof value === 'object' &&
@@ -52,7 +52,7 @@ interface BooleanSchema
 
 export const boolean = {
   create(args: Arguments<BooleanSchema>): BooleanSchema {
-    return { kind: 'boolean', isFlatValue: Guard.boolean, ...args }
+    return { kind: 'boolean', isFlatValue: G.boolean, ...args }
   },
   is: createSchemaGuard<BooleanSchema>('boolean'),
 }
@@ -66,7 +66,7 @@ interface StringSchema
 
 export const string = {
   create(args: Arguments<StringSchema>): StringSchema {
-    return { kind: 'string', isFlatValue: Guard.string, ...args }
+    return { kind: 'string', isFlatValue: G.string, ...args }
   },
   is: createSchemaGuard<StringSchema>('string'),
 }
