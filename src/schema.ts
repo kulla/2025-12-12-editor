@@ -50,12 +50,13 @@ interface BooleanSchema
     JSONValue: boolean
   }> {}
 
-export const boolean = {
-  create(args: Arguments<BooleanSchema>): BooleanSchema {
-    return { kind: 'boolean', isFlatValue: isBoolean, ...args }
-  },
-  is: createSchemaGuard<BooleanSchema>('boolean'),
+export function createBooleanSchema(
+  args: Arguments<BooleanSchema>,
+): BooleanSchema {
+  return { kind: 'boolean', isFlatValue: isBoolean, ...args }
 }
+
+export const isBooleanSchema = createSchemaGuard<BooleanSchema>('boolean')
 
 interface StringSchema
   extends Schema<{
@@ -64,12 +65,13 @@ interface StringSchema
     JSONValue: string
   }> {}
 
-export const string = {
-  create(args: Arguments<StringSchema>): StringSchema {
-    return { kind: 'string', isFlatValue: isString, ...args }
-  },
-  is: createSchemaGuard<StringSchema>('string'),
+export function createStringSchema(
+  args: Arguments<StringSchema>,
+): StringSchema {
+  return { kind: 'string', isFlatValue: isString, ...args }
 }
+
+export const isStringSchema = createSchemaGuard<StringSchema>('string')
 
 interface UnionSchema<S extends Schema[] = Schema[]>
   extends Schema<{
@@ -81,16 +83,17 @@ interface UnionSchema<S extends Schema[] = Schema[]>
   getOption(value: JSONValue<S[number]>): S[number]
 }
 
-export const union = {
-  create<S extends Schema[]>(args: Arguments<UnionSchema<S>>): UnionSchema<S> {
-    return { kind: 'union', isFlatValue: isKey, ...args }
-  },
-  is: createSchemaGuard<UnionSchema>('union'),
+export function createUnionSchema<S extends Schema[]>(
+  args: Arguments<UnionSchema<S>>,
+): UnionSchema<S> {
+  return { kind: 'union', isFlatValue: isKey, ...args }
 }
 
-const BooleanSchema = boolean.create({ name: 'Boolean' })
-const StringSchema = string.create({ name: 'String' })
-const UnionSchema = union.create({
+export const isUnionSchema = createSchemaGuard<UnionSchema>('union')
+
+const BooleanSchema = createBooleanSchema({ name: 'Boolean' })
+const StringSchema = createStringSchema({ name: 'String' })
+const UnionSchema = createUnionSchema({
   name: 'BooleanOrString',
   options: [BooleanSchema, StringSchema],
   getOption(value) {
