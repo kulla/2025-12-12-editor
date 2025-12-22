@@ -34,13 +34,8 @@ interface BooleanSchema
   }> {}
 
 export const boolean = {
-  create(): BooleanSchema {
-    return {
-      kind: 'boolean',
-      name: 'Boolean',
-      isFlatValue: (value: unknown): value is boolean =>
-        typeof value === 'boolean',
-    }
+  create(name: string): BooleanSchema {
+    return { kind: 'boolean', name, isFlatValue: Guard.boolean }
   },
   is: (value: unknown): value is BooleanSchema => {
     return (
