@@ -78,14 +78,14 @@ interface ArraySchema<S extends Schema = Schema>
 }
 
 interface ObjectSchema<
-  Props extends Record<string, Schema> = Record<string, Schema>,
+  P extends Record<string, Schema> = Record<string, Schema>,
 > extends Schema<{
     kind: 'object'
-    FlatValue: LoroMap<{ [K in keyof Props]: Key }>
-    JSONValue: { [K in keyof Props]: JSONValue<Props[K]> }
+    FlatValue: LoroMap<{ [K in keyof P]: Key }>
+    JSONValue: { [K in keyof P]: JSONValue<P[K]> }
   }> {
-  properties: Props
-  keyOrder: (keyof Props)[]
+  properties: P
+  keyOrder: (keyof P)[]
 }
 
 export function createBooleanSchema(
