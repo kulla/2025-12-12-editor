@@ -46,7 +46,7 @@ interface BooleanSchema
   }> {}
 
 export const boolean = {
-  create(name: string): BooleanSchema {
+  create({ name }: { name: string }): BooleanSchema {
     return { kind: 'boolean', name, isFlatValue: Guard.boolean }
   },
   is: createSchemaGuard<BooleanSchema>('boolean'),
@@ -60,7 +60,7 @@ interface StringSchema
   }> {}
 
 export const string = {
-  create(name: string): StringSchema {
+  create({ name }: { name: string }): StringSchema {
     return { kind: 'string', name, isFlatValue: Guard.string }
   },
   is: createSchemaGuard<StringSchema>('string'),
@@ -76,8 +76,11 @@ interface UnionSchema<S extends Schema[] = Schema[]>
 }
 
 export const union = {
-  create<S extends Schema[]>(name: string, options: S): UnionSchema<S> {
-    return { kind: 'union', name, options, isFlatValue: isKey }
+  create<S extends Schema[]>(args: {
+    name: string
+    options: S
+  }): UnionSchema<S> {
+    return { kind: 'union', isFlatValue: isKey, ...args }
   },
   is: createSchemaGuard<UnionSchema>('union'),
 }
