@@ -11,11 +11,11 @@ interface SchemaDef {
 export interface Schema<D extends SchemaDef = SchemaDef> {
   kind: D['kind']
   name: string
+  isFlatValue: Guard.Guard<D['FlatValue']>
   [TypeInformation]?: {
     FlatValue: D['FlatValue']
     JSONValue: D['JSONValue']
   }
-  isFlatValue: Guard.Guard<D['FlatValue']>
 }
 
 export type FlatValue<S extends Schema> = NonNullable<
