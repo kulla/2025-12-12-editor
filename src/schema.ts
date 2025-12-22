@@ -73,12 +73,14 @@ interface UnionSchema<S extends Schema[] = Schema[]>
     JSONValue: JSONValue<S[number]>
   }> {
   options: S
+  getOption(value: JSONValue<S[number]>): S[number]
 }
 
 export const union = {
   create<S extends Schema[]>(args: {
     name: string
     options: S
+    getOption(value: JSONValue<S[number]>): S[number]
   }): UnionSchema<S> {
     return { kind: 'union', isFlatValue: isKey, ...args }
   },
