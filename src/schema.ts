@@ -91,19 +91,3 @@ export function createUnionSchema<S extends Schema[]>(
 }
 
 export const isUnionSchema = createSchemaGuard<UnionSchema>('union')
-
-const BooleanSchema = createBooleanSchema({ name: 'Boolean' })
-const RichTextSchema = createRichTextSchema({ name: 'String' })
-const UnionSchema = createUnionSchema({
-  name: 'BooleanOrString',
-  options: [BooleanSchema, RichTextSchema],
-  getOption(value) {
-    if (typeof value === 'boolean') {
-      return BooleanSchema
-    } else {
-      return RichTextSchema
-    }
-  },
-})
-
-export type UnionJsonType = JSONValue<typeof UnionSchema>
