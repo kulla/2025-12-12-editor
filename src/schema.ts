@@ -1,5 +1,5 @@
 import { isKey, type Key } from './store/key'
-import { G, type Guard } from './utils'
+import { type Guard, isBoolean, isString } from './utils/guard'
 
 declare const TypeInformation: unique symbol
 
@@ -52,7 +52,7 @@ interface BooleanSchema
 
 export const boolean = {
   create(args: Arguments<BooleanSchema>): BooleanSchema {
-    return { kind: 'boolean', isFlatValue: G.boolean, ...args }
+    return { kind: 'boolean', isFlatValue: isBoolean, ...args }
   },
   is: createSchemaGuard<BooleanSchema>('boolean'),
 }
@@ -66,7 +66,7 @@ interface StringSchema
 
 export const string = {
   create(args: Arguments<StringSchema>): StringSchema {
-    return { kind: 'string', isFlatValue: G.string, ...args }
+    return { kind: 'string', isFlatValue: isString, ...args }
   },
   is: createSchemaGuard<StringSchema>('string'),
 }
