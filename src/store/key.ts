@@ -1,4 +1,4 @@
-import type { Branded } from '../utils'
+import type { Branded } from '../utils/branded'
 
 export type Key = Branded<string, 'Key'>
 
