@@ -16,3 +16,8 @@ export const isUnion = <Options extends Guard<unknown>[]>(
   // biome-ignore lint/suspicious/noExplicitAny: Makes code simpler
   return (value: unknown): value is any => guards.some((guard) => guard(value))
 }
+
+export const isArrayOf = <T>(elementGuard: Guard<T>): Guard<T[]> => {
+  return (value: unknown): value is T[] =>
+    Array.isArray(value) && value.every((item) => elementGuard(item))
+}

@@ -1,6 +1,6 @@
 import { LoroMap } from 'loro-crdt'
 import { isKey, type Key } from './store/key'
-import { type Guard, isBoolean, isInstanceOf } from './utils/guard'
+import { type Guard, isArrayOf, isBoolean, isInstanceOf } from './utils/guard'
 
 declare const TypeInformation: unique symbol
 
@@ -91,3 +91,20 @@ export function createUnionSchema<S extends Schema[]>(
 }
 
 export const isUnionSchema = createSchemaGuard<UnionSchema>('union')
+
+interface ArraySchema<S extends Schema = Schema>
+  extends Schema<{
+    kind: 'array'
+    FlatValue: Key[]
+    JSONValue: JSONValue<S>[]
+  }> {
+  itemSchema: S
+}
+
+export function createArraySchema<S extends Schema>(
+  args: Arguments<ArraySchema<S>>,
+): ArraySchema<S> {
+  return { kind: 'array', isFlatValue: isArrayOf(isKey), ...args }
+}
+
+export const isArraySchema = createSchemaGuard<ArraySchema>('array')
