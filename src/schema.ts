@@ -1,6 +1,6 @@
 import type { LoroList, LoroMap } from 'loro-crdt'
 import { isKey, type Key } from './store/key'
-import { type Guard, isBoolean } from './utils/guard'
+import { type Guard, isBoolean, isUnion } from './utils/guard'
 import { isLoroList, isLoroMap } from './utils/loro'
 
 declare const TypeInformation: unique symbol
@@ -131,8 +131,10 @@ export function createObjectSchema<Props extends Record<string, Schema>>(
   }
 }
 
-export const isUnionSchema = createSchemaGuard<UnionSchema>('union')
 export const isBooleanSchema = createSchemaGuard<BooleanSchema>('boolean')
 export const isRichTextSchema = createSchemaGuard<RichTextSchema>('string')
+export const isUnionSchema = createSchemaGuard<UnionSchema>('union')
 export const isArraySchema = createSchemaGuard<ArraySchema>('array')
 export const isObjectSchema = createSchemaGuard<ObjectSchema>('object')
+
+export const isPrimitiveSchema = isUnion(isBooleanSchema, isRichTextSchema)
