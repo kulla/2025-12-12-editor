@@ -1,6 +1,7 @@
 import type { LoroList, LoroMap } from 'loro-crdt'
 import { isKey, type Key } from './store/key'
 import { type Guard, isBoolean, isUnion } from './utils/guard'
+import type { Iso } from './utils/iso'
 import { isLoroList, isLoroMap } from './utils/loro'
 
 declare const TypeInformation: unique symbol
@@ -59,6 +60,16 @@ interface RichTextSchema
     JSONValue: string
   }> {}
 
+interface WrapperSchema<S extends Schema = Schema, J = JSONValue<S>>
+  extends Schema<{
+    kind: 'wrapper'
+    FlatValue: Key
+    JSONValue: J
+  }> {
+  wrappedSchema: S
+  wrapIso: Iso<JSONValue<S>, J>
+}
+
 interface UnionSchema<S extends Schema[] = Schema[]>
   extends Schema<{
     kind: 'union'
@@ -101,6 +112,12 @@ export function createRichTextSchema(
   return { kind: 'richText', isFlatValue: isLoroMap, ...args }
 }
 
+export function createWrapperSchema<S extends Schema, J = JSONValue<S>>(
+  args: Arguments<WrapperSchema<S, J>>,
+): WrapperSchema<S, J> {
+  return { kind: 'wrapper', isFlatValue: isKey, ...args }
+}
+
 export function createUnionSchema<S extends Schema[]>(
   args: Arguments<UnionSchema<S>>,
 ): UnionSchema<S> {
@@ -133,8 +150,10 @@ export function createObjectSchema<Props extends Record<string, Schema>>(
 
 export const isBooleanSchema = createSchemaGuard<BooleanSchema>('boolean')
 export const isRichTextSchema = createSchemaGuard<RichTextSchema>('string')
+export const isWrapperSchema = createSchemaGuard<WrapperSchema>('wrapper')
 export const isUnionSchema = createSchemaGuard<UnionSchema>('union')
 export const isArraySchema = createSchemaGuard<ArraySchema>('array')
 export const isObjectSchema = createSchemaGuard<ObjectSchema>('object')
 
 export const isPrimitiveSchema = isUnion(isBooleanSchema, isRichTextSchema)
+export const isSingletonSchema = isUnion(isWrapperSchema, isUnionSchema)
