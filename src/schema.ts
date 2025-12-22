@@ -1,4 +1,4 @@
-import {Guard} from "./utils"
+import { Guard } from './utils'
 
 declare const TypeInformation: unique symbol
 
@@ -18,17 +18,20 @@ export interface Schema<D extends SchemaDef = SchemaDef> {
   isFlatValue: Guard.Guard<D['FlatValue']>
 }
 
-export type FlatValue<S extends Schema> =
-  NonNullable<S[typeof TypeInformation]>['FlatValue']
+export type FlatValue<S extends Schema> = NonNullable<
+  S[typeof TypeInformation]
+>['FlatValue']
 
-export type JSONValue<S extends Schema> =
-  NonNullable<S[typeof TypeInformation]>['JSONValue']
+export type JSONValue<S extends Schema> = NonNullable<
+  S[typeof TypeInformation]
+>['JSONValue']
 
-interface BooleanSchema extends Schema<{
-  kind: 'boolean'
-  FlatValue: boolean
-  JSONValue: boolean
-}> {}
+interface BooleanSchema
+  extends Schema<{
+    kind: 'boolean'
+    FlatValue: boolean
+    JSONValue: boolean
+  }> {}
 
 export const boolean = {
   create(): BooleanSchema {
@@ -45,5 +48,5 @@ export const boolean = {
       value !== null &&
       (value as Schema).kind === 'boolean'
     )
-  }
+  },
 }
