@@ -1,4 +1,4 @@
-import { LoroMap } from 'loro-crdt'
+import { LoroList, LoroMap } from 'loro-crdt'
 import { isKey, type Key } from './store/key'
 import { type Guard, isArrayOf, isBoolean, isInstanceOf } from './utils/guard'
 
@@ -95,7 +95,7 @@ export const isUnionSchema = createSchemaGuard<UnionSchema>('union')
 interface ArraySchema<S extends Schema = Schema>
   extends Schema<{
     kind: 'array'
-    FlatValue: Key[]
+    FlatValue: LoroList<Key>
     JSONValue: JSONValue<S>[]
   }> {
   itemSchema: S
@@ -104,7 +104,13 @@ interface ArraySchema<S extends Schema = Schema>
 export function createArraySchema<S extends Schema>(
   args: Arguments<ArraySchema<S>>,
 ): ArraySchema<S> {
-  return { kind: 'array', isFlatValue: isArrayOf(isKey), ...args }
+  return {
+    kind: 'array',
+    isFlatValue(value): value is LoroList<Key> {
+      return isInstanceOf(LoroList)(value) && value.toArray().every(isKey)
+    },
+    ...args,
+  }
 }
 
 export const isArraySchema = createSchemaGuard<ArraySchema>('array')
