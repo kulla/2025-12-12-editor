@@ -1,5 +1,6 @@
+import { LoroMap } from 'loro-crdt'
 import { isKey, type Key } from './store/key'
-import { type Guard, isBoolean, isString } from './utils/guard'
+import { type Guard, isBoolean, isInstanceOf } from './utils/guard'
 
 declare const TypeInformation: unique symbol
 
@@ -58,20 +59,20 @@ export function createBooleanSchema(
 
 export const isBooleanSchema = createSchemaGuard<BooleanSchema>('boolean')
 
-interface StringSchema
+interface RichTextSchema
   extends Schema<{
-    kind: 'string'
-    FlatValue: string
+    kind: 'richText'
+    FlatValue: LoroMap
     JSONValue: string
   }> {}
 
-export function createStringSchema(
-  args: Arguments<StringSchema>,
-): StringSchema {
-  return { kind: 'string', isFlatValue: isString, ...args }
+export function createRichTextSchema(
+  args: Arguments<RichTextSchema>,
+): RichTextSchema {
+  return { kind: 'richText', isFlatValue: isInstanceOf(LoroMap), ...args }
 }
 
-export const isStringSchema = createSchemaGuard<StringSchema>('string')
+export const isRichTextSchema = createSchemaGuard<RichTextSchema>('string')
 
 interface UnionSchema<S extends Schema[] = Schema[]>
   extends Schema<{
@@ -92,15 +93,15 @@ export function createUnionSchema<S extends Schema[]>(
 export const isUnionSchema = createSchemaGuard<UnionSchema>('union')
 
 const BooleanSchema = createBooleanSchema({ name: 'Boolean' })
-const StringSchema = createStringSchema({ name: 'String' })
+const RichTextSchema = createRichTextSchema({ name: 'String' })
 const UnionSchema = createUnionSchema({
   name: 'BooleanOrString',
-  options: [BooleanSchema, StringSchema],
+  options: [BooleanSchema, RichTextSchema],
   getOption(value) {
     if (typeof value === 'boolean') {
       return BooleanSchema
     } else {
-      return StringSchema
+      return RichTextSchema
     }
   },
 })

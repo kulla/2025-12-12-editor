@@ -4,6 +4,12 @@ export const isString: Guard<string> = (value) => typeof value === 'string'
 
 export const isBoolean: Guard<boolean> = (value) => typeof value === 'boolean'
 
+export const isInstanceOf = <T>(
+  ctor: new (...args: unknown[]) => T,
+): Guard<T> => {
+  return (value: unknown): value is T => value instanceof ctor
+}
+
 export const isUnion = <Options extends Guard<unknown>[]>(
   ...guards: Options
 ): Guard<Options[number] extends Guard<infer U> ? U : never> => {
