@@ -27,6 +27,11 @@ export type JSONValue<S extends Schema> = NonNullable<
   S[typeof TypeInformation]
 >['JSONValue']
 
+type Arguments<S extends Schema> = Omit<
+  S,
+  'kind' | typeof TypeInformation | 'isFlatValue'
+>
+
 function createSchemaGuard<S extends Schema>(kind: string): Guard.Guard<S> {
   return (value: unknown): value is S => {
     return (
@@ -46,8 +51,8 @@ interface BooleanSchema
   }> {}
 
 export const boolean = {
-  create({ name }: { name: string }): BooleanSchema {
-    return { kind: 'boolean', name, isFlatValue: Guard.boolean }
+  create(args: Arguments<BooleanSchema>): BooleanSchema {
+    return { kind: 'boolean', isFlatValue: Guard.boolean, ...args }
   },
   is: createSchemaGuard<BooleanSchema>('boolean'),
 }
@@ -60,8 +65,8 @@ interface StringSchema
   }> {}
 
 export const string = {
-  create({ name }: { name: string }): StringSchema {
-    return { kind: 'string', name, isFlatValue: Guard.string }
+  create(args: Arguments<StringSchema>): StringSchema {
+    return { kind: 'string', isFlatValue: Guard.string, ...args }
   },
   is: createSchemaGuard<StringSchema>('string'),
 }
@@ -77,11 +82,7 @@ interface UnionSchema<S extends Schema[] = Schema[]>
 }
 
 export const union = {
-  create<S extends Schema[]>(args: {
-    name: string
-    options: S
-    getOption(value: JSONValue<S[number]>): S[number]
-  }): UnionSchema<S> {
+  create<S extends Schema[]>(args: Arguments<UnionSchema<S>>): UnionSchema<S> {
     return { kind: 'union', isFlatValue: isKey, ...args }
   },
   is: createSchemaGuard<UnionSchema>('union'),
