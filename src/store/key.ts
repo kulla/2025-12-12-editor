@@ -1,7 +1,6 @@
 import type { Branded } from '../utils/branded'
+import { type Guard, isString } from '../utils/guard'
 
 export type Key = Branded<string, 'Key'>
 
-export function isKey(value: unknown): value is Key {
-  return typeof value === 'string'
-}
+export const isKey = isString as Guard<Key>
