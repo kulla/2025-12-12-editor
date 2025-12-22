@@ -51,28 +51,12 @@ interface BooleanSchema
     JSONValue: boolean
   }> {}
 
-export function createBooleanSchema(
-  args: Arguments<BooleanSchema>,
-): BooleanSchema {
-  return { kind: 'boolean', isFlatValue: isBoolean, ...args }
-}
-
-export const isBooleanSchema = createSchemaGuard<BooleanSchema>('boolean')
-
 interface RichTextSchema
   extends Schema<{
     kind: 'richText'
     FlatValue: LoroMap
     JSONValue: string
   }> {}
-
-export function createRichTextSchema(
-  args: Arguments<RichTextSchema>,
-): RichTextSchema {
-  return { kind: 'richText', isFlatValue: isInstanceOf(LoroMap), ...args }
-}
-
-export const isRichTextSchema = createSchemaGuard<RichTextSchema>('string')
 
 interface UnionSchema<S extends Schema[] = Schema[]>
   extends Schema<{
@@ -84,14 +68,6 @@ interface UnionSchema<S extends Schema[] = Schema[]>
   getOption(value: JSONValue<S[number]>): S[number]
 }
 
-export function createUnionSchema<S extends Schema[]>(
-  args: Arguments<UnionSchema<S>>,
-): UnionSchema<S> {
-  return { kind: 'union', isFlatValue: isKey, ...args }
-}
-
-export const isUnionSchema = createSchemaGuard<UnionSchema>('union')
-
 interface ArraySchema<S extends Schema = Schema>
   extends Schema<{
     kind: 'array'
@@ -99,6 +75,35 @@ interface ArraySchema<S extends Schema = Schema>
     JSONValue: JSONValue<S>[]
   }> {
   itemSchema: S
+}
+
+interface ObjectSchema<
+  Props extends Record<string, Schema> = Record<string, Schema>,
+> extends Schema<{
+    kind: 'object'
+    FlatValue: LoroMap<{ [K in keyof Props]: Key }>
+    JSONValue: { [K in keyof Props]: JSONValue<Props[K]> }
+  }> {
+  properties: Props
+  keyOrder: (keyof Props)[]
+}
+
+export function createBooleanSchema(
+  args: Arguments<BooleanSchema>,
+): BooleanSchema {
+  return { kind: 'boolean', isFlatValue: isBoolean, ...args }
+}
+
+export function createRichTextSchema(
+  args: Arguments<RichTextSchema>,
+): RichTextSchema {
+  return { kind: 'richText', isFlatValue: isInstanceOf(LoroMap), ...args }
+}
+
+export function createUnionSchema<S extends Schema[]>(
+  args: Arguments<UnionSchema<S>>,
+): UnionSchema<S> {
+  return { kind: 'union', isFlatValue: isKey, ...args }
 }
 
 export function createArraySchema<S extends Schema>(
@@ -113,19 +118,6 @@ export function createArraySchema<S extends Schema>(
   }
 }
 
-export const isArraySchema = createSchemaGuard<ArraySchema>('array')
-
-interface ObjectSchema<
-  Props extends Record<string, Schema> = Record<string, Schema>,
-> extends Schema<{
-    kind: 'object'
-    FlatValue: LoroMap<{ [K in keyof Props]: Key }>
-    JSONValue: { [K in keyof Props]: JSONValue<Props[K]> }
-  }> {
-  properties: Props
-  keyOrder: (keyof Props)[]
-}
-
 export function createObjectSchema<Props extends Record<string, Schema>>(
   args: Arguments<ObjectSchema<Props>>,
 ): ObjectSchema<Props> {
@@ -137,3 +129,8 @@ export function createObjectSchema<Props extends Record<string, Schema>>(
     ...args,
   }
 }
+
+export const isUnionSchema = createSchemaGuard<UnionSchema>('union')
+export const isBooleanSchema = createSchemaGuard<BooleanSchema>('boolean')
+export const isRichTextSchema = createSchemaGuard<RichTextSchema>('string')
+export const isArraySchema = createSchemaGuard<ArraySchema>('array')
