@@ -114,3 +114,26 @@ export function createArraySchema<S extends Schema>(
 }
 
 export const isArraySchema = createSchemaGuard<ArraySchema>('array')
+
+interface ObjectSchema<
+  Props extends Record<string, Schema> = Record<string, Schema>,
+> extends Schema<{
+    kind: 'object'
+    FlatValue: LoroMap<{ [K in keyof Props]: Key }>
+    JSONValue: { [K in keyof Props]: JSONValue<Props[K]> }
+  }> {
+  properties: Props
+  keyOrder: (keyof Props)[]
+}
+
+export function createObjectSchema<Props extends Record<string, Schema>>(
+  args: Arguments<ObjectSchema<Props>>,
+): ObjectSchema<Props> {
+  return {
+    kind: 'object',
+    isFlatValue(value): value is LoroMap<{ [K in keyof Props]: Key }> {
+      return isInstanceOf(LoroMap)(value) && value.values().every(isKey)
+    },
+    ...args,
+  }
+}
