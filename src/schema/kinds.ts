@@ -113,7 +113,7 @@ type FactoryArguments<S extends Schema> = Omit<
 >
 
 export const isBooleanSchema = createSchemaGuard<BooleanSchema>('boolean')
-export const isRichTextSchema = createSchemaGuard<RichTextSchema>('string')
+export const isRichTextSchema = createSchemaGuard<RichTextSchema>('richText')
 export const isWrapperSchema = createSchemaGuard<WrapperSchema>('wrapper')
 export const isUnionSchema = createSchemaGuard<UnionSchema>('union')
 export const isArraySchema = createSchemaGuard<ArraySchema>('array')
@@ -122,7 +122,7 @@ export const isObjectSchema = createSchemaGuard<ObjectSchema>('object')
 export const isPrimitiveSchema = isUnion(isBooleanSchema, isRichTextSchema)
 export const isSingletonSchema = isUnion(isWrapperSchema, isUnionSchema)
 
-function createSchemaGuard<S extends Schema>(kind: string): Guard<S> {
+function createSchemaGuard<S extends Schema>(kind: S['kind']): Guard<S> {
   return (value: unknown): value is S => {
     return (
       typeof value === 'object' &&
