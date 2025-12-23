@@ -55,8 +55,8 @@ interface ObjectSchema<
     FlatValue: LoroMap<{ [K in keyof P]: Key }>
     JSONValue: { [K in keyof P]: JSONValue<P[K]> }
   }> {
-  properties: P
-  keyOrder: (keyof P)[]
+  properties: Readonly<P>
+  keyOrder: readonly (keyof P)[]
 }
 
 export function createBooleanSchema(
@@ -98,6 +98,20 @@ export function createArraySchema<S extends Schema>(
 export function createObjectSchema<Props extends Record<string, Schema>>(
   args: FactoryArguments<ObjectSchema<Props>>,
 ): ObjectSchema<Props> {
+  const propertyNames = Object.keys(args.properties)
+
+  if (propertyNames.length === 0) {
+    throw new Error('Object schema must have at least one property')
+  }
+  if (new Set(propertyNames).size !== propertyNames.length) {
+    throw new Error('Property names in object schema must be unique')
+  }
+  if (!propertyNames.every((name) => args.keyOrder.includes(name))) {
+    throw new Error(
+      'All property names must be included in keyOrder of object schema',
+    )
+  }
+
   return {
     kind: 'object',
     isFlatValue(value): value is LoroMap<{ [K in keyof Props]: Key }> {
