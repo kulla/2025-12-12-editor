@@ -4,7 +4,7 @@ import { isKey, type Key } from '../store/key'
 import { type Guard, isBoolean, isUnion } from '../utils/guard'
 import type { Iso } from '../utils/iso'
 import { isLoroList, isLoroMap } from '../utils/loro'
-import type { JSONValue, OmitTypeInformation, Schema } from './types'
+import type { JSONValue, OmitTypeInfo, Schema } from './types'
 
 interface BooleanSchema
   extends Schema<{
@@ -124,7 +124,7 @@ export function createObjectSchema<Props extends Record<string, Schema>>(
 }
 
 type FactoryArguments<S extends Schema> = Omit<
-  OmitTypeInformation<S>,
+  OmitTypeInfo<S>,
   'kind' | 'isFlatValue'
 >
 

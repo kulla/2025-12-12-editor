@@ -4,7 +4,7 @@ export interface Schema<K extends SchemaKind = SchemaKind> {
   kind: K['kind']
   name: string
   isFlatValue: Guard<K['FlatValue']>
-  [TypeInformation]?: {
+  [TypeInfo]?: {
     FlatValue: K['FlatValue']
     JSONValue: K['JSONValue']
   }
@@ -13,12 +13,9 @@ export interface Schema<K extends SchemaKind = SchemaKind> {
 export type FlatValue<S extends Schema> = TypeInfo<S>['FlatValue']
 export type JSONValue<S extends Schema> = TypeInfo<S>['JSONValue']
 
-type TypeInfo<S extends Schema> = NonNullable<S[typeof TypeInformation]>
+export type OmitTypeInfo<S extends Schema> = Omit<S, typeof TypeInfo>
 
-export type OmitTypeInformation<S extends Schema> = Omit<
-  S,
-  typeof TypeInformation
->
+type TypeInfo<S extends Schema> = NonNullable<S[typeof TypeInfo]>
 
 interface SchemaKind {
   kind: string
@@ -26,4 +23,4 @@ interface SchemaKind {
   JSONValue: unknown
 }
 
-declare const TypeInformation: unique symbol
+declare const TypeInfo: unique symbol
