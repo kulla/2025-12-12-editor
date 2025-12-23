@@ -7,6 +7,7 @@ import { type Key, type KeyGenerator, PrefixKeyGenerator } from './key'
 
 export class EditorStore {
   private nodes: FlatNodeMap
+  private currentTransaction: Transaction | null = null
 
   constructor(
     private readonly loroDoc: LoroDoc,
@@ -30,8 +31,16 @@ export class EditorStore {
   }
 
   update(updater: (tx: Transaction) => void): void {
-    const tx = this.createTransaction()
-    updater(tx)
+    if (this.currentTransaction != null) {
+      // If we're already in a transaction, just call the update function directly
+      updater(this.currentTransaction)
+    } else {
+      this.currentTransaction = this.createTransaction()
+
+      updater(this.currentTransaction)
+
+      this.currentTransaction = null
+    }
   }
 
   private createTransaction(): Transaction {
