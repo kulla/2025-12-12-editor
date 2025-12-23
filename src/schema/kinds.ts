@@ -1,5 +1,6 @@
 import { invariant } from 'es-toolkit'
 import type { LoroList, LoroMap } from 'loro-crdt'
+import type { NodeJSON } from 'prosekit/core'
 import { isKey, type Key } from '../store/key'
 import { type Guard, isBoolean, isLiteral, isUnion } from '../utils/guard'
 import { isLoroList, isLoroMap } from '../utils/loro'
@@ -17,7 +18,7 @@ interface RichTextSchema
   extends Schema<{
     kind: 'richText'
     FlatValue: LoroMap
-    JSONValue: Record<string, unknown>
+    JSONValue: NodeJSON
   }> {
   readonly features: Array<RichTextFeature>
 }
