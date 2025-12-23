@@ -18,6 +18,10 @@ export class EditorStore {
     this.nodes = this.loroDoc.getMap('nodes') as FlatNodeMap
   }
 
+  addUpdateListener(listener: () => void) {
+    return this.loroDoc.subscribe(listener)
+  }
+
   get(key: Key): FlatNode {
     const node = this.nodes.get(key)
 
