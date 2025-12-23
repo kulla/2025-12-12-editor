@@ -1,3 +1,4 @@
+import { RichTextFeature } from '../rich-text/features'
 import {
   createArray,
   createLiteral,
@@ -6,9 +7,8 @@ import {
   createTruthValue,
   createUnion,
   createWrapper,
-} from './kinds'
-import { RichTextFeature } from './rich-text'
-import type { Schema } from './types'
+} from '../schema/kinds'
+import type { Schema } from '../schema/types'
 
 export enum ContentType {
   Text = 'text',

@@ -1,10 +1,10 @@
 import { invariant } from 'es-toolkit'
 import type { LoroList, LoroMap } from 'loro-crdt'
 import type { NodeJSON } from 'prosekit/core'
+import type { RichTextFeature } from '../rich-text/features'
 import { isKey, type Key } from '../store/key'
 import { type Guard, isBoolean, isLiteral, isUnion } from '../utils/guard'
 import { isLoroList, isLoroMap } from '../utils/loro'
-import type { RichTextFeature } from './rich-text'
 import type { JSONValue, OmitTypeInfo, Schema } from './types'
 
 interface TruthValueSchema
