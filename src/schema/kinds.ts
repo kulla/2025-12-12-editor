@@ -29,7 +29,7 @@ interface WrapperSchema<S extends Schema = Schema, J = JSONValue<S>>
   wrapIso: Iso<JSONValue<S>, J>
 }
 
-interface UnionSchema<S extends Schema[] = Schema[]>
+interface UnionSchema<S extends readonly Schema[] = readonly Schema[]>
   extends Schema<{
     kind: 'union'
     FlatValue: Key
@@ -77,7 +77,7 @@ export function createWrapperSchema<S extends Schema, J = JSONValue<S>>(
   return { kind: 'wrapper', isFlatValue: isKey, ...args }
 }
 
-export function createUnionSchema<S extends Schema[]>(
+export function createUnionSchema<S extends readonly Schema[]>(
   args: FactoryArguments<UnionSchema<S>>,
 ): UnionSchema<S> {
   return { kind: 'union', isFlatValue: isKey, ...args }
