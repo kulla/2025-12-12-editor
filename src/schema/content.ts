@@ -100,6 +100,7 @@ const EducationalContent = createUnion({
   },
 })
 
+export type Root = typeof Root
 export const Root = createWrapper({
   name: 'Root',
   wrappedSchema: EducationalContent,

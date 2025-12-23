@@ -1,13 +1,17 @@
 import { invariant } from 'es-toolkit'
 import type { LoroDoc, LoroMap } from 'loro-crdt'
 import type { FlatNode } from '../nodes/flat'
-import { schemaRegistry } from '../schema/content'
-import type { Key } from './key'
+import { Root, schemaRegistry } from '../schema/content'
+import type { FlatValue, Schema } from '../schema/types'
+import { type Key, type KeyGenerator, PrefixKeyGenerator } from './key'
 
 export class EditorStore {
   nodes: FlatNodeMap
 
-  constructor(private readonly loroDoc: LoroDoc) {
+  constructor(
+    private readonly loroDoc: LoroDoc,
+    private readonly keyGenerator: KeyGenerator = new PrefixKeyGenerator('n'),
+  ) {
     // TODO: Check that the map of the correct type
     this.nodes = this.loroDoc.getMap('nodes') as FlatNodeMap
   }
@@ -24,6 +28,41 @@ export class EditorStore {
 
     return { ...restData, schema }
   }
+
+  update(updater: (tx: Transaction) => void): void {
+    const tx = this.createTransaction()
+    updater(tx)
+  }
+
+  private createTransaction(): Transaction {
+    return {
+      attachRoot: (rootKey: Key, value: FlatValue<Root>) => {
+        this.nodes.set(rootKey, {
+          schemaName: Root.name,
+          key: rootKey,
+          parentKey: null,
+          value: value,
+        })
+      },
+      insert: (schema, parentKey, createValue) => {
+        const key = this.keyGenerator.next()
+        const value = createValue(key)
+
+        this.nodes.set(key, { schemaName: schema.name, key, parentKey, value })
+
+        return key
+      },
+    }
+  }
+}
+
+interface Transaction {
+  attachRoot(rootKey: Key, value: FlatValue<Root>): void
+  insert<S extends Schema>(
+    schema: S,
+    parentKey: Key,
+    createValue: (key: Key) => FlatValue<S>,
+  ): Key
 }
 
 type FlatNodeMap = LoroMap<Record<string, StoredFlatNode>>
