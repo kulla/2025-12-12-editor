@@ -3,7 +3,7 @@ import { isKey, type Key } from '../store/key'
 import { type Guard, isBoolean, isUnion } from '../utils/guard'
 import type { Iso } from '../utils/iso'
 import { isLoroList, isLoroMap } from '../utils/loro'
-import type { Arguments, JSONValue, Schema } from './types'
+import type { JSONValue, OmitTypeInformation, Schema } from './types'
 
 function createSchemaGuard<S extends Schema>(kind: string): Guard<S> {
   return (value: unknown): value is S => {
@@ -127,3 +127,8 @@ export const isObjectSchema = createSchemaGuard<ObjectSchema>('object')
 
 export const isPrimitiveSchema = isUnion(isBooleanSchema, isRichTextSchema)
 export const isSingletonSchema = isUnion(isWrapperSchema, isUnionSchema)
+
+type Arguments<S extends Schema> = Omit<
+  OmitTypeInformation<S>,
+  'kind' | 'isFlatValue'
+>

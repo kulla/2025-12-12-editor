@@ -18,9 +18,9 @@ export type JSONValue<S extends Schema> = NonNullable<
   S[typeof TypeInformation]
 >['JSONValue']
 
-export type Arguments<S extends Schema> = Omit<
+export type OmitTypeInformation<S extends Schema> = Omit<
   S,
-  'kind' | typeof TypeInformation | 'isFlatValue'
+  typeof TypeInformation
 >
 
 interface SchemaKind {
