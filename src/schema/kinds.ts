@@ -1,39 +1,9 @@
 import type { LoroList, LoroMap } from 'loro-crdt'
-import { isKey, type Key } from './store/key'
-import { type Guard, isBoolean, isUnion } from './utils/guard'
-import type { Iso } from './utils/iso'
-import { isLoroList, isLoroMap } from './utils/loro'
-
-declare const TypeInformation: unique symbol
-
-interface SchemaDef {
-  kind: string
-  FlatValue: unknown
-  JSONValue: unknown
-}
-
-export interface Schema<D extends SchemaDef = SchemaDef> {
-  kind: D['kind']
-  name: string
-  isFlatValue: Guard<D['FlatValue']>
-  [TypeInformation]?: {
-    FlatValue: D['FlatValue']
-    JSONValue: D['JSONValue']
-  }
-}
-
-export type FlatValue<S extends Schema> = NonNullable<
-  S[typeof TypeInformation]
->['FlatValue']
-
-export type JSONValue<S extends Schema> = NonNullable<
-  S[typeof TypeInformation]
->['JSONValue']
-
-type Arguments<S extends Schema> = Omit<
-  S,
-  'kind' | typeof TypeInformation | 'isFlatValue'
->
+import { isKey, type Key } from '../store/key'
+import { type Guard, isBoolean, isUnion } from '../utils/guard'
+import type { Iso } from '../utils/iso'
+import { isLoroList, isLoroMap } from '../utils/loro'
+import type { Arguments, JSONValue, Schema } from './types'
 
 function createSchemaGuard<S extends Schema>(kind: string): Guard<S> {
   return (value: unknown): value is S => {
