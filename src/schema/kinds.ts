@@ -1,3 +1,4 @@
+import { invariant } from 'es-toolkit'
 import type { LoroList, LoroMap } from 'loro-crdt'
 import { isKey, type Key } from '../store/key'
 import { type Guard, isBoolean, isUnion } from '../utils/guard'
@@ -100,17 +101,18 @@ export function createObjectSchema<Props extends Record<string, Schema>>(
 ): ObjectSchema<Props> {
   const propertyNames = Object.keys(args.properties)
 
-  if (propertyNames.length === 0) {
-    throw new Error('Object schema must have at least one property')
-  }
-  if (new Set(propertyNames).size !== propertyNames.length) {
-    throw new Error('Property names in object schema must be unique')
-  }
-  if (!propertyNames.every((name) => args.keyOrder.includes(name))) {
-    throw new Error(
-      'All property names must be included in keyOrder of object schema',
-    )
-  }
+  invariant(
+    propertyNames.length !== 0,
+    'Object schema must have at least one property',
+  )
+  invariant(
+    new Set(propertyNames).size !== propertyNames.length,
+    'Property names in object schema must be unique',
+  )
+  invariant(
+    !propertyNames.every((name) => args.keyOrder.includes(name)),
+    'All property names must be included in keyOrder of object schema',
+  )
 
   return {
     kind: 'object',
