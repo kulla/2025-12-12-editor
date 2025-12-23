@@ -47,19 +47,15 @@ const FillInTheBlankRichText = createRichText({
 const TextContent = createWrapper({
   name: 'TextContent',
   wrappedSchema: ContentRichText,
-  wrapIso: {
-    to: (value) => ({ type: ContentType.Text, content: value }),
-    from: (value) => value.content,
-  },
+  wrap: (value) => ({ type: ContentType.Text, content: value }),
+  unwrap: (value) => value.content,
 })
 
 const FillInTheBlankExercise = createWrapper({
   name: 'FillInTheBlankExercise',
   wrappedSchema: FillInTheBlankRichText,
-  wrapIso: {
-    to: (value) => ({ type: ContentType.FillInTheBlank, content: value }),
-    from: (value) => value.content,
-  },
+  wrap: (value) => ({ type: ContentType.FillInTheBlank, content: value }),
+  unwrap: (value) => value.content,
 })
 
 export const MultipleChoiceExercise = createObject({
@@ -104,7 +100,8 @@ export type Root = typeof Root
 export const Root = createWrapper({
   name: 'Root',
   wrappedSchema: EducationalContent,
-  wrapIso: { to: (value) => value, from: (value) => value },
+  wrap: (value) => value,
+  unwrap: (value) => value,
 })
 
 export const schemaRegistry: Record<string, Schema | undefined> =

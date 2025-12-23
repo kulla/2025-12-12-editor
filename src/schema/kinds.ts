@@ -2,7 +2,6 @@ import { invariant } from 'es-toolkit'
 import type { LoroList, LoroMap } from 'loro-crdt'
 import { isKey, type Key } from '../store/key'
 import { type Guard, isBoolean, isLiteral, isUnion } from '../utils/guard'
-import type { Iso } from '../utils/iso'
 import { isLoroList, isLoroMap } from '../utils/loro'
 import type { RichTextFeature } from './rich-text'
 import type { JSONValue, OmitTypeInfo, Schema } from './types'
@@ -40,7 +39,8 @@ interface WrapperSchema<S extends Schema = Schema, J = JSONValue<S>>
     JSONValue: J
   }> {
   wrappedSchema: S
-  wrapIso: Iso<JSONValue<S>, J>
+  wrap(inner: JSONValue<S>): J
+  unwrap(outer: J): JSONValue<S>
 }
 
 interface UnionSchema<S extends readonly Schema[] = readonly Schema[]>
