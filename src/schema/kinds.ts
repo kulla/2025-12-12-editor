@@ -63,31 +63,31 @@ interface ObjectSchema<
   keyOrder: readonly (keyof P)[]
 }
 
-export function createBooleanSchema(
+export function createBoolean(
   args: FactoryArguments<BooleanSchema>,
 ): BooleanSchema {
   return { kind: 'boolean', isFlatValue: isBoolean, ...args }
 }
 
-export function createRichTextSchema(
+export function createRichText(
   args: FactoryArguments<RichTextSchema>,
 ): RichTextSchema {
   return { kind: 'richText', isFlatValue: isLoroMap, ...args }
 }
 
-export function createWrapperSchema<S extends Schema, J = JSONValue<S>>(
+export function createWrapper<S extends Schema, J = JSONValue<S>>(
   args: FactoryArguments<WrapperSchema<S, J>>,
 ): WrapperSchema<S, J> {
   return { kind: 'wrapper', isFlatValue: isKey, ...args }
 }
 
-export function createUnionSchema<S extends readonly Schema[]>(
+export function createUnion<S extends readonly Schema[]>(
   args: FactoryArguments<UnionSchema<S>>,
 ): UnionSchema<S> {
   return { kind: 'union', isFlatValue: isKey, ...args }
 }
 
-export function createArraySchema<S extends Schema>(
+export function createArray<S extends Schema>(
   args: FactoryArguments<ArraySchema<S>>,
 ): ArraySchema<S> {
   return {
@@ -99,7 +99,7 @@ export function createArraySchema<S extends Schema>(
   }
 }
 
-export function createObjectSchema<Props extends Record<string, Schema>>(
+export function createObject<Props extends Record<string, Schema>>(
   args: FactoryArguments<ObjectSchema<Props>>,
 ): ObjectSchema<Props> {
   const propertyNames = Object.keys(args.properties)

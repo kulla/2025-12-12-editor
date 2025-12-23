@@ -1,10 +1,10 @@
 import {
-  createArraySchema,
-  createBooleanSchema,
-  createObjectSchema,
-  createRichTextSchema,
-  createUnionSchema,
-  createWrapperSchema,
+  createArray,
+  createBoolean,
+  createObject,
+  createRichText,
+  createUnion,
+  createWrapper,
 } from './kinds'
 import { RichTextFeature } from './rich-text'
 
@@ -13,14 +13,14 @@ enum ContentType {
   FillInTheBlank = 'fill-in-the-blank',
 }
 
-const BooleanSchema = createBooleanSchema({ name: 'Boolean' })
+const BooleanSchema = createBoolean({ name: 'Boolean' })
 
-const InlineRichText = createRichTextSchema({
+const InlineRichText = createRichText({
   name: 'InlineRichText',
   features: [RichTextFeature.Bold, RichTextFeature.Italic],
 })
 
-const ContentRichText = createRichTextSchema({
+const ContentRichText = createRichText({
   name: 'ContentRichText',
   features: [
     RichTextFeature.Bold,
@@ -31,7 +31,7 @@ const ContentRichText = createRichTextSchema({
   ],
 })
 
-const FillInTheBlankRichText = createRichTextSchema({
+const FillInTheBlankRichText = createRichText({
   name: 'FillInTheBlankRichText',
   features: [
     RichTextFeature.Bold,
@@ -41,7 +41,7 @@ const FillInTheBlankRichText = createRichTextSchema({
   ],
 })
 
-const TextContent = createWrapperSchema({
+const TextContent = createWrapper({
   name: 'TextContent',
   wrappedSchema: ContentRichText,
   wrapIso: {
@@ -50,7 +50,7 @@ const TextContent = createWrapperSchema({
   },
 })
 
-const FillInTheBlankExercise = createWrapperSchema({
+const FillInTheBlankExercise = createWrapper({
   name: 'FillInTheBlankExercise',
   wrappedSchema: FillInTheBlankRichText,
   wrapIso: {
@@ -59,13 +59,13 @@ const FillInTheBlankExercise = createWrapperSchema({
   },
 })
 
-export const MultipleChoiceExercise = createObjectSchema({
+export const MultipleChoiceExercise = createObject({
   name: 'MultipleChoiceExercise',
   properties: {
     question: InlineRichText,
-    options: createArraySchema({
+    options: createArray({
       name: 'MultipleChoiceOptions',
-      itemSchema: createObjectSchema({
+      itemSchema: createObject({
         name: 'MultipleChoiceOption',
         properties: {
           isCorrect: BooleanSchema,
@@ -78,7 +78,7 @@ export const MultipleChoiceExercise = createObjectSchema({
   keyOrder: ['question', 'options'],
 })
 
-const EducationalContent = createUnionSchema({
+const EducationalContent = createUnion({
   name: 'EducationalContent',
   options: [TextContent, FillInTheBlankExercise, MultipleChoiceExercise],
   getOption: (value) => {
@@ -94,7 +94,7 @@ const EducationalContent = createUnionSchema({
   },
 })
 
-export const Root = createWrapperSchema({
+export const Root = createWrapper({
   name: 'Root',
   wrappedSchema: EducationalContent,
   wrapIso: { to: (value) => value, from: (value) => value },
