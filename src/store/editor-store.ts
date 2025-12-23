@@ -7,6 +7,7 @@ import { type Key, type KeyGenerator, PrefixKeyGenerator } from './key'
 
 export class EditorStore {
   private nodes: FlatNodeMap
+  private metadata = this.loroDoc.getMap('metadata') as LoroMap<Metadata>
   private currentTransaction: Transaction | null = null
 
   constructor(
@@ -30,6 +31,10 @@ export class EditorStore {
     return { ...restData, schema }
   }
 
+  get updateCount(): number {
+    return this.metadata.get('updateCount') ?? 0
+  }
+
   update(updater: (tx: Transaction) => void): void {
     if (this.currentTransaction != null) {
       // If we're already in a transaction, just call the update function directly
@@ -39,6 +44,7 @@ export class EditorStore {
 
       updater(this.currentTransaction)
 
+      this.incrementUpdateCount()
       this.currentTransaction = null
     }
   }
@@ -63,6 +69,17 @@ export class EditorStore {
       },
     }
   }
+
+  private incrementUpdateCount(): void {
+    const currentCount = this.metadata.get('updateCount') ?? 0
+    this.metadata.set('updateCount', currentCount + 1)
+  }
+}
+
+interface Metadata {
+  updateCount: number | undefined
+  // TODO: Find a way so that this is not needed any more
+  [key: string]: unknown
 }
 
 interface Transaction {
