@@ -139,7 +139,7 @@ type FactoryArguments<S extends Schema> = Omit<
   'kind' | 'isFlatValue'
 >
 
-export const isBooleanSchema = createSchemaGuard<TruthValueSchema>('boolean')
+export const isTruthValueSchema = createSchemaGuard<TruthValueSchema>('boolean')
 export const isRichTextSchema = createSchemaGuard<RichTextSchema>('richText')
 export const isLiteralSchema = createSchemaGuard<LiteralSchema>('literal')
 export const isWrapperSchema = createSchemaGuard<WrapperSchema>('wrapper')
@@ -147,7 +147,11 @@ export const isUnionSchema = createSchemaGuard<UnionSchema>('union')
 export const isArraySchema = createSchemaGuard<ArraySchema>('array')
 export const isObjectSchema = createSchemaGuard<ObjectSchema>('object')
 
-export const isPrimitiveSchema = isUnion(isBooleanSchema, isRichTextSchema)
+export const isPrimitiveSchema = isUnion(
+  isTruthValueSchema,
+  isRichTextSchema,
+  isLiteralSchema,
+)
 export const isSingletonSchema = isUnion(isWrapperSchema, isUnionSchema)
 
 function createSchemaGuard<S extends Schema>(kind: S['kind']): Guard<S> {
