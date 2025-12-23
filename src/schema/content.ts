@@ -1,5 +1,6 @@
 import {
   createArray,
+  createLiteral,
   createObject,
   createRichText,
   createTruthValue,
@@ -11,6 +12,7 @@ import { RichTextFeature } from './rich-text'
 enum ContentType {
   Text = 'text',
   FillInTheBlank = 'fill-in-the-blank',
+  MultipleChoice = 'multiple-choice',
 }
 
 const TruthValue = createTruthValue({ name: 'TruthValue' })
@@ -62,6 +64,10 @@ const FillInTheBlankExercise = createWrapper({
 export const MultipleChoiceExercise = createObject({
   name: 'MultipleChoiceExercise',
   properties: {
+    type: createLiteral({
+      name: 'MultipleChoiceType',
+      value: ContentType.MultipleChoice,
+    }),
     question: InlineRichText,
     options: createArray({
       name: 'MultipleChoiceOptions',
@@ -82,14 +88,13 @@ const EducationalContent = createUnion({
   name: 'EducationalContent',
   options: [TextContent, FillInTheBlankExercise, MultipleChoiceExercise],
   getOption: (value) => {
-    if ('type' in value) {
-      if (value.type === ContentType.Text) {
+    switch (value.type) {
+      case ContentType.Text:
         return TextContent
-      } else {
+      case ContentType.FillInTheBlank:
         return FillInTheBlankExercise
-      }
-    } else {
-      return MultipleChoiceExercise
+      case ContentType.MultipleChoice:
+        return MultipleChoiceExercise
     }
   },
 })

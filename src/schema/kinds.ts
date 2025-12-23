@@ -1,7 +1,7 @@
 import { invariant } from 'es-toolkit'
 import type { LoroList, LoroMap } from 'loro-crdt'
 import { isKey, type Key } from '../store/key'
-import { type Guard, isBoolean, isUnion } from '../utils/guard'
+import { type Guard, isBoolean, isLiteral, isUnion } from '../utils/guard'
 import type { Iso } from '../utils/iso'
 import { isLoroList, isLoroMap } from '../utils/loro'
 import type { RichTextFeature } from './rich-text'
@@ -21,6 +21,16 @@ interface RichTextSchema
     JSONValue: Record<string, unknown>
   }> {
   readonly features: Array<RichTextFeature>
+}
+
+interface LiteralSchema<
+  T extends string | number | boolean = string | number | boolean,
+> extends Schema<{
+    kind: 'literal'
+    FlatValue: T
+    JSONValue: T
+  }> {
+  readonly value: T
 }
 
 interface WrapperSchema<S extends Schema = Schema, J = JSONValue<S>>
@@ -75,6 +85,12 @@ export function createRichText(
   return { kind: 'richText', isFlatValue: isLoroMap, ...args }
 }
 
+export function createLiteral<T extends string | number | boolean>(
+  args: FactoryArguments<LiteralSchema<T>>,
+): LiteralSchema<T> {
+  return { kind: 'literal', isFlatValue: isLiteral(args.value), ...args }
+}
+
 export function createWrapper<S extends Schema, J = JSONValue<S>>(
   args: FactoryArguments<WrapperSchema<S, J>>,
 ): WrapperSchema<S, J> {
@@ -108,14 +124,6 @@ export function createObject<Props extends Record<string, Schema>>(
     propertyNames.length !== 0,
     'Object schema must have at least one property',
   )
-  invariant(
-    new Set(propertyNames).size !== propertyNames.length,
-    'Property names in object schema must be unique',
-  )
-  invariant(
-    !propertyNames.every((name) => args.keyOrder.includes(name)),
-    'All property names must be included in keyOrder of object schema',
-  )
 
   return {
     kind: 'object',
@@ -133,6 +141,7 @@ type FactoryArguments<S extends Schema> = Omit<
 
 export const isBooleanSchema = createSchemaGuard<TruthValueSchema>('boolean')
 export const isRichTextSchema = createSchemaGuard<RichTextSchema>('richText')
+export const isLiteralSchema = createSchemaGuard<LiteralSchema>('literal')
 export const isWrapperSchema = createSchemaGuard<WrapperSchema>('wrapper')
 export const isUnionSchema = createSchemaGuard<UnionSchema>('union')
 export const isArraySchema = createSchemaGuard<ArraySchema>('array')
