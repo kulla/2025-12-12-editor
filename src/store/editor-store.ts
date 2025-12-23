@@ -6,7 +6,7 @@ import type { FlatValue, Schema } from '../schema/types'
 import { type Key, type KeyGenerator, PrefixKeyGenerator } from './key'
 
 export class EditorStore {
-  nodes: FlatNodeMap
+  private nodes: FlatNodeMap
 
   constructor(
     private readonly loroDoc: LoroDoc,
