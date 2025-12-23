@@ -8,6 +8,7 @@ import {
   createWrapper,
 } from './kinds'
 import { RichTextFeature } from './rich-text'
+import type { Schema } from './types'
 
 enum ContentType {
   Text = 'text',
@@ -104,3 +105,18 @@ export const Root = createWrapper({
   wrappedSchema: EducationalContent,
   wrapIso: { to: (value) => value, from: (value) => value },
 })
+
+export const schemaRegistry: Record<string, Schema | undefined> =
+  Object.fromEntries(
+    [
+      TruthValue,
+      InlineRichText,
+      ContentRichText,
+      FillInTheBlankRichText,
+      TextContent,
+      FillInTheBlankExercise,
+      MultipleChoiceExercise,
+      EducationalContent,
+      Root,
+    ].map((schema) => [schema.name, schema]),
+  )
