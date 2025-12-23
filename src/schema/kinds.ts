@@ -5,17 +5,6 @@ import type { Iso } from '../utils/iso'
 import { isLoroList, isLoroMap } from '../utils/loro'
 import type { JSONValue, OmitTypeInformation, Schema } from './types'
 
-function createSchemaGuard<S extends Schema>(kind: string): Guard<S> {
-  return (value: unknown): value is S => {
-    return (
-      typeof value === 'object' &&
-      value !== null &&
-      'kind' in value &&
-      value.kind === kind
-    )
-  }
-}
-
 interface BooleanSchema
   extends Schema<{
     kind: 'boolean'
@@ -118,6 +107,11 @@ export function createObjectSchema<Props extends Record<string, Schema>>(
   }
 }
 
+type Arguments<S extends Schema> = Omit<
+  OmitTypeInformation<S>,
+  'kind' | 'isFlatValue'
+>
+
 export const isBooleanSchema = createSchemaGuard<BooleanSchema>('boolean')
 export const isRichTextSchema = createSchemaGuard<RichTextSchema>('string')
 export const isWrapperSchema = createSchemaGuard<WrapperSchema>('wrapper')
@@ -128,7 +122,13 @@ export const isObjectSchema = createSchemaGuard<ObjectSchema>('object')
 export const isPrimitiveSchema = isUnion(isBooleanSchema, isRichTextSchema)
 export const isSingletonSchema = isUnion(isWrapperSchema, isUnionSchema)
 
-type Arguments<S extends Schema> = Omit<
-  OmitTypeInformation<S>,
-  'kind' | 'isFlatValue'
->
+function createSchemaGuard<S extends Schema>(kind: string): Guard<S> {
+  return (value: unknown): value is S => {
+    return (
+      typeof value === 'object' &&
+      value !== null &&
+      'kind' in value &&
+      value.kind === kind
+    )
+  }
+}
