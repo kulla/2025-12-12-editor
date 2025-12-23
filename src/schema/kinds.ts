@@ -60,31 +60,31 @@ interface ObjectSchema<
 }
 
 export function createBooleanSchema(
-  args: Arguments<BooleanSchema>,
+  args: FactoryArguments<BooleanSchema>,
 ): BooleanSchema {
   return { kind: 'boolean', isFlatValue: isBoolean, ...args }
 }
 
 export function createRichTextSchema(
-  args: Arguments<RichTextSchema>,
+  args: FactoryArguments<RichTextSchema>,
 ): RichTextSchema {
   return { kind: 'richText', isFlatValue: isLoroMap, ...args }
 }
 
 export function createWrapperSchema<S extends Schema, J = JSONValue<S>>(
-  args: Arguments<WrapperSchema<S, J>>,
+  args: FactoryArguments<WrapperSchema<S, J>>,
 ): WrapperSchema<S, J> {
   return { kind: 'wrapper', isFlatValue: isKey, ...args }
 }
 
 export function createUnionSchema<S extends Schema[]>(
-  args: Arguments<UnionSchema<S>>,
+  args: FactoryArguments<UnionSchema<S>>,
 ): UnionSchema<S> {
   return { kind: 'union', isFlatValue: isKey, ...args }
 }
 
 export function createArraySchema<S extends Schema>(
-  args: Arguments<ArraySchema<S>>,
+  args: FactoryArguments<ArraySchema<S>>,
 ): ArraySchema<S> {
   return {
     kind: 'array',
@@ -96,7 +96,7 @@ export function createArraySchema<S extends Schema>(
 }
 
 export function createObjectSchema<Props extends Record<string, Schema>>(
-  args: Arguments<ObjectSchema<Props>>,
+  args: FactoryArguments<ObjectSchema<Props>>,
 ): ObjectSchema<Props> {
   return {
     kind: 'object',
@@ -107,7 +107,7 @@ export function createObjectSchema<Props extends Record<string, Schema>>(
   }
 }
 
-type Arguments<S extends Schema> = Omit<
+type FactoryArguments<S extends Schema> = Omit<
   OmitTypeInformation<S>,
   'kind' | 'isFlatValue'
 >
