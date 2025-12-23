@@ -1,8 +1,8 @@
 import {
   createArray,
-  createBoolean,
   createObject,
   createRichText,
+  createTruthValue,
   createUnion,
   createWrapper,
 } from './kinds'
@@ -13,7 +13,7 @@ enum ContentType {
   FillInTheBlank = 'fill-in-the-blank',
 }
 
-const BooleanSchema = createBoolean({ name: 'Boolean' })
+const TruthValue = createTruthValue({ name: 'TruthValue' })
 
 const InlineRichText = createRichText({
   name: 'InlineRichText',
@@ -68,7 +68,7 @@ export const MultipleChoiceExercise = createObject({
       itemSchema: createObject({
         name: 'MultipleChoiceOption',
         properties: {
-          isCorrect: BooleanSchema,
+          isCorrect: TruthValue,
           text: InlineRichText,
         },
         keyOrder: ['isCorrect', 'text'],

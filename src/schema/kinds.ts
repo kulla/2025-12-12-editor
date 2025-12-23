@@ -7,7 +7,7 @@ import { isLoroList, isLoroMap } from '../utils/loro'
 import type { RichTextFeature } from './rich-text'
 import type { JSONValue, OmitTypeInfo, Schema } from './types'
 
-interface BooleanSchema
+interface TruthValueSchema
   extends Schema<{
     kind: 'boolean'
     FlatValue: boolean
@@ -63,9 +63,9 @@ interface ObjectSchema<
   keyOrder: readonly (keyof P)[]
 }
 
-export function createBoolean(
-  args: FactoryArguments<BooleanSchema>,
-): BooleanSchema {
+export function createTruthValue(
+  args: FactoryArguments<TruthValueSchema>,
+): TruthValueSchema {
   return { kind: 'boolean', isFlatValue: isBoolean, ...args }
 }
 
@@ -131,7 +131,7 @@ type FactoryArguments<S extends Schema> = Omit<
   'kind' | 'isFlatValue'
 >
 
-export const isBooleanSchema = createSchemaGuard<BooleanSchema>('boolean')
+export const isBooleanSchema = createSchemaGuard<TruthValueSchema>('boolean')
 export const isRichTextSchema = createSchemaGuard<RichTextSchema>('richText')
 export const isWrapperSchema = createSchemaGuard<WrapperSchema>('wrapper')
 export const isUnionSchema = createSchemaGuard<UnionSchema>('union')
