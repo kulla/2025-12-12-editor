@@ -10,7 +10,7 @@ import {
 import { RichTextFeature } from './rich-text'
 import type { Schema } from './types'
 
-enum ContentType {
+export enum ContentType {
   Text = 'text',
   FillInTheBlank = 'fill-in-the-blank',
   MultipleChoice = 'multiple-choice',
