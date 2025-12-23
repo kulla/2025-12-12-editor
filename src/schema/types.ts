@@ -1,12 +1,12 @@
 import type { Guard } from '../utils/guard'
 
-export interface Schema<D extends SchemaDef = SchemaDef> {
-  kind: D['kind']
+export interface Schema<K extends SchemaKind = SchemaKind> {
+  kind: K['kind']
   name: string
-  isFlatValue: Guard<D['FlatValue']>
+  isFlatValue: Guard<K['FlatValue']>
   [TypeInformation]?: {
-    FlatValue: D['FlatValue']
-    JSONValue: D['JSONValue']
+    FlatValue: K['FlatValue']
+    JSONValue: K['JSONValue']
   }
 }
 
@@ -23,7 +23,7 @@ export type Arguments<S extends Schema> = Omit<
   'kind' | typeof TypeInformation | 'isFlatValue'
 >
 
-interface SchemaDef {
+interface SchemaKind {
   kind: string
   FlatValue: unknown
   JSONValue: unknown
