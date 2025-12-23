@@ -81,19 +81,22 @@ export const MultipleChoiceExercise = createObject({
   keyOrder: ['question', 'options'],
 })
 
-const EducationalContent = createUnion({
+const EducationalContent = createArray({
   name: 'EducationalContent',
-  options: [TextContent, FillInTheBlankExercise, MultipleChoiceExercise],
-  getOption: (value) => {
-    switch (value.type) {
-      case ContentType.Text:
-        return TextContent
-      case ContentType.FillInTheBlank:
-        return FillInTheBlankExercise
-      case ContentType.MultipleChoice:
-        return MultipleChoiceExercise
-    }
-  },
+  itemSchema: createUnion({
+    name: 'EducationalContentItem',
+    options: [TextContent, FillInTheBlankExercise, MultipleChoiceExercise],
+    getOption: (value) => {
+      switch (value.type) {
+        case ContentType.Text:
+          return TextContent
+        case ContentType.FillInTheBlank:
+          return FillInTheBlankExercise
+        case ContentType.MultipleChoice:
+          return MultipleChoiceExercise
+      }
+    },
+  }),
 })
 
 export type Root = typeof Root
