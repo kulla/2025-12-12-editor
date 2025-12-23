@@ -4,6 +4,7 @@ import { isKey, type Key } from '../store/key'
 import { type Guard, isBoolean, isUnion } from '../utils/guard'
 import type { Iso } from '../utils/iso'
 import { isLoroList, isLoroMap } from '../utils/loro'
+import type { RichTextFeature } from './rich-text'
 import type { JSONValue, OmitTypeInfo, Schema } from './types'
 
 interface BooleanSchema
@@ -17,8 +18,10 @@ interface RichTextSchema
   extends Schema<{
     kind: 'richText'
     FlatValue: LoroMap
-    JSONValue: string
-  }> {}
+    JSONValue: Record<string, unknown>
+  }> {
+  readonly features: Array<RichTextFeature>
+}
 
 interface WrapperSchema<S extends Schema = Schema, J = JSONValue<S>>
   extends Schema<{
