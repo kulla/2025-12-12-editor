@@ -10,13 +10,10 @@ export interface Schema<K extends SchemaKind = SchemaKind> {
   }
 }
 
-export type FlatValue<S extends Schema> = NonNullable<
-  S[typeof TypeInformation]
->['FlatValue']
+export type FlatValue<S extends Schema> = TypeInfo<S>['FlatValue']
+export type JSONValue<S extends Schema> = TypeInfo<S>['JSONValue']
 
-export type JSONValue<S extends Schema> = NonNullable<
-  S[typeof TypeInformation]
->['JSONValue']
+type TypeInfo<S extends Schema> = NonNullable<S[typeof TypeInformation]>
 
 export type OmitTypeInformation<S extends Schema> = Omit<
   S,
