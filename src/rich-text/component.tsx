@@ -7,6 +7,7 @@ import { useMemo } from 'react'
 import type * as F from '../nodes/flat'
 import type * as S from '../schema'
 import type { EditorStore } from '../store/editor-store'
+import { RichTextProperty } from './types'
 
 interface RichTextEditorProps {
   node: F.FlatNode<S.RichTextSchema>
@@ -14,18 +15,19 @@ interface RichTextEditorProps {
 }
 
 export function RichTextEditor({ node, store }: RichTextEditorProps) {
+  const containerId = node.value.get(RichTextProperty.Content).id
   const editor = useMemo(() => {
     const extension = union(
       defineBasicExtension(),
       defineLoro({
         awareness: store.awareness,
         doc: store.loroDoc as LoroDocType,
-        sync: { containerId: node.value.id },
+        sync: { containerId },
       }),
     )
 
     return createEditor({ extension })
-  }, [store, node.value.id])
+  }, [store, containerId])
 
   return (
     <ProseKit editor={editor}>
@@ -33,5 +35,3 @@ export function RichTextEditor({ node, store }: RichTextEditorProps) {
     </ProseKit>
   )
 }
-
-export const DEFAULT_CONTENT_KEY = 'default-content' as const

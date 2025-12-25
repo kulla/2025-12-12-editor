@@ -1,7 +1,8 @@
 import { LoroList, LoroMap } from 'loro-crdt'
 import type { Root } from '../content'
 import * as N from '../nodes/nested'
-import { DEFAULT_CONTENT_KEY } from '../rich-text'
+import { RichTextProperty } from '../rich-text/types'
+import type { RichTextFlatValue } from '../schema'
 import type { Transaction } from '../store/editor-store'
 import type { Key } from '../store/key'
 
@@ -25,9 +26,10 @@ export function save(args: {
   if (N.isPrimitive(node)) {
     return tx.insert(node.schema, parentKey, () => node.value)
   } else if (N.isRichText(node)) {
-    const map = new LoroMap()
+    const map = new LoroMap() as RichTextFlatValue
 
-    map.set(DEFAULT_CONTENT_KEY, node.value)
+    map.set(RichTextProperty.DefaultContent, node.value)
+    map.setContainer(RichTextProperty.Content, new LoroMap())
 
     return tx.insert(node.schema, parentKey, () => map)
   } else if (N.isWrapper(node)) {

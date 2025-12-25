@@ -1,1 +1,1 @@
-export { DEFAULT_CONTENT_KEY, RichTextEditor } from './component'
+export { RichTextEditor } from './component'
