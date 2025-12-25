@@ -22,14 +22,14 @@ export function store(args: {
 }): Key {
   const { tx, parentKey, node } = args
 
-  if (N.isRichText(node)) {
+  if (N.isPrimitive(node)) {
+    return tx.insert(node.schema, parentKey, () => node.value)
+  } else if (N.isRichText(node)) {
     const map = new LoroMap()
 
     map.set(DEFAULT_CONTENT_KEY, node.value)
 
     return tx.insert(node.schema, parentKey, () => map)
-  } else if (N.isPrimitive(node)) {
-    return tx.insert(node.schema, parentKey, () => node.value)
   } else if (N.isWrapper(node)) {
     return tx.insert(node.schema, parentKey, (key) =>
       store({ tx, parentKey: key, node: N.unwrap(node) }),
