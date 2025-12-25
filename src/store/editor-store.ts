@@ -70,12 +70,7 @@ export class EditorStore {
   private createTransaction(): Transaction {
     return {
       attachRoot: (rootKey: Key, value: FlatValue<Root>) => {
-        this.store(rootKey, {
-          schema: Root,
-          key: rootKey,
-          parentKey: null,
-          value,
-        })
+        this.store({ schema: Root, key: rootKey, parentKey: null, value })
 
         return rootKey
       },
@@ -83,24 +78,24 @@ export class EditorStore {
         const key = this.keyGenerator.next()
         const value = createValue(key)
 
-        this.store(key, { schema, key, parentKey, value })
+        this.store({ schema, key, parentKey, value })
 
         return key
       },
     }
   }
 
-  private store(key: Key, node: FlatNode): void {
+  private store({ schema, key, parentKey, value }: FlatNode): void {
     const map = new LoroMap<StoredFlatNode>()
 
-    map.set('schemaName', node.schema.name)
-    map.set('key', node.key)
-    map.set('parentKey', node.parentKey)
+    map.set('schemaName', schema.name)
+    map.set('key', key)
+    map.set('parentKey', parentKey)
 
-    if (node.value instanceof LoroMap || node.value instanceof LoroList) {
-      map.setContainer('value', node.value)
+    if (value instanceof LoroMap || value instanceof LoroList) {
+      map.setContainer('value', value)
     } else {
-      map.set('value', node.value)
+      map.set('value', value)
     }
 
     this.nodes.setContainer(key, map)
