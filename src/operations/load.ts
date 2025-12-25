@@ -1,4 +1,5 @@
 import * as F from '../nodes/flat'
+import { RichTextProperty } from '../rich-text/types'
 import type { JSONValue, Schema } from '../schema'
 import type { EditorStore } from '../store/editor-store'
 import type { Key } from '../store/key'
@@ -13,7 +14,10 @@ export function load<S extends Schema>({
   if (F.isPrimitive(node)) {
     return node.value
   } else if (F.isRichText(node)) {
-    return node.value.toJSON()
+    const content = node.value.get(RichTextProperty.Content)
+    const defaultContent = node.value.get(RichTextProperty.DefaultContent)
+
+    return content.size > 0 ? content.toJSON() : defaultContent
   } else if (F.isWrapper(node)) {
     return node.schema.wrap(load({ store, node: store.get(node.value) }))
   } else if (F.isUnion(node)) {
