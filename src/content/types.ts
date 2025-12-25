@@ -1,13 +1,5 @@
 import { RichTextFeature } from '../rich-text/features'
-import {
-  createArray,
-  createLiteral,
-  createObject,
-  createRichText,
-  createTruthValue,
-  createUnion,
-  createWrapper,
-} from '../schema'
+import * as S from '../schema'
 
 export enum ContentType {
   Text = 'text',
@@ -15,14 +7,14 @@ export enum ContentType {
   MultipleChoice = 'multiple-choice',
 }
 
-const TruthValue = createTruthValue({ name: 'TruthValue' })
+const TruthValue = S.createTruthValue({ name: 'TruthValue' })
 
-const InlineRichText = createRichText({
+const InlineRichText = S.createRichText({
   name: 'InlineRichText',
   features: [RichTextFeature.Bold, RichTextFeature.Italic],
 })
 
-const ContentRichText = createRichText({
+const ContentRichText = S.createRichText({
   name: 'ContentRichText',
   features: [
     RichTextFeature.Bold,
@@ -33,7 +25,7 @@ const ContentRichText = createRichText({
   ],
 })
 
-const FillInTheBlankRichText = createRichText({
+const FillInTheBlankRichText = S.createRichText({
   name: 'FillInTheBlankRichText',
   features: [
     RichTextFeature.Bold,
@@ -43,31 +35,31 @@ const FillInTheBlankRichText = createRichText({
   ],
 })
 
-const TextContent = createWrapper({
+const TextContent = S.createWrapper({
   name: 'TextContent',
   wrappedSchema: ContentRichText,
   wrap: (value) => ({ type: ContentType.Text, content: value }),
   unwrap: (value) => value.content,
 })
 
-const FillInTheBlankExercise = createWrapper({
+const FillInTheBlankExercise = S.createWrapper({
   name: 'FillInTheBlankExercise',
   wrappedSchema: FillInTheBlankRichText,
   wrap: (value) => ({ type: ContentType.FillInTheBlank, content: value }),
   unwrap: (value) => value.content,
 })
 
-export const MultipleChoiceExercise = createObject({
+const MultipleChoiceExercise = S.createObject({
   name: 'MultipleChoiceExercise',
   properties: {
-    type: createLiteral({
+    type: S.createLiteral({
       name: 'MultipleChoiceType',
       value: ContentType.MultipleChoice,
     }),
     question: InlineRichText,
-    options: createArray({
+    options: S.createArray({
       name: 'MultipleChoiceOptions',
-      itemSchema: createObject({
+      itemSchema: S.createObject({
         name: 'MultipleChoiceOption',
         properties: {
           isCorrect: TruthValue,
@@ -80,9 +72,9 @@ export const MultipleChoiceExercise = createObject({
   keyOrder: ['question', 'options'],
 })
 
-const EducationalContent = createArray({
+const EducationalContent = S.createArray({
   name: 'EducationalContent',
-  itemSchema: createUnion({
+  itemSchema: S.createUnion({
     name: 'EducationalContentItem',
     options: [TextContent, FillInTheBlankExercise, MultipleChoiceExercise],
     getOption: (value) => {
@@ -99,7 +91,7 @@ const EducationalContent = createArray({
 })
 
 export type Root = typeof Root
-export const Root = createWrapper({
+export const Root = S.createWrapper({
   name: 'Root',
   wrappedSchema: EducationalContent,
   wrap: (value) => value,
