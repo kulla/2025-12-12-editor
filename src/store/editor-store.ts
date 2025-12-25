@@ -13,7 +13,7 @@ export class EditorStore {
   private schemaRegistry = createSchemaRegistry(Root)
 
   constructor(
-    private readonly loroDoc: LoroDoc,
+    public readonly loroDoc: LoroDoc,
     private readonly keyGenerator: KeyGenerator = new PrefixKeyGenerator('n'),
   ) {}
 

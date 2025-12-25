@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import * as F from '../nodes/flat'
+import { RichTextEditor } from '../rich-text'
 import type { EditorStore } from '../store/editor-store'
 
 export function render(args: {
@@ -15,6 +16,7 @@ export function render(args: {
       <input key={node.key} type="checkbox" checked={node.value} readOnly />
     )
   } else if (F.isRichText(node)) {
+    return <RichTextEditor key={node.key} node={node} store={store} />
   } else if (F.isWrapper(node)) {
     return render({ store: store, node: F.getSingletonChild({ store, node }) })
   } else if (F.isUnion(node)) {
