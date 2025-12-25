@@ -12,7 +12,7 @@ import {
   type ObjectSchema,
   type UnionSchema,
   type WrapperSchema,
-} from '../schema/kinds'
+} from '../schema'
 import type { JSONValue, Schema } from '../schema/types'
 import type { Guard } from '../utils/guard'
 

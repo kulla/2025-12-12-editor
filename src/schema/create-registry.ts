@@ -1,18 +1,17 @@
-import * as S from '../schema/kinds'
-import type { Schema } from '../schema/types'
 import type { Root } from '../content/types'
+import * as S from './index'
 
 export function createSchemaRegistry(
   rootSchema: Root,
-): Record<string, Schema | undefined> {
+): Record<string, S.Schema | undefined> {
   return Object.fromEntries(
     collectSchemas(rootSchema).map((schema) => [schema.name, schema]),
   )
 }
 
-function collectSchemas(schema: Schema): Schema[] {
-  const collected = new Set<Schema>()
-  const toProcess: Schema[] = [schema]
+function collectSchemas(schema: S.Schema): S.Schema[] {
+  const collected = new Set<S.Schema>()
+  const toProcess: S.Schema[] = [schema]
 
   while (true) {
     const current = toProcess.pop()

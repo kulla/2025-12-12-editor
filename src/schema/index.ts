@@ -7,14 +7,16 @@ import { type Guard, isBoolean, isLiteral, isUnion } from '../utils/guard'
 import { isLoroList, isLoroMap } from '../utils/loro'
 import type { JSONValue, OmitTypeInfo, Schema } from './types'
 
-interface TruthValueSchema
+export type { FlatValue, JSONValue, Schema } from './types'
+
+export interface TruthValueSchema
   extends Schema<{
     kind: 'boolean'
     FlatValue: boolean
     JSONValue: boolean
   }> {}
 
-interface RichTextSchema
+export interface RichTextSchema
   extends Schema<{
     kind: 'richText'
     FlatValue: LoroMap
@@ -23,7 +25,7 @@ interface RichTextSchema
   readonly features: Array<RichTextFeature>
 }
 
-interface LiteralSchema<
+export interface LiteralSchema<
   T extends string | number | boolean = string | number | boolean,
 > extends Schema<{
     kind: 'literal'
@@ -73,15 +75,6 @@ export interface ObjectSchema<
   properties: Readonly<P>
   keyOrder: readonly (keyof P)[]
 }
-
-export type AllSchema =
-  | TruthValueSchema
-  | RichTextSchema
-  | LiteralSchema
-  | WrapperSchema
-  | UnionSchema
-  | ArraySchema
-  | ObjectSchema
 
 export function createTruthValue(
   args: FactoryArguments<TruthValueSchema>,
@@ -149,14 +142,13 @@ type FactoryArguments<S extends Schema> = Omit<
   'kind' | 'isFlatValue'
 >
 
-export const isTruthValueSchema = createSchemaGuard<TruthValueSchema>('boolean')
-export const isRichTextSchema = createSchemaGuard<RichTextSchema>('richText')
-export const isLiteralSchema = createSchemaGuard<LiteralSchema>('literal')
-export const isWrapperSchema = createSchemaGuard<WrapperSchema>('wrapper')
-export const isUnionSchema = createSchemaGuard<UnionSchema>('union')
-export const isArraySchema = createSchemaGuard<ArraySchema>('array')
-export const isObjectSchema = createSchemaGuard<ObjectSchema>('object')
-
+export const isTruthValueSchema = createGuard<TruthValueSchema>('boolean')
+export const isRichTextSchema = createGuard<RichTextSchema>('richText')
+export const isLiteralSchema = createGuard<LiteralSchema>('literal')
+export const isWrapperSchema = createGuard<WrapperSchema>('wrapper')
+export const isUnionSchema = createGuard<UnionSchema>('union')
+export const isArraySchema = createGuard<ArraySchema>('array')
+export const isObjectSchema = createGuard<ObjectSchema>('object')
 export const isPrimitiveSchema = isUnion(
   isTruthValueSchema,
   isLiteralSchema,
@@ -164,7 +156,7 @@ export const isPrimitiveSchema = isUnion(
 )
 export const isSingletonSchema = isUnion(isWrapperSchema, isUnionSchema)
 
-function createSchemaGuard<S extends Schema>(kind: S['kind']): Guard<S> {
+function createGuard<S extends Schema>(kind: S['kind']): Guard<S> {
   return (value: unknown): value is S => {
     return (
       typeof value === 'object' &&

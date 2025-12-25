@@ -8,7 +8,7 @@ import {
   isTruthValueSchema,
   isUnionSchema,
   isWrapperSchema,
-} from '../schema/kinds'
+} from '../schema'
 import type { FlatValue, Schema } from '../schema/types'
 import type { Key } from '../store/key'
 import type { Guard } from '../utils/guard'

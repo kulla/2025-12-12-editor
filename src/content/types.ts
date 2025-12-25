@@ -7,8 +7,7 @@ import {
   createTruthValue,
   createUnion,
   createWrapper,
-} from '../schema/kinds'
-import type { Schema } from '../schema/types'
+} from '../schema'
 
 export enum ContentType {
   Text = 'text',
