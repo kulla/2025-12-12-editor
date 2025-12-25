@@ -18,6 +18,7 @@ export function RichTextEditor({ node, store }: RichTextEditorProps) {
     const extension = union(
       defineBasicExtension(),
       defineLoro({
+        awareness: store.awareness,
         doc: store.loroDoc as LoroDocType,
         sync: { containerId: node.value.id },
       }),

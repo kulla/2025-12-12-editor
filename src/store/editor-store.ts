@@ -1,5 +1,6 @@
 import { invariant } from 'es-toolkit'
 import { type LoroDoc, LoroList, LoroMap } from 'loro-crdt'
+import { CursorAwareness } from 'loro-prosemirror'
 import { Root } from '../content'
 import type { FlatNode } from '../nodes/flat'
 import type { FlatValue, Schema } from '../schema'
@@ -7,6 +8,7 @@ import { collectSchemas } from '../schema/collect-schemas'
 import { type Key, type KeyGenerator, PrefixKeyGenerator } from './key'
 
 export class EditorStore {
+  public readonly awareness = new CursorAwareness(this.loroDoc.peerIdStr)
   private nodes = this.loroDoc.getMap('nodes') as FlatNodeMap
   private metadata = this.loroDoc.getMap('metadata') as LoroMap<Metadata>
   private currentTransaction: Transaction | null = null
