@@ -3,7 +3,11 @@ import type { EditorStore } from '../store/editor-store'
 import type { Key } from '../store/key'
 import type { Guard } from '../utils/guard'
 
-export interface FlatNode<S extends S.Schema = S.Schema> {
+export type FlatNode<S extends S.Schema = S.Schema> = S extends unknown
+  ? _FlatNode<S>
+  : never
+
+interface _FlatNode<S extends S.Schema> {
   schema: S
   key: Key
   parentKey: Key | null
@@ -20,14 +24,20 @@ export function getSingletonChild({
   return store.get(node.value)
 }
 
-export function getItems({
+export function getVisibleChildren({
   store,
   node,
 }: {
   store: EditorStore
-  node: FlatNode<S.ArraySchema>
+  node: FlatNode<S.ArraySchema | S.ObjectSchema>
 }): FlatNode[] {
-  return node.value.toArray().map((itemKey) => store.get(itemKey))
+  if (isArray(node)) {
+    return node.value.toArray().map((itemKey) => store.get(itemKey))
+  } else {
+    return node.schema.keyOrder.map((propKey) =>
+      store.get(node.value.get(propKey)),
+    )
+  }
 }
 
 export const isTruthValue = createGuard(S.isTruthValue)

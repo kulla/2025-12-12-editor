@@ -16,17 +16,16 @@ export function render(args: {
     return render({ store: store, node: F.getSingletonChild({ store, node }) })
   } else if (F.isUnion(node)) {
     return render({ store: store, node: F.getSingletonChild({ store, node }) })
-  } else if (F.isArray(node)) {
+  } else if (F.isArray(node) || F.isObject(node)) {
     const HTMLTag = node.schema.htmlTag ?? 'div'
 
     return (
       <HTMLTag key={node.key}>
-        {F.getItems({ store, node }).map((itemNode) =>
+        {F.getVisibleChildren({ store, node }).map((itemNode) =>
           render({ store, node: itemNode }),
         )}
       </HTMLTag>
     )
-  } else if (F.isObject(node)) {
   }
 
   return `[Unsupported node kind: ${node.schema.kind}]`

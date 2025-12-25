@@ -75,6 +75,7 @@ export interface ObjectSchema<
   }> {
   properties: Readonly<P>
   keyOrder: readonly (keyof P)[]
+  htmlTag?: React.HTMLElementType
 }
 
 export function createTruthValue(
