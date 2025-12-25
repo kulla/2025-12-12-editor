@@ -17,6 +17,7 @@ export const isUnion = createFlatNodeGuard(S.isUnion)
 export const isArray = createFlatNodeGuard(S.isArray)
 export const isObject = createFlatNodeGuard(S.isObject)
 export const isPrimitive = createFlatNodeGuard(S.isPrimitive)
+export const isLeaf = createFlatNodeGuard(S.isLeaf)
 export const isSingleton = createFlatNodeGuard(S.isSingletonSchema)
 
 function createFlatNodeGuard<S extends S.Schema>(schemaGuard: Guard<S>) {

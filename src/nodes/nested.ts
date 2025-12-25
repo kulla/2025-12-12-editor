@@ -35,6 +35,7 @@ export const isUnion = createNestedNodeGuard(S.isUnion)
 export const isArray = createNestedNodeGuard(S.isArray)
 export const isObject = createNestedNodeGuard(S.isObject)
 export const isPrimitive = createNestedNodeGuard(S.isPrimitive)
+export const isLeaf = createNestedNodeGuard(S.isLeaf)
 export const isSingleton = createNestedNodeGuard(S.isSingletonSchema)
 
 function createNestedNodeGuard<S extends S.Schema>(schemaGuard: Guard<S>) {

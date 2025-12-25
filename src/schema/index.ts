@@ -149,7 +149,8 @@ export const isWrapper = createGuard<WrapperSchema>('wrapper')
 export const isUnion = createGuard<UnionSchema>('union')
 export const isArray = createGuard<ArraySchema>('array')
 export const isObject = createGuard<ObjectSchema>('object')
-export const isPrimitive = G.isUnion(isTruthValue, isLiteral, isRichText)
+export const isPrimitive = G.isUnion(isTruthValue, isLiteral)
+export const isLeaf = G.isUnion(isTruthValue, isLiteral, isRichText)
 export const isSingletonSchema = G.isUnion(isWrapper, isUnion)
 
 function createGuard<S extends Schema>(kind: S['kind']): G.Guard<S> {

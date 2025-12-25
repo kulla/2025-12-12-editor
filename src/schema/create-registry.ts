@@ -26,7 +26,7 @@ function collectSchemas(schema: S.Schema): S.Schema[] {
       collected.add(current)
     }
 
-    if (S.isPrimitive(current)) {
+    if (S.isLeaf(current)) {
     } else if (S.isWrapper(current)) {
       toProcess.push(current.wrappedSchema)
     } else if (S.isUnion(current)) {
