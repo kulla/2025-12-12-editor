@@ -80,19 +80,19 @@ export class EditorStore {
   }
 }
 
-interface Metadata {
-  updateCount: number | undefined
-  // TODO: Find a way so that this is not needed any more
-  [key: string]: unknown
-}
-
-interface Transaction {
+export interface Transaction {
   attachRoot(rootKey: Key, value: FlatValue<Root>): void
   insert<S extends Schema>(
     schema: S,
     parentKey: Key,
     createValue: (key: Key) => FlatValue<S>,
   ): Key
+}
+
+interface Metadata {
+  updateCount: number | undefined
+  // TODO: Find a way so that this is not needed any more
+  [key: string]: unknown
 }
 
 type FlatNodeMap = LoroMap<Record<string, StoredFlatNode>>

@@ -33,7 +33,7 @@ interface LiteralSchema<
   readonly value: T
 }
 
-interface WrapperSchema<S extends Schema = Schema, J = JSONValue<S>>
+export interface WrapperSchema<S extends Schema = Schema, J = JSONValue<S>>
   extends Schema<{
     kind: 'wrapper'
     FlatValue: Key
@@ -44,7 +44,7 @@ interface WrapperSchema<S extends Schema = Schema, J = JSONValue<S>>
   unwrap(outer: J): JSONValue<S>
 }
 
-interface UnionSchema<S extends readonly Schema[] = readonly Schema[]>
+export interface UnionSchema<S extends readonly Schema[] = readonly Schema[]>
   extends Schema<{
     kind: 'union'
     FlatValue: Key
@@ -54,7 +54,7 @@ interface UnionSchema<S extends readonly Schema[] = readonly Schema[]>
   getOption(value: JSONValue<S[number]>): S[number]
 }
 
-interface ArraySchema<S extends Schema = Schema>
+export interface ArraySchema<S extends Schema = Schema>
   extends Schema<{
     kind: 'array'
     FlatValue: LoroList<Key>
@@ -63,7 +63,7 @@ interface ArraySchema<S extends Schema = Schema>
   itemSchema: S
 }
 
-interface ObjectSchema<
+export interface ObjectSchema<
   P extends Record<string, Schema> = Record<string, Schema>,
 > extends Schema<{
     kind: 'object'
@@ -148,11 +148,7 @@ export const isUnionSchema = createSchemaGuard<UnionSchema>('union')
 export const isArraySchema = createSchemaGuard<ArraySchema>('array')
 export const isObjectSchema = createSchemaGuard<ObjectSchema>('object')
 
-export const isPrimitiveSchema = isUnion(
-  isTruthValueSchema,
-  isRichTextSchema,
-  isLiteralSchema,
-)
+export const isPrimitiveSchema = isUnion(isTruthValueSchema, isLiteralSchema)
 export const isSingletonSchema = isUnion(isWrapperSchema, isUnionSchema)
 
 function createSchemaGuard<S extends Schema>(kind: S['kind']): Guard<S> {
