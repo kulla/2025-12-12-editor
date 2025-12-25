@@ -7,7 +7,7 @@ import { initialContent } from './content/initial-content'
 import { Root } from './content/types'
 import { DebugPanel } from './debug-panel'
 import type { FlatNode } from './nodes/flat'
-import { storeRoot } from './operations/store'
+import { saveRoot } from './operations/save'
 import type { Key } from './store/key'
 import { useEditorStore } from './store/use-editor-store'
 
@@ -20,7 +20,7 @@ export default function App() {
     if (store.has(rootKey)) return
 
     store.update((tx) => {
-      storeRoot({
+      saveRoot({
         tx,
         rootKey,
         node: { schema: Root, value: initialContent },

@@ -5,17 +5,17 @@ import { DEFAULT_CONTENT_KEY } from '../rich-text/create-editor'
 import type { Transaction } from '../store/editor-store'
 import type { Key } from '../store/key'
 
-export function storeRoot(args: {
+export function saveRoot(args: {
   tx: Transaction
   node: N.NestedNode<Root>
   rootKey: Key
 }): Key {
   const { tx, node, rootKey } = args
 
-  return tx.attachRoot(rootKey, store({ tx, parentKey: rootKey, node }))
+  return tx.attachRoot(rootKey, save({ tx, parentKey: rootKey, node }))
 }
 
-export function store(args: {
+export function save(args: {
   tx: Transaction
   parentKey: Key
   node: N.NestedNode
@@ -32,18 +32,18 @@ export function store(args: {
     return tx.insert(node.schema, parentKey, () => map)
   } else if (N.isWrapper(node)) {
     return tx.insert(node.schema, parentKey, (key) =>
-      store({ tx, parentKey: key, node: N.unwrap(node) }),
+      save({ tx, parentKey: key, node: N.unwrap(node) }),
     )
   } else if (N.isUnion(node)) {
     return tx.insert(node.schema, parentKey, (key) =>
-      store({ tx, parentKey: key, node: N.getOption(node) }),
+      save({ tx, parentKey: key, node: N.getOption(node) }),
     )
   } else if (N.isArray(node)) {
     return tx.insert(node.schema, parentKey, (key) => {
       const list = new LoroList<Key>()
 
       N.getItems(node).forEach((itemNode) => {
-        list.push(store({ tx, parentKey: key, node: itemNode }))
+        list.push(save({ tx, parentKey: key, node: itemNode }))
       })
 
       return list
@@ -55,7 +55,7 @@ export function store(args: {
       for (const propertyName of Object.keys(node.schema.properties)) {
         const propertyNode = N.getProperty(node, propertyName)
 
-        const propertyKey = store({ tx, parentKey: key, node: propertyNode })
+        const propertyKey = save({ tx, parentKey: key, node: propertyNode })
 
         map.set(propertyName, propertyKey)
       }
