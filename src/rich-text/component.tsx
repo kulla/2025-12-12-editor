@@ -1,4 +1,8 @@
-import type { LoroDocType } from 'loro-prosemirror'
+import {
+  type LoroDocType,
+  type LoroNodeMapping,
+  updateLoroToPmState,
+} from 'loro-prosemirror'
 import { defineBasicExtension } from 'prosekit/basic'
 import { createEditor, union } from 'prosekit/core'
 import { defineLoro } from 'prosekit/extensions/loro'
@@ -17,6 +21,7 @@ interface RichTextEditorProps {
 export function RichTextEditor({ node, store }: RichTextEditorProps) {
   // biome-ignore lint: react-hooks-deps
   const editor = useMemo(() => {
+    const mapping: LoroNodeMapping = new Map()
     const containerId = node.value.get(RichTextProperty.Content).id
     const defaultContent = node.value.get(RichTextProperty.DefaultContent)
 
@@ -25,11 +30,20 @@ export function RichTextEditor({ node, store }: RichTextEditorProps) {
       defineLoro({
         awareness: store.awareness,
         doc: store.loroDoc as LoroDocType,
-        sync: { containerId },
+        sync: { containerId, mapping },
       }),
     )
 
-    return createEditor({ extension, defaultContent })
+    const editor = createEditor({ extension, defaultContent })
+
+    updateLoroToPmState(
+      store.loroDoc as LoroDocType,
+      mapping,
+      editor.state,
+      containerId,
+    )
+
+    return editor
   }, [store, node.key])
 
   return (
