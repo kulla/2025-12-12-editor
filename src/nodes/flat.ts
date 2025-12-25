@@ -20,15 +20,15 @@ export interface FlatNode<S extends Schema = Schema> {
   value: FlatValue<S>
 }
 
-export const isTruthValueFlatNode = createFlatNodeGuard(isTruthValueSchema)
-export const isRichTextFlatNode = createFlatNodeGuard(isRichTextSchema)
-export const isLiteralFlatNode = createFlatNodeGuard(isLiteralSchema)
-export const isWrapperFlatNode = createFlatNodeGuard(isWrapperSchema)
-export const isUnionFlatNode = createFlatNodeGuard(isUnionSchema)
-export const isArrayFlatNode = createFlatNodeGuard(isArraySchema)
-export const isObjectFlatNode = createFlatNodeGuard(isObjectSchema)
-export const isPrimitiveFlatNode = createFlatNodeGuard(isPrimitiveSchema)
-export const isSingletonFlatNode = createFlatNodeGuard(isSingletonSchema)
+export const isTruthValue = createFlatNodeGuard(isTruthValueSchema)
+export const isRichText = createFlatNodeGuard(isRichTextSchema)
+export const isLiteral = createFlatNodeGuard(isLiteralSchema)
+export const isWrapper = createFlatNodeGuard(isWrapperSchema)
+export const isUnion = createFlatNodeGuard(isUnionSchema)
+export const isArray = createFlatNodeGuard(isArraySchema)
+export const isObject = createFlatNodeGuard(isObjectSchema)
+export const isPrimitive = createFlatNodeGuard(isPrimitiveSchema)
+export const isSingleton = createFlatNodeGuard(isSingletonSchema)
 
 function createFlatNodeGuard<S extends Schema>(schemaGuard: Guard<S>) {
   return (node: FlatNode): node is FlatNode<S> => schemaGuard(node.schema)
