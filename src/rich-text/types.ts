@@ -1,8 +1,3 @@
-export enum RichTextProperty {
-  Content = 'content',
-  DefaultContent = 'default-content',
-}
-
 export enum RichTextFeature {
   Bold = 'bold',
   Italic = 'italic',

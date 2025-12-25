@@ -1,7 +1,7 @@
 import { invariant } from 'es-toolkit'
 import type { LoroList, LoroMap } from 'loro-crdt'
 import type { NodeJSON } from 'prosekit/core'
-import { type RichTextFeature, RichTextProperty } from '../rich-text/types'
+import type { RichTextFeature } from '../rich-text/types'
 import { isKey, type Key } from '../store/key'
 import * as G from '../utils/guard'
 import { isLoroList, isLoroMap } from '../utils/loro'
@@ -19,16 +19,11 @@ export interface TruthValueSchema
 export interface RichTextSchema
   extends Schema<{
     kind: 'richText'
-    FlatValue: RichTextFlatValue
+    FlatValue: LoroMap
     JSONValue: NodeJSON
   }> {
   readonly features: Array<RichTextFeature>
 }
-
-export type RichTextFlatValue = LoroMap<{
-  [RichTextProperty.Content]: LoroMap
-  [RichTextProperty.DefaultContent]: NodeJSON
-}>
 
 export interface LiteralSchema<
   T extends string | number | boolean = string | number | boolean,
@@ -92,11 +87,7 @@ export function createTruthValue(
 export function createRichText(
   args: FactoryArguments<RichTextSchema>,
 ): RichTextSchema {
-  return {
-    kind: 'richText',
-    isFlatValue: isLoroMap as G.Guard<RichTextFlatValue>,
-    ...args,
-  }
+  return { kind: 'richText', isFlatValue: isLoroMap, ...args }
 }
 
 export function createLiteral<T extends string | number | boolean>(

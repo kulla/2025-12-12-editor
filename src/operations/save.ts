@@ -1,8 +1,9 @@
+import { invariant } from 'es-toolkit'
 import { LoroList, LoroMap } from 'loro-crdt'
 import type { Root } from '../content'
+import * as F from '../nodes/flat'
 import * as N from '../nodes/nested'
-import { RichTextProperty } from '../rich-text/types'
-import type { RichTextFlatValue } from '../schema'
+import { createRichTextEditor } from '../rich-text/create-editor'
 import type { Transaction } from '../store/editor-store'
 import type { Key } from '../store/key'
 
@@ -26,12 +27,19 @@ export function save(args: {
   if (N.isPrimitive(node)) {
     return tx.insert(node.schema, parentKey, () => node.value)
   } else if (N.isRichText(node)) {
-    const map = new LoroMap() as RichTextFlatValue
+    const key = tx.insert(node.schema, parentKey, () => new LoroMap())
+    const storedNode = tx.store.get(key)
+    invariant(F.isRichText(storedNode), 'Stored node must be rich text')
 
-    map.set(RichTextProperty.DefaultContent, node.value)
-    map.setContainer(RichTextProperty.Content, new LoroMap())
+    const editor = createRichTextEditor({
+      loroMap: storedNode.value,
+      store: tx.store,
+      defaultContent: node.value,
+    })
 
-    return tx.insert(node.schema, parentKey, () => map)
+    tx.setEditor(key, editor)
+
+    return key
   } else if (N.isWrapper(node)) {
     return tx.insert(node.schema, parentKey, (key) =>
       save({ tx, parentKey: key, node: N.unwrap(node) }),

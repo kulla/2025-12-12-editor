@@ -1,9 +1,11 @@
 import { invariant } from 'es-toolkit'
 import { type LoroDoc, LoroList, LoroMap } from 'loro-crdt'
 import { CursorAwareness } from 'loro-prosemirror'
+import type { Editor } from 'prosekit/core'
 import { Root } from '../content'
 import type { FlatNode } from '../nodes/flat'
-import type { FlatValue, Schema } from '../schema'
+import { createRichTextEditor } from '../rich-text/create-editor'
+import type { FlatValue, RichTextSchema, Schema } from '../schema'
 import { collectSchemas } from '../schema/collect-schemas'
 import { type Key, type KeyGenerator, PrefixKeyGenerator } from './key'
 
@@ -13,6 +15,7 @@ export class EditorStore {
   private metadata = this.loroDoc.getMap('metadata') as LoroMap<Metadata>
   private currentTransaction: Transaction | null = null
   private schemaRegistry = createSchemaRegistry(Root)
+  private editors = new Map<Key, Editor | undefined>()
 
   constructor(
     public readonly loroDoc: LoroDoc,
@@ -38,6 +41,20 @@ export class EditorStore {
       key: node.get('key'),
       parentKey: node.get('parentKey'),
       value: node.get('value'),
+    }
+  }
+
+  getEditor(node: FlatNode<RichTextSchema>): Editor {
+    const editor = this.editors.get(node.key)
+
+    if (editor != null) {
+      return editor
+    } else {
+      const editor = createRichTextEditor({ loroMap: node.value, store: this })
+
+      this.editors.set(node.key, editor)
+
+      return editor
     }
   }
 
@@ -84,6 +101,10 @@ export class EditorStore {
 
         return key
       },
+      setEditor: (key, editor) => {
+        this.editors.set(key, editor)
+      },
+      store: this,
     }
   }
 
@@ -124,6 +145,8 @@ export interface Transaction {
     parentKey: Key,
     createValue: (key: Key) => FlatValue<S>,
   ): Key
+  setEditor(key: Key, editor: Editor): void
+  store: EditorStore
 }
 
 interface Metadata {

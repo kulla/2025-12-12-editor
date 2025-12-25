@@ -16,7 +16,7 @@ export function render(args: {
       <input key={node.key} type="checkbox" checked={node.value} readOnly />
     )
   } else if (F.isRichText(node)) {
-    return <RichTextEditor key={node.key} node={node} store={store} />
+    return <RichTextEditor key={node.key} editor={store.getEditor(node)} />
   } else if (F.isWrapper(node)) {
     return render({ store: store, node: F.getSingletonChild({ store, node }) })
   } else if (F.isUnion(node)) {
