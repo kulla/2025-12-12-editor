@@ -1,7 +1,11 @@
 import * as S from '../schema'
 import type { Guard } from '../utils/guard'
 
-export interface NestedNode<S extends S.Schema = S.Schema> {
+export type NestedNode<S extends S.Schema = S.Schema> = S extends unknown
+  ? _NestedNode<S>
+  : never
+
+interface _NestedNode<S extends S.Schema> {
   schema: S
   value: S.JSONValue<S>
 }
