@@ -3,7 +3,7 @@ import type { LoroDoc, LoroMap } from 'loro-crdt'
 import { Root } from '../content/types'
 import type { FlatNode } from '../nodes/flat'
 import type { FlatValue, Schema } from '../schema'
-import { createSchemaRegistry } from '../schema/create-registry'
+import { collectSchemas } from '../schema/collect-schemas'
 import { type Key, type KeyGenerator, PrefixKeyGenerator } from './key'
 
 export class EditorStore {
@@ -89,6 +89,14 @@ export class EditorStore {
     const currentCount = this.metadata.get('updateCount') ?? 0
     this.metadata.set('updateCount', currentCount + 1)
   }
+}
+
+function createSchemaRegistry(
+  rootSchema: Root,
+): Record<string, Schema | undefined> {
+  return Object.fromEntries(
+    collectSchemas(rootSchema).map((schema) => [schema.name, schema]),
+  )
 }
 
 export interface Transaction {
