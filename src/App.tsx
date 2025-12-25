@@ -8,6 +8,7 @@ import { initialContent } from './content/initial-content'
 import { DebugPanel } from './debug-panel'
 import type { FlatNode } from './nodes/flat'
 import { load } from './operations/load'
+import { render } from './operations/render'
 import { saveRoot } from './operations/save'
 import type { Key } from './store/key'
 import { useEditorStore } from './store/use-editor-store'
@@ -16,6 +17,7 @@ export default function App() {
   const rootKey = 'root' as Key
   const loroDoc = useRef(new LoroDoc()).current
   const { store } = useEditorStore(loroDoc)
+  const rootNode = store.has(rootKey) ? store.get(rootKey) : null
 
   useEffect(() => {
     if (store.has(rootKey)) return
@@ -29,16 +31,16 @@ export default function App() {
 
   return (
     <main className="p-10">
-      <h1>Rsbuild with React</h1>
-      <p>Start building amazing things with Rsbuild.</p>
+      <h1>Editor</h1>
+      {rootNode ? render({ store, node: rootNode }) : 'Loading...'}
       <DebugPanel
         labels={{ json: 'External JSON value', entries: 'Internal flat nodes' }}
         showOnStartup={{ json: true, entries: true }}
         getCurrentValue={{
           json: () => {
-            if (!store.has(rootKey)) return 'Loading...'
+            if (rootNode == null) return 'Loading...'
 
-            const jsonValue = load({ store, node: store.get(rootKey) })
+            const jsonValue = load({ store, node: rootNode })
             return JSON.stringify(jsonValue, null, 2)
           },
           entries: () => {
