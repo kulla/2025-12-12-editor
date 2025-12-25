@@ -1,4 +1,4 @@
-import { RichTextFeature } from '../rich-text/features'
+import { RichTextFeature } from '../rich-text/types'
 import * as S from '../schema'
 import { ContentType } from './types'
 
