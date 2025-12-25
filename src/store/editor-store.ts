@@ -1,6 +1,6 @@
 import { invariant } from 'es-toolkit'
 import type { LoroDoc, LoroMap } from 'loro-crdt'
-import { collectSchemsByName } from '../content/registry'
+import { createSchemaRegistry } from '../content/registry'
 import { Root } from '../content/types'
 import type { FlatNode } from '../nodes/flat'
 import type { FlatValue, Schema } from '../schema/types'
@@ -10,7 +10,7 @@ export class EditorStore {
   private nodes: FlatNodeMap
   private metadata = this.loroDoc.getMap('metadata') as LoroMap<Metadata>
   private currentTransaction: Transaction | null = null
-  private schemaRegistry = collectSchemsByName(Root)
+  private schemaRegistry = createSchemaRegistry(Root)
 
   constructor(
     private readonly loroDoc: LoroDoc,

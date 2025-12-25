@@ -1,10 +1,13 @@
 import * as S from '../schema/kinds'
 import type { Schema } from '../schema/types'
+import type { Root } from './types'
 
-export function collectSchemsByName(
-  schema: Schema,
+export function createSchemaRegistry(
+  rootSchema: Root,
 ): Record<string, Schema | undefined> {
-  return Object.fromEntries(collectSchemas(schema).map((s) => [s.name, s]))
+  return Object.fromEntries(
+    collectSchemas(rootSchema).map((schema) => [schema.name, schema]),
+  )
 }
 
 function collectSchemas(schema: Schema): Schema[] {
