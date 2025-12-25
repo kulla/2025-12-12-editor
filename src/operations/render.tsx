@@ -11,6 +11,7 @@ export function render(args: {
   if (F.isLiteral(node)) {
     return String(node.value)
   } else if (F.isTruthValue(node)) {
+    return <input type="checkbox" checked={node.value} readOnly />
   } else if (F.isRichText(node)) {
   } else if (F.isWrapper(node)) {
     return render({ store: store, node: F.getSingletonChild({ store, node }) })
