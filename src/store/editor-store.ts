@@ -39,6 +39,10 @@ export class EditorStore {
     return this.nodes.get(key) != null
   }
 
+  getEntries(): Array<[Key, FlatNode]> {
+    return this.nodes.keys().map((key) => [key, this.get(key)])
+  }
+
   get updateCount(): number {
     return this.metadata.get('updateCount') ?? 0
   }
