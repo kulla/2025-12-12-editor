@@ -1,4 +1,5 @@
 import {
+  type ArraySchema,
   isArraySchema,
   isLiteralSchema,
   isObjectSchema,
@@ -8,6 +9,8 @@ import {
   isTruthValueSchema,
   isUnionSchema,
   isWrapperSchema,
+  type ObjectSchema,
+  type UnionSchema,
   type WrapperSchema,
 } from '../schema/kinds'
 import type { JSONValue, Schema } from '../schema/types'
@@ -18,11 +21,25 @@ export interface NestedNode<S extends Schema = Schema> {
   value: JSONValue<S>
 }
 
-export function unwrap({
-  schema,
-  value,
-}: NestedNode<WrapperSchema>): NestedNode {
+export function unwrap({ schema, value }: NestedNode<WrapperSchema>) {
   return { schema: schema.wrappedSchema, value: schema.unwrap(value) }
+}
+
+export function getOption({ schema, value }: NestedNode<UnionSchema>) {
+  return { schema: schema.getOption(value), value }
+}
+
+export function getItems({ schema, value }: NestedNode<ArraySchema>) {
+  return value.map((itemValue) => {
+    return { schema: schema.itemSchema, value: itemValue }
+  })
+}
+
+export function getProperty(
+  { schema, value }: NestedNode<ObjectSchema>,
+  key: string,
+) {
+  return { schema: schema.properties[key], value: value[key] }
 }
 
 export const isTruthValue = createNestedNodeGuard(isTruthValueSchema)
