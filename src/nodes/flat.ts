@@ -1,4 +1,5 @@
 import * as S from '../schema'
+import type { EditorStore } from '../store/editor-store'
 import type { Key } from '../store/key'
 import type { Guard } from '../utils/guard'
 
@@ -7,6 +8,16 @@ export interface FlatNode<S extends S.Schema = S.Schema> {
   key: Key
   parentKey: Key | null
   value: S.FlatValue<S>
+}
+
+export function getSingletonChild({
+  store,
+  node,
+}: {
+  store: EditorStore
+  node: FlatNode<S.WrapperSchema | S.UnionSchema>
+}): FlatNode {
+  return store.get(node.value)
 }
 
 export const isTruthValue = createGuard(S.isTruthValue)
