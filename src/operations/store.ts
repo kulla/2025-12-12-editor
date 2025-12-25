@@ -1,8 +1,19 @@
 import { LoroList, LoroMap } from 'loro-crdt'
+import type { Root } from '../content/types'
 import * as N from '../nodes/nested'
 import { DEFAULT_CONTENT_KEY } from '../rich-text/create-editor'
 import type { Transaction } from '../store/editor-store'
 import type { Key } from '../store/key'
+
+export function storeRoot(args: {
+  tx: Transaction
+  node: N.NestedNode<Root>
+  rootKey: Key
+}): Key {
+  const { tx, node, rootKey } = args
+
+  return tx.attachRoot(rootKey, store({ tx, parentKey: rootKey, node }))
+}
 
 export function store(args: {
   tx: Transaction

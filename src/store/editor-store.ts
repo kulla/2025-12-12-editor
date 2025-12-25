@@ -62,6 +62,8 @@ export class EditorStore {
           parentKey: null,
           value: value,
         })
+
+        return rootKey
       },
       insert: (schema, parentKey, createValue) => {
         const key = this.keyGenerator.next()
@@ -81,7 +83,7 @@ export class EditorStore {
 }
 
 export interface Transaction {
-  attachRoot(rootKey: Key, value: FlatValue<Root>): void
+  attachRoot(rootKey: Key, value: FlatValue<Root>): Key
   insert<S extends Schema>(
     schema: S,
     parentKey: Key,
