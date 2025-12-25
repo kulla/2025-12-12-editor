@@ -1,5 +1,5 @@
 import { invariant } from 'es-toolkit'
-import type { LoroDoc, LoroMap } from 'loro-crdt'
+import { type LoroDoc, LoroMap } from 'loro-crdt'
 import { Root } from '../content'
 import type { FlatNode } from '../nodes/flat'
 import type { FlatValue, Schema } from '../schema'
@@ -26,12 +26,17 @@ export class EditorStore {
 
     invariant(node != null, `Node with key ${key} does not exist`)
 
-    const { schemaName, ...restData } = node
+    const schemaName = node.get('schemaName')
     const schema = this.schemaRegistry[schemaName]
 
     invariant(schema != null, `Schema with name ${schemaName} does not exist`)
 
-    return { ...restData, schema }
+    return {
+      schema,
+      key: node.get('key'),
+      parentKey: node.get('parentKey'),
+      value: node.get('value'),
+    }
   }
 
   has(key: Key): boolean {
@@ -65,11 +70,11 @@ export class EditorStore {
   private createTransaction(): Transaction {
     return {
       attachRoot: (rootKey: Key, value: FlatValue<Root>) => {
-        this.nodes.set(rootKey, {
-          schemaName: Root.name,
+        this.store(rootKey, {
+          schema: Root,
           key: rootKey,
           parentKey: null,
-          value: value,
+          value,
         })
 
         return rootKey
@@ -78,11 +83,22 @@ export class EditorStore {
         const key = this.keyGenerator.next()
         const value = createValue(key)
 
-        this.nodes.set(key, { schemaName: schema.name, key, parentKey, value })
+        this.store(key, { schema, key, parentKey, value })
 
         return key
       },
     }
+  }
+
+  private store(key: Key, node: FlatNode): void {
+    const map = new LoroMap<StoredFlatNode>()
+
+    map.set('schemaName', node.schema.name)
+    map.set('key', node.key)
+    map.set('parentKey', node.parentKey)
+    map.set('value', node.value)
+
+    this.nodes.setContainer(key, map)
   }
 
   private incrementUpdateCount(): void {
@@ -114,5 +130,5 @@ interface Metadata {
   [key: string]: unknown
 }
 
-type FlatNodeMap = LoroMap<Record<string, StoredFlatNode>>
+type FlatNodeMap = LoroMap<Record<string, LoroMap<StoredFlatNode>>>
 type StoredFlatNode = Omit<FlatNode, 'schema'> & { schemaName: string }
