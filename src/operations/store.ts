@@ -1,11 +1,5 @@
 import { LoroMap } from 'loro-crdt'
-import {
-  isPrimitiveNestedNode,
-  isRichTextNestedNode,
-  isWrapperNestedNode,
-  type NestedNode,
-  unwrap,
-} from '../nodes/nested'
+import * as N from '../nodes/nested'
 import { DEFAULT_CONTENT_KEY } from '../rich-text/create-editor'
 import type { Transaction } from '../store/editor-store'
 import type { Key } from '../store/key'
@@ -13,21 +7,21 @@ import type { Key } from '../store/key'
 export function store(args: {
   tx: Transaction
   parentKey: Key
-  node: NestedNode
+  node: N.NestedNode
 }): Key {
   const { tx, parentKey, node } = args
 
-  if (isRichTextNestedNode(node)) {
+  if (N.isRichText(node)) {
     const map = new LoroMap()
 
     map.set(DEFAULT_CONTENT_KEY, node.value)
 
     return tx.insert(node.schema, parentKey, () => map)
-  } else if (isPrimitiveNestedNode(node)) {
+  } else if (N.isPrimitive(node)) {
     return tx.insert(node.schema, parentKey, () => node.value)
-  } else if (isWrapperNestedNode(node)) {
+  } else if (N.isWrapper(node)) {
     return tx.insert(node.schema, parentKey, () =>
-      store({ tx, parentKey, node: unwrap(node) }),
+      store({ tx, parentKey, node: N.unwrap(node) }),
     )
   } else {
     throw new Error(`Unsupported schema kind: ${node.schema.kind}`)
