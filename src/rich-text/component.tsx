@@ -15,8 +15,11 @@ interface RichTextEditorProps {
 }
 
 export function RichTextEditor({ node, store }: RichTextEditorProps) {
-  const containerId = node.value.get(RichTextProperty.Content).id
+  // biome-ignore lint: react-hooks-deps
   const editor = useMemo(() => {
+    const containerId = node.value.get(RichTextProperty.Content).id
+    const defaultContent = node.value.get(RichTextProperty.DefaultContent)
+
     const extension = union(
       defineBasicExtension(),
       defineLoro({
@@ -26,8 +29,8 @@ export function RichTextEditor({ node, store }: RichTextEditorProps) {
       }),
     )
 
-    return createEditor({ extension })
-  }, [store, containerId])
+    return createEditor({ extension, defaultContent })
+  }, [store, node.key])
 
   return (
     <ProseKit editor={editor}>
