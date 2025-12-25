@@ -1,5 +1,5 @@
-import '@picocss/pico/css/pico.min.css'
 import './App.css'
+
 import { padStart } from 'es-toolkit/compat'
 import { LoroDoc } from 'loro-crdt'
 import { useEffect, useRef } from 'react'
