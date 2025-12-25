@@ -20,6 +20,16 @@ export function getSingletonChild({
   return store.get(node.value)
 }
 
+export function getItems({
+  store,
+  node,
+}: {
+  store: EditorStore
+  node: FlatNode<S.ArraySchema>
+}): FlatNode[] {
+  return node.value.toArray().map((itemKey) => store.get(itemKey))
+}
+
 export const isTruthValue = createGuard(S.isTruthValue)
 export const isRichText = createGuard(S.isRichText)
 export const isLiteral = createGuard(S.isLiteral)

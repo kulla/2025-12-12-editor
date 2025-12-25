@@ -17,6 +17,13 @@ export function render(args: {
   } else if (F.isUnion(node)) {
     return render({ store: store, node: F.getSingletonChild({ store, node }) })
   } else if (F.isArray(node)) {
+    return (
+      <div key={node.key}>
+        {F.getItems({ store, node }).map((itemNode) =>
+          render({ store, node: itemNode }),
+        )}
+      </div>
+    )
   } else if (F.isObject(node)) {
   }
 
