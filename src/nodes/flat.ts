@@ -1,35 +1,24 @@
-import {
-  isArraySchema,
-  isLiteralSchema,
-  isObjectSchema,
-  isPrimitiveSchema,
-  isRichTextSchema,
-  isSingletonSchema,
-  isTruthValueSchema,
-  isUnionSchema,
-  isWrapperSchema,
-} from '../schema'
-import type { FlatValue, Schema } from '../schema/types'
+import * as S from '../schema'
 import type { Key } from '../store/key'
 import type { Guard } from '../utils/guard'
 
-export interface FlatNode<S extends Schema = Schema> {
+export interface FlatNode<S extends S.Schema = S.Schema> {
   schema: S
   key: Key
   parentKey: Key | null
-  value: FlatValue<S>
+  value: S.FlatValue<S>
 }
 
-export const isTruthValue = createFlatNodeGuard(isTruthValueSchema)
-export const isRichText = createFlatNodeGuard(isRichTextSchema)
-export const isLiteral = createFlatNodeGuard(isLiteralSchema)
-export const isWrapper = createFlatNodeGuard(isWrapperSchema)
-export const isUnion = createFlatNodeGuard(isUnionSchema)
-export const isArray = createFlatNodeGuard(isArraySchema)
-export const isObject = createFlatNodeGuard(isObjectSchema)
-export const isPrimitive = createFlatNodeGuard(isPrimitiveSchema)
-export const isSingleton = createFlatNodeGuard(isSingletonSchema)
+export const isTruthValue = createFlatNodeGuard(S.isTruthValueSchema)
+export const isRichText = createFlatNodeGuard(S.isRichTextSchema)
+export const isLiteral = createFlatNodeGuard(S.isLiteralSchema)
+export const isWrapper = createFlatNodeGuard(S.isWrapperSchema)
+export const isUnion = createFlatNodeGuard(S.isUnionSchema)
+export const isArray = createFlatNodeGuard(S.isArraySchema)
+export const isObject = createFlatNodeGuard(S.isObjectSchema)
+export const isPrimitive = createFlatNodeGuard(S.isPrimitiveSchema)
+export const isSingleton = createFlatNodeGuard(S.isSingletonSchema)
 
-function createFlatNodeGuard<S extends Schema>(schemaGuard: Guard<S>) {
+function createFlatNodeGuard<S extends S.Schema>(schemaGuard: Guard<S>) {
   return (node: FlatNode): node is FlatNode<S> => schemaGuard(node.schema)
 }
