@@ -1,6 +1,7 @@
+import type { Editor } from 'prosekit/core'
+import { ProseKit } from 'prosekit/react'
 import type { ReactNode } from 'react'
 import * as F from '../nodes/flat'
-import { RichTextEditor } from '../rich-text'
 import type { EditorStore } from '../store/editor-store'
 
 export function render(args: {
@@ -34,4 +35,12 @@ export function render(args: {
   }
 
   return `[Unsupported node kind: ${node.schema.kind}]`
+}
+
+function RichTextEditor({ editor }: { editor: Editor }) {
+  return (
+    <ProseKit editor={editor}>
+      <div ref={editor.mount} />
+    </ProseKit>
+  )
 }
