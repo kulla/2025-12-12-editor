@@ -27,17 +27,17 @@ export function getProperty(
   return { schema: schema.properties[key], value: value[key] }
 }
 
-export const isTruthValue = createNestedNodeGuard(S.isTruthValue)
-export const isRichText = createNestedNodeGuard(S.isRichText)
-export const isLiteral = createNestedNodeGuard(S.isLiteral)
-export const isWrapper = createNestedNodeGuard(S.isWrapper)
-export const isUnion = createNestedNodeGuard(S.isUnion)
-export const isArray = createNestedNodeGuard(S.isArray)
-export const isObject = createNestedNodeGuard(S.isObject)
-export const isPrimitive = createNestedNodeGuard(S.isPrimitive)
-export const isLeaf = createNestedNodeGuard(S.isLeaf)
-export const isSingleton = createNestedNodeGuard(S.isSingletonSchema)
+export const isTruthValue = createGuard(S.isTruthValue)
+export const isRichText = createGuard(S.isRichText)
+export const isLiteral = createGuard(S.isLiteral)
+export const isWrapper = createGuard(S.isWrapper)
+export const isUnion = createGuard(S.isUnion)
+export const isArray = createGuard(S.isArray)
+export const isObject = createGuard(S.isObject)
+export const isPrimitive = createGuard(S.isPrimitive)
+export const isLeaf = createGuard(S.isLeaf)
+export const isSingleton = createGuard(S.isSingletonSchema)
 
-function createNestedNodeGuard<S extends S.Schema>(schemaGuard: Guard<S>) {
+function createGuard<S extends S.Schema>(schemaGuard: Guard<S>) {
   return (node: NestedNode): node is NestedNode<S> => schemaGuard(node.schema)
 }
