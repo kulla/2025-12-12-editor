@@ -21,11 +21,9 @@ export default function App() {
     if (store.has(rootKey)) return
 
     store.update((tx) => {
-      saveRoot({
-        tx,
-        rootKey,
-        node: { schema: Root, value: initialContent },
-      })
+      const rootNode = { schema: Root, value: initialContent }
+
+      saveRoot({ tx, rootKey, node: rootNode })
     })
   }, [rootKey, store])
 
