@@ -1,6 +1,6 @@
 import { invariant } from 'es-toolkit'
 import type { LoroDoc, LoroMap } from 'loro-crdt'
-import { Root } from '../content/types'
+import { Root } from '../content'
 import type { FlatNode } from '../nodes/flat'
 import type { FlatValue, Schema } from '../schema'
 import { collectSchemas } from '../schema/collect-schemas'

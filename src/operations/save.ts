@@ -1,5 +1,5 @@
 import { LoroList, LoroMap } from 'loro-crdt'
-import type { Root } from '../content/types'
+import type { Root } from '../content'
 import * as N from '../nodes/nested'
 import { DEFAULT_CONTENT_KEY } from '../rich-text/create-editor'
 import type { Transaction } from '../store/editor-store'
