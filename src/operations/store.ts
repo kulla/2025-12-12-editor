@@ -1,4 +1,4 @@
-import { LoroMap } from 'loro-crdt'
+import { LoroList, LoroMap } from 'loro-crdt'
 import * as N from '../nodes/nested'
 import { DEFAULT_CONTENT_KEY } from '../rich-text/create-editor'
 import type { Transaction } from '../store/editor-store'
@@ -20,9 +20,37 @@ export function store(args: {
   } else if (N.isPrimitive(node)) {
     return tx.insert(node.schema, parentKey, () => node.value)
   } else if (N.isWrapper(node)) {
-    return tx.insert(node.schema, parentKey, () =>
-      store({ tx, parentKey, node: N.unwrap(node) }),
+    return tx.insert(node.schema, parentKey, (key) =>
+      store({ tx, parentKey: key, node: N.unwrap(node) }),
     )
+  } else if (N.isUnion(node)) {
+    return tx.insert(node.schema, parentKey, (key) =>
+      store({ tx, parentKey: key, node: N.getOption(node) }),
+    )
+  } else if (N.isArray(node)) {
+    return tx.insert(node.schema, parentKey, (key) => {
+      const list = new LoroList<Key>()
+
+      N.getItems(node).forEach((itemNode) => {
+        list.push(store({ tx, parentKey: key, node: itemNode }))
+      })
+
+      return list
+    })
+  } else if (N.isObject(node)) {
+    return tx.insert(node.schema, parentKey, (key) => {
+      const map = new LoroMap<Record<string, Key>>()
+
+      for (const propertyName of Object.keys(node.schema.properties)) {
+        const propertyNode = N.getProperty(node, propertyName)
+
+        const propertyKey = store({ tx, parentKey: key, node: propertyNode })
+
+        map.set(propertyName, propertyKey)
+      }
+
+      return map
+    })
   } else {
     throw new Error(`Unsupported schema kind: ${node.schema.kind}`)
   }
