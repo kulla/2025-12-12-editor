@@ -46,17 +46,19 @@ export class EditorStore {
     return this.metadata.get('updateCount') ?? 0
   }
 
-  update(updater: (tx: Transaction) => void): void {
+  update<A>(updater: (tx: Transaction) => A): A {
     if (this.currentTransaction != null) {
       // If we're already in a transaction, just call the update function directly
-      updater(this.currentTransaction)
+      return updater(this.currentTransaction)
     } else {
       this.currentTransaction = this.createTransaction()
 
-      updater(this.currentTransaction)
-
-      this.incrementUpdateCount()
-      this.currentTransaction = null
+      try {
+        return updater(this.currentTransaction)
+      } finally {
+        this.incrementUpdateCount()
+        this.currentTransaction = null
+      }
     }
   }
 
