@@ -148,7 +148,11 @@ export const isUnionSchema = createSchemaGuard<UnionSchema>('union')
 export const isArraySchema = createSchemaGuard<ArraySchema>('array')
 export const isObjectSchema = createSchemaGuard<ObjectSchema>('object')
 
-export const isPrimitiveSchema = isUnion(isTruthValueSchema, isLiteralSchema)
+export const isPrimitiveSchema = isUnion(
+  isTruthValueSchema,
+  isLiteralSchema,
+  isRichTextSchema,
+)
 export const isSingletonSchema = isUnion(isWrapperSchema, isUnionSchema)
 
 function createSchemaGuard<S extends Schema>(kind: S['kind']): Guard<S> {
