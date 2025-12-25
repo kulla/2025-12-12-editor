@@ -17,12 +17,14 @@ export function render(args: {
   } else if (F.isUnion(node)) {
     return render({ store: store, node: F.getSingletonChild({ store, node }) })
   } else if (F.isArray(node)) {
+    const HTMLTag = node.schema.htmlTag ?? 'div'
+
     return (
-      <div key={node.key}>
+      <HTMLTag key={node.key}>
         {F.getItems({ store, node }).map((itemNode) =>
           render({ store, node: itemNode }),
         )}
-      </div>
+      </HTMLTag>
     )
   } else if (F.isObject(node)) {
   }

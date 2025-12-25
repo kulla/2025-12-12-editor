@@ -63,6 +63,7 @@ export interface ArraySchema<S extends Schema = Schema>
     JSONValue: JSONValue<S>[]
   }> {
   itemSchema: S
+  htmlTag?: React.HTMLElementType
 }
 
 export interface ObjectSchema<
