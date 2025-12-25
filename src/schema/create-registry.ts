@@ -1,6 +1,6 @@
 import * as S from '../schema/kinds'
 import type { Schema } from '../schema/types'
-import type { Root } from './types'
+import type { Root } from '../content/types'
 
 export function createSchemaRegistry(
   rootSchema: Root,
