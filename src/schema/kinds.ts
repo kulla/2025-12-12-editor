@@ -74,6 +74,15 @@ export interface ObjectSchema<
   keyOrder: readonly (keyof P)[]
 }
 
+export type AllSchema =
+  | TruthValueSchema
+  | RichTextSchema
+  | LiteralSchema
+  | WrapperSchema
+  | UnionSchema
+  | ArraySchema
+  | ObjectSchema
+
 export function createTruthValue(
   args: FactoryArguments<TruthValueSchema>,
 ): TruthValueSchema {

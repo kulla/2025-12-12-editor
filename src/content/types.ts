@@ -106,18 +106,3 @@ export const Root = createWrapper({
   wrap: (value) => value,
   unwrap: (value) => value,
 })
-
-export const schemaRegistry: Record<string, Schema | undefined> =
-  Object.fromEntries(
-    [
-      TruthValue,
-      InlineRichText,
-      ContentRichText,
-      FillInTheBlankRichText,
-      TextContent,
-      FillInTheBlankExercise,
-      MultipleChoiceExercise,
-      EducationalContent,
-      Root,
-    ].map((schema) => [schema.name, schema]),
-  )
