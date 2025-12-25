@@ -13,7 +13,7 @@ export function load<S extends Schema>({
   if (F.isPrimitive(node)) {
     return node.value
   } else if (F.isRichText(node)) {
-    return store.getEditor(node).state.toJSON()
+    return store.getEditor(node).state.toJSON().doc
   } else if (F.isWrapper(node)) {
     return node.schema.wrap(load({ store, node: store.get(node.value) }))
   } else if (F.isUnion(node)) {
