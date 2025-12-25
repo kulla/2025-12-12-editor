@@ -70,7 +70,7 @@ export class EditorStore {
   private createTransaction(): Transaction {
     return {
       attachRoot: (rootKey: Key, value: FlatValue<Root>) => {
-        this.store({ schema: Root, key: rootKey, parentKey: null, value })
+        this.save({ schema: Root, key: rootKey, parentKey: null, value })
 
         return rootKey
       },
@@ -78,14 +78,14 @@ export class EditorStore {
         const key = this.keyGenerator.next()
         const value = createValue(key)
 
-        this.store({ schema, key, parentKey, value })
+        this.save({ schema, key, parentKey, value })
 
         return key
       },
     }
   }
 
-  private store({ schema, key, parentKey, value }: FlatNode): void {
+  private save({ schema, key, parentKey, value }: FlatNode): void {
     const map = new LoroMap<StoredFlatNode>()
 
     map.set('schemaName', schema.name)
