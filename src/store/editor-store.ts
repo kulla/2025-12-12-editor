@@ -7,7 +7,7 @@ import type { FlatValue, Schema } from '../schema/types'
 import { type Key, type KeyGenerator, PrefixKeyGenerator } from './key'
 
 export class EditorStore {
-  private nodes: FlatNodeMap
+  private nodes = this.loroDoc.getMap('nodes') as FlatNodeMap
   private metadata = this.loroDoc.getMap('metadata') as LoroMap<Metadata>
   private currentTransaction: Transaction | null = null
   private schemaRegistry = createSchemaRegistry(Root)
@@ -15,10 +15,7 @@ export class EditorStore {
   constructor(
     private readonly loroDoc: LoroDoc,
     private readonly keyGenerator: KeyGenerator = new PrefixKeyGenerator('n'),
-  ) {
-    // TODO: Check that the map of the correct type
-    this.nodes = this.loroDoc.getMap('nodes') as FlatNodeMap
-  }
+  ) {}
 
   addUpdateListener(listener: () => void) {
     return this.loroDoc.subscribe(listener)
