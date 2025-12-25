@@ -35,6 +35,10 @@ export class EditorStore {
     return { ...restData, schema }
   }
 
+  has(key: Key): boolean {
+    return this.nodes.get(key) != null
+  }
+
   get updateCount(): number {
     return this.metadata.get('updateCount') ?? 0
   }

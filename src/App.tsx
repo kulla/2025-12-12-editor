@@ -14,7 +14,7 @@ export default function App() {
   const { store } = useEditorStore(loroDoc)
 
   useEffect(() => {
-    if (store.get(rootKey) != null) return
+    if (store.has(rootKey)) return
 
     store.update((tx) => {
       storeRoot({
