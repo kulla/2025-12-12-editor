@@ -1,8 +1,8 @@
 import { invariant } from 'es-toolkit'
 import type { LoroDoc, LoroMap } from 'loro-crdt'
-import { createSchemaRegistry } from '../content/registry'
 import { Root } from '../content/types'
 import type { FlatNode } from '../nodes/flat'
+import { createSchemaRegistry } from '../schema/registry'
 import type { FlatValue, Schema } from '../schema/types'
 import { type Key, type KeyGenerator, PrefixKeyGenerator } from './key'
 
