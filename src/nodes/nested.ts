@@ -27,14 +27,14 @@ export function getProperty(
   return { schema: schema.properties[key], value: value[key] }
 }
 
-export const isTruthValue = createNestedNodeGuard(S.isTruthValueSchema)
-export const isRichText = createNestedNodeGuard(S.isRichTextSchema)
-export const isLiteral = createNestedNodeGuard(S.isLiteralSchema)
-export const isWrapper = createNestedNodeGuard(S.isWrapperSchema)
-export const isUnion = createNestedNodeGuard(S.isUnionSchema)
-export const isArray = createNestedNodeGuard(S.isArraySchema)
-export const isObject = createNestedNodeGuard(S.isObjectSchema)
-export const isPrimitive = createNestedNodeGuard(S.isPrimitiveSchema)
+export const isTruthValue = createNestedNodeGuard(S.isTruthValue)
+export const isRichText = createNestedNodeGuard(S.isRichText)
+export const isLiteral = createNestedNodeGuard(S.isLiteral)
+export const isWrapper = createNestedNodeGuard(S.isWrapper)
+export const isUnion = createNestedNodeGuard(S.isUnion)
+export const isArray = createNestedNodeGuard(S.isArray)
+export const isObject = createNestedNodeGuard(S.isObject)
+export const isPrimitive = createNestedNodeGuard(S.isPrimitive)
 export const isSingleton = createNestedNodeGuard(S.isSingletonSchema)
 
 function createNestedNodeGuard<S extends S.Schema>(schemaGuard: Guard<S>) {

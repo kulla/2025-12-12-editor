@@ -3,7 +3,7 @@ import type { LoroList, LoroMap } from 'loro-crdt'
 import type { NodeJSON } from 'prosekit/core'
 import type { RichTextFeature } from '../rich-text/features'
 import { isKey, type Key } from '../store/key'
-import { type Guard, isBoolean, isLiteral, isUnion } from '../utils/guard'
+import * as G from '../utils/guard'
 import { isLoroList, isLoroMap } from '../utils/loro'
 import type { JSONValue, OmitTypeInfo, Schema } from './types'
 
@@ -79,7 +79,7 @@ export interface ObjectSchema<
 export function createTruthValue(
   args: FactoryArguments<TruthValueSchema>,
 ): TruthValueSchema {
-  return { kind: 'boolean', isFlatValue: isBoolean, ...args }
+  return { kind: 'boolean', isFlatValue: G.isBoolean, ...args }
 }
 
 export function createRichText(
@@ -91,7 +91,7 @@ export function createRichText(
 export function createLiteral<T extends string | number | boolean>(
   args: FactoryArguments<LiteralSchema<T>>,
 ): LiteralSchema<T> {
-  return { kind: 'literal', isFlatValue: isLiteral(args.value), ...args }
+  return { kind: 'literal', isFlatValue: G.isLiteral(args.value), ...args }
 }
 
 export function createWrapper<S extends Schema, J = JSONValue<S>>(
@@ -142,21 +142,17 @@ type FactoryArguments<S extends Schema> = Omit<
   'kind' | 'isFlatValue'
 >
 
-export const isTruthValueSchema = createGuard<TruthValueSchema>('boolean')
-export const isRichTextSchema = createGuard<RichTextSchema>('richText')
-export const isLiteralSchema = createGuard<LiteralSchema>('literal')
-export const isWrapperSchema = createGuard<WrapperSchema>('wrapper')
-export const isUnionSchema = createGuard<UnionSchema>('union')
-export const isArraySchema = createGuard<ArraySchema>('array')
-export const isObjectSchema = createGuard<ObjectSchema>('object')
-export const isPrimitiveSchema = isUnion(
-  isTruthValueSchema,
-  isLiteralSchema,
-  isRichTextSchema,
-)
-export const isSingletonSchema = isUnion(isWrapperSchema, isUnionSchema)
+export const isTruthValue = createGuard<TruthValueSchema>('boolean')
+export const isRichText = createGuard<RichTextSchema>('richText')
+export const isLiteral = createGuard<LiteralSchema>('literal')
+export const isWrapper = createGuard<WrapperSchema>('wrapper')
+export const isUnion = createGuard<UnionSchema>('union')
+export const isArray = createGuard<ArraySchema>('array')
+export const isObject = createGuard<ObjectSchema>('object')
+export const isPrimitive = G.isUnion(isTruthValue, isLiteral, isRichText)
+export const isSingletonSchema = G.isUnion(isWrapper, isUnion)
 
-function createGuard<S extends Schema>(kind: S['kind']): Guard<S> {
+function createGuard<S extends Schema>(kind: S['kind']): G.Guard<S> {
   return (value: unknown): value is S => {
     return (
       typeof value === 'object' &&

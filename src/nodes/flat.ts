@@ -9,14 +9,14 @@ export interface FlatNode<S extends S.Schema = S.Schema> {
   value: S.FlatValue<S>
 }
 
-export const isTruthValue = createFlatNodeGuard(S.isTruthValueSchema)
-export const isRichText = createFlatNodeGuard(S.isRichTextSchema)
-export const isLiteral = createFlatNodeGuard(S.isLiteralSchema)
-export const isWrapper = createFlatNodeGuard(S.isWrapperSchema)
-export const isUnion = createFlatNodeGuard(S.isUnionSchema)
-export const isArray = createFlatNodeGuard(S.isArraySchema)
-export const isObject = createFlatNodeGuard(S.isObjectSchema)
-export const isPrimitive = createFlatNodeGuard(S.isPrimitiveSchema)
+export const isTruthValue = createFlatNodeGuard(S.isTruthValue)
+export const isRichText = createFlatNodeGuard(S.isRichText)
+export const isLiteral = createFlatNodeGuard(S.isLiteral)
+export const isWrapper = createFlatNodeGuard(S.isWrapper)
+export const isUnion = createFlatNodeGuard(S.isUnion)
+export const isArray = createFlatNodeGuard(S.isArray)
+export const isObject = createFlatNodeGuard(S.isObject)
+export const isPrimitive = createFlatNodeGuard(S.isPrimitive)
 export const isSingleton = createFlatNodeGuard(S.isSingletonSchema)
 
 function createFlatNodeGuard<S extends S.Schema>(schemaGuard: Guard<S>) {
