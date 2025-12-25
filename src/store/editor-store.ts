@@ -1,5 +1,5 @@
 import { invariant } from 'es-toolkit'
-import { type LoroDoc, LoroMap } from 'loro-crdt'
+import { type LoroDoc, LoroList, LoroMap } from 'loro-crdt'
 import { Root } from '../content'
 import type { FlatNode } from '../nodes/flat'
 import type { FlatValue, Schema } from '../schema'
@@ -96,7 +96,12 @@ export class EditorStore {
     map.set('schemaName', node.schema.name)
     map.set('key', node.key)
     map.set('parentKey', node.parentKey)
-    map.set('value', node.value)
+
+    if (node.value instanceof LoroMap || node.value instanceof LoroList) {
+      map.setContainer('value', node.value)
+    } else {
+      map.set('value', node.value)
+    }
 
     this.nodes.setContainer(key, map)
   }
