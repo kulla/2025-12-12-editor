@@ -1,5 +1,6 @@
 {
   "lockfileVersion": 1,
+  "configVersion": 0,
   "workspaces": {
     "": {
       "name": "rsbuild-react-bun-biome-starter-template",
@@ -8,7 +9,7 @@
         "clsx": "^2.1.1",
         "es-toolkit": "^1.43.0",
         "loro-crdt": "^1.10.3",
-        "loro-prosemirror": "^0.4.1",
+        "loro-prosemirror": "^0.4.2",
         "prosekit": "^0.17.1",
         "react": "^19.2.3",
         "react-dom": "^19.2.3",
@@ -345,7 +346,7 @@
 
     "loro-crdt": ["loro-crdt@1.10.3", "", {}, "sha512-vzWkVw7mWrKTilPjrgAhhzjAyOn3/DaUPJxdK9lunpEI1Y+uQMDBt/pEtRiovKFtGXo4tUVfULnFc7H/ufGwkQ=="],
 
-    "loro-prosemirror": ["loro-prosemirror@0.4.1", "", { "dependencies": { "lib0": "^0.2.42" }, "peerDependencies": { "loro-crdt": "^1.10.0", "prosemirror-model": "^1.18.1", "prosemirror-state": "^1.4.1", "prosemirror-view": "^1.28.0" } }, "sha512-Nly6ECBCaGKkXmycYSZFlSJaI4juhzH5ZjvYL0Eu2vLebvLcKx6sPtmpM/6KYp69CSBrF6xL1Q31B0rk2Z8qSA=="],
+    "loro-prosemirror": ["loro-prosemirror@0.4.2", "", { "dependencies": { "lib0": "^0.2.42" }, "peerDependencies": { "loro-crdt": "^1.10.2", "prosemirror-model": "^1.18.1", "prosemirror-state": "^1.4.1", "prosemirror-view": "^1.28.0" } }, "sha512-j+7UybYAbTcv/uuoFJkd03EQWJzihd0fbwsoq93ExJtZ/4y5GXU4ZpRSkDwqYXczyh5Ptd+NecbILNpRMLPBTw=="],
 
     "magic-string": ["magic-string@0.30.21", "", { "dependencies": { "@jridgewell/sourcemap-codec": "^1.5.5" } }, "sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ=="],
 
