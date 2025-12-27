@@ -1,7 +1,10 @@
 import { invariant } from 'es-toolkit'
 import type { LoroList, LoroMap } from 'loro-crdt'
 import type { NodeJSON } from 'prosekit/core'
+import type { ReactNode } from 'react'
+import type { FlatNode } from '../nodes/flat'
 import type { RichTextFeature } from '../rich-text/types'
+import type { EditorStore } from '../store/editor-store'
 import { isKey, type Key } from '../store/key'
 import * as G from '../utils/guard'
 import { isLoroList, isLoroMap } from '../utils/loro'
@@ -14,7 +17,9 @@ export interface TruthValueSchema
     kind: 'boolean'
     FlatValue: boolean
     JSONValue: boolean
-  }> {}
+  }> {
+  customBehavior?: CustomBehavior<this>
+}
 
 export interface RichTextSchema
   extends Schema<{
@@ -23,6 +28,7 @@ export interface RichTextSchema
     JSONValue: NodeJSON
   }> {
   readonly features: Array<RichTextFeature>
+  customBehavior?: CustomBehavior<this>
 }
 
 export interface LiteralSchema<
@@ -33,6 +39,7 @@ export interface LiteralSchema<
     JSONValue: T
   }> {
   readonly value: T
+  customBehavior?: CustomBehavior<this>
 }
 
 export interface WrapperSchema<S extends Schema = Schema, J = JSONValue<S>>
@@ -44,6 +51,7 @@ export interface WrapperSchema<S extends Schema = Schema, J = JSONValue<S>>
   wrappedSchema: S
   wrap(inner: JSONValue<S>): J
   unwrap(outer: J): JSONValue<S>
+  customBehavior?: CustomBehavior<this>
 }
 
 export interface UnionSchema<S extends readonly Schema[] = readonly Schema[]>
@@ -54,6 +62,7 @@ export interface UnionSchema<S extends readonly Schema[] = readonly Schema[]>
   }> {
   options: S
   getOption(value: JSONValue<S[number]>): S[number]
+  customBehavior?: CustomBehavior<this>
 }
 
 export interface ArraySchema<S extends Schema = Schema>
@@ -64,6 +73,7 @@ export interface ArraySchema<S extends Schema = Schema>
   }> {
   itemSchema: S
   htmlTag?: React.HTMLElementType
+  customBehavior?: CustomBehavior<this>
 }
 
 export interface ObjectSchema<
@@ -76,6 +86,15 @@ export interface ObjectSchema<
   properties: Readonly<P>
   keyOrder: readonly (keyof P)[]
   htmlTag?: React.HTMLElementType
+  customBehavior?: CustomBehavior<this>
+}
+
+interface CustomBehavior<S extends Schema = Schema> {
+  render?: (args: {
+    node: FlatNode<S>
+    store: EditorStore
+    renderChild: (node: FlatNode) => ReactNode
+  }) => ReactNode
 }
 
 export function createTruthValue(
@@ -143,6 +162,12 @@ type FactoryArguments<S extends Schema> = Omit<
   OmitTypeInfo<S>,
   'kind' | 'isFlatValue'
 >
+
+export const hasCustomBehavior = (
+  schema: Schema,
+): schema is Schema & { customBehavior: CustomBehavior } => {
+  return 'customBehavior' in schema && schema.customBehavior !== undefined
+}
 
 export const isTruthValue = createGuard<TruthValueSchema>('boolean')
 export const isRichText = createGuard<RichTextSchema>('richText')

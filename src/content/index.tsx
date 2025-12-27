@@ -1,3 +1,4 @@
+import * as F from '../nodes/flat'
 import { RichTextFeature } from '../rich-text/types'
 import * as S from '../schema'
 import { ContentType } from './types'
@@ -65,6 +66,21 @@ const MultipleChoiceExercise = S.createObject({
     }),
   },
   keyOrder: ['question', 'options'],
+  customBehavior: {
+    render: ({ node, store, renderChild }) => {
+      const question = F.getProperty({ node, store, propertyName: 'question' })
+      const options = F.getProperty({ node, store, propertyName: 'options' })
+
+      return (
+        <div key={node.key}>
+          <p>
+            <strong>Multiple Choice Exercise: </strong> {renderChild(question)}
+          </p>
+          {renderChild(options)}
+        </div>
+      )
+    },
+  },
 })
 
 const EducationalContent = S.createArray({

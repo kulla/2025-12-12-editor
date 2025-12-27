@@ -40,6 +40,19 @@ export function getVisibleChildren({
   }
 }
 
+export function getProperty<P extends Record<string, S.Schema>>({
+  store,
+  node,
+  propertyName,
+}: {
+  store: EditorStore
+  node: FlatNode<S.ObjectSchema<P>>
+  propertyName: keyof P & string
+}): FlatNode {
+  const propertyKey = node.value.get(propertyName)
+  return store.get(propertyKey)
+}
+
 export const isTruthValue = createGuard(S.isTruthValue)
 export const isRichText = createGuard(S.isRichText)
 export const isLiteral = createGuard(S.isLiteral)

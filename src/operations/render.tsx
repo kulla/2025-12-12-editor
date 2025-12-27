@@ -2,6 +2,7 @@ import type { Editor } from 'prosekit/core'
 import { ProseKit } from 'prosekit/react'
 import type { ReactNode } from 'react'
 import * as F from '../nodes/flat'
+import * as S from '../schema'
 import type { EditorStore } from '../store/editor-store'
 
 export function render(args: {
@@ -10,7 +11,13 @@ export function render(args: {
 }): ReactNode {
   const { node, store } = args
 
-  if (F.isLiteral(node)) {
+  if (S.hasCustomBehavior(node.schema) && node.schema.customBehavior.render) {
+    return node.schema.customBehavior.render({
+      store,
+      node,
+      renderChild: (childNode) => render({ store, node: childNode }),
+    })
+  } else if (F.isLiteral(node)) {
     return String(node.value)
   } else if (F.isTruthValue(node)) {
     return (
