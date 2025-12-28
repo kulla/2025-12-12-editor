@@ -1,4 +1,3 @@
-import type { Editor } from 'prosekit/core'
 import { ProseKit } from 'prosekit/react'
 import type { ReactNode } from 'react'
 import * as F from '../nodes/flat'
@@ -24,7 +23,14 @@ export function render(args: {
       <input key={node.key} type="checkbox" checked={node.value} readOnly />
     )
   } else if (F.isRichText(node)) {
-    return <RichTextEditor key={node.key} editor={store.getEditor(node)} />
+    const HTMLTag = node.schema.htmlTag ?? 'div'
+    const editor = store.getEditor(node)
+
+    return (
+      <ProseKit editor={editor}>
+        <HTMLTag ref={editor.mount} />
+      </ProseKit>
+    )
   } else if (F.isWrapper(node)) {
     return render({ store: store, node: F.getSingletonChild({ store, node }) })
   } else if (F.isUnion(node)) {
@@ -42,12 +48,4 @@ export function render(args: {
   }
 
   return `[Unsupported node kind: ${node.schema.kind}]`
-}
-
-function RichTextEditor({ editor }: { editor: Editor }) {
-  return (
-    <ProseKit editor={editor}>
-      <div ref={editor.mount} />
-    </ProseKit>
-  )
 }

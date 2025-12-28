@@ -8,6 +8,7 @@ const TruthValue = S.createTruthValue({ name: 'TruthValue' })
 const InlineRichText = S.createRichText({
   name: 'InlineRichText',
   features: [RichTextFeature.Bold, RichTextFeature.Italic],
+  htmlTag: 'span',
 })
 
 const ContentRichText = S.createRichText({
