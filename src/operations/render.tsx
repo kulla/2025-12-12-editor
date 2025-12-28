@@ -31,9 +31,7 @@ export function render(args: {
         <HTMLTag ref={editor.mount} />
       </ProseKit>
     )
-  } else if (F.isWrapper(node)) {
-    return render({ store: store, node: F.getSingletonChild({ store, node }) })
-  } else if (F.isUnion(node)) {
+  } else if (F.isSingleton(node)) {
     return render({ store: store, node: F.getSingletonChild({ store, node }) })
   } else if (F.isArray(node) || F.isObject(node)) {
     const HTMLTag = node.schema.htmlTag ?? 'div'
