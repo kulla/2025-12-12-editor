@@ -40,13 +40,9 @@ export function save(args: {
     tx.setEditor(key, editor)
 
     return key
-  } else if (N.isWrapper(node)) {
+  } else if (N.isSingleton(node)) {
     return tx.insert(node.schema, parentKey, (key) =>
-      save({ tx, parentKey: key, node: N.unwrap(node) }),
-    )
-  } else if (N.isUnion(node)) {
-    return tx.insert(node.schema, parentKey, (key) =>
-      save({ tx, parentKey: key, node: N.getOption(node) }),
+      save({ tx, parentKey: key, node: N.getSingletonChild(node) }),
     )
   } else if (N.isArray(node)) {
     return tx.insert(node.schema, parentKey, (key) => {

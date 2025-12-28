@@ -10,12 +10,15 @@ interface _NestedNode<S extends S.Schema> {
   value: S.JSONValue<S>
 }
 
-export function unwrap({ schema, value }: NestedNode<S.WrapperSchema>) {
-  return { schema: schema.wrappedSchema, value: schema.unwrap(value) }
-}
-
-export function getOption({ schema, value }: NestedNode<S.UnionSchema>) {
-  return { schema: schema.getOption(value), value }
+export function getSingletonChild({
+  schema,
+  value,
+}: NestedNode<S.WrapperSchema | S.UnionSchema>) {
+  if (S.isWrapper(schema)) {
+    return { schema: schema.wrappedSchema, value: schema.unwrap(value) }
+  } else {
+    return { schema: schema.getOption(value), value }
+  }
 }
 
 export function getItems({ schema, value }: NestedNode<S.ArraySchema>) {
