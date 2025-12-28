@@ -50,7 +50,7 @@ export class EditorStore {
     if (editor != null) {
       return editor
     } else {
-      const editor = createRichTextEditor({ loroMap: node.value, store: this })
+      const editor = createRichTextEditor({ node, store: this })
 
       this.editors.set(node.key, editor)
 

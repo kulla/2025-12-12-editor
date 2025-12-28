@@ -32,7 +32,7 @@ export function save(args: {
     invariant(F.isRichText(storedNode), 'Stored node must be rich text')
 
     const editor = createRichTextEditor({
-      loroMap: storedNode.value,
+      node: storedNode,
       store: tx.store,
       defaultContent: node.value,
     })
