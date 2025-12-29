@@ -27,12 +27,7 @@ export const initialContent: JSONValue<Root> = [
       content: [
         {
           type: 'paragraph',
-          content: [
-            {
-              type: 'text',
-              text: 'The capital of France is _____.',
-            },
-          ],
+          content: [{ type: 'text', text: 'The capital of France is _____.' }],
         },
       ],
     },
