@@ -36,40 +36,20 @@ export const initialContent: JSONValue<Root> = [
     type: ContentType.MultipleChoice,
     question: {
       type: 'doc',
-      content: [
-        {
-          type: 'paragraph',
-          content: [{ type: 'text', text: 'What is 2 + 2?' }],
-        },
-      ],
+      content: [{ type: 'text', text: 'What is 2 + 2?' }],
     },
     options: [
       {
         isCorrect: false,
-        text: {
-          type: 'doc',
-          content: [
-            { type: 'paragraph', content: [{ type: 'text', text: '3' }] },
-          ],
-        },
+        text: { type: 'doc', content: [{ type: 'text', text: '3' }] },
       },
       {
         isCorrect: true,
-        text: {
-          type: 'doc',
-          content: [
-            { type: 'paragraph', content: [{ type: 'text', text: '4' }] },
-          ],
-        },
+        text: { type: 'doc', content: [{ type: 'text', text: '4' }] },
       },
       {
         isCorrect: false,
-        text: {
-          type: 'doc',
-          content: [
-            { type: 'paragraph', content: [{ type: 'text', text: '5' }] },
-          ],
-        },
+        text: { type: 'doc', content: [{ type: 'text', text: '5' }] },
       },
     ],
   },

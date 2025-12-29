@@ -5,13 +5,13 @@ import {
 } from 'loro-prosemirror'
 import {
   createEditor,
+  defineNodeSpec,
   type Extension,
   type NodeJSON,
   union,
 } from 'prosekit/core'
 import { defineBold } from 'prosekit/extensions/bold'
 import { defineCode } from 'prosekit/extensions/code'
-import { defineDoc } from 'prosekit/extensions/doc'
 import { defineHeading } from 'prosekit/extensions/heading'
 import { defineItalic } from 'prosekit/extensions/italic'
 import { defineList } from 'prosekit/extensions/list'
@@ -35,12 +35,6 @@ export function createRichTextEditor({
   const containerId = node.value.id
   const mapping: LoroNodeMapping = new Map()
   const extension = union(
-    defineDoc(),
-    defineText(),
-    // TODO: Without this I get the error
-    // "No node type or group 'block' found (in content expression 'block+'"
-    // in the inline rich text => fix this
-    defineParagraph(),
     defineRichTextExtensions(node.schema.features),
     defineLoro({
       awareness: store.awareness,
@@ -62,8 +56,20 @@ export function createRichTextEditor({
   return editor
 }
 
+function defineDoc(features: Array<RichTextFeature>): Extension {
+  const content = features.includes(RichTextFeature.Paragraph)
+    ? 'block+'
+    : 'inline*'
+
+  return defineNodeSpec({ name: 'doc', content, topNode: true })
+}
+
 function defineRichTextExtensions(features: Array<RichTextFeature>): Extension {
-  return union(features.map((feature) => createExtension(feature)))
+  return union(
+    defineDoc(features),
+    defineText(),
+    ...features.map((feature) => createExtension(feature)),
+  )
 }
 
 function createExtension(feature: RichTextFeature): Extension {
