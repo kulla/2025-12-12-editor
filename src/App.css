@@ -6,6 +6,10 @@
 @import "prosekit/basic/style.css";
 @import "prosekit/basic/typography.css";
 
+.exercise {
+  @apply p-4 mb-2 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800 border-0;
+}
+
 .ProseMirror.inline {
   display: inline;
 }
