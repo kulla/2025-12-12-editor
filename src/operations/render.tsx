@@ -39,7 +39,7 @@ export function render(args: {
     const HTMLTag = node.schema.htmlTag ?? 'div'
 
     return (
-      <HTMLTag key={node.key}>
+      <HTMLTag key={node.key} className={node.schema.className}>
         {F.getVisibleChildren({ store, node }).map((itemNode) =>
           render({ store, node: itemNode }),
         )}

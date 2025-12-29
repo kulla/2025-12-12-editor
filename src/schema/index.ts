@@ -73,6 +73,7 @@ export interface ArraySchema<S extends Schema = Schema>
   }> {
   itemSchema: S
   htmlTag?: React.HTMLElementType
+  className?: string
   customBehavior?: CustomBehavior<this>
 }
 
@@ -86,6 +87,7 @@ export interface ObjectSchema<
   properties: Readonly<P>
   keyOrder: readonly (keyof P)[]
   htmlTag?: React.HTMLElementType
+  className?: string
   customBehavior?: CustomBehavior<this>
 }
 

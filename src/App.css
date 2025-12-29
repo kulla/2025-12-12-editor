@@ -13,3 +13,7 @@
 .ProseMirror.inline {
   display: inline;
 }
+
+ul.list-none li {
+  list-style-type: none;
+}

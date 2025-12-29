@@ -1,9 +1,9 @@
 import * as F from '../nodes/flat'
-import {RichTextFeature} from '../rich-text/types'
+import { RichTextFeature } from '../rich-text/types'
 import * as S from '../schema'
-import {ContentType} from './types'
+import { ContentType } from './types'
 
-const TruthValue = S.createTruthValue({name: 'TruthValue'})
+const TruthValue = S.createTruthValue({ name: 'TruthValue' })
 
 const InlineRichText = S.createRichText({
   name: 'InlineRichText',
@@ -34,14 +34,14 @@ const FillInTheBlankRichText = S.createRichText({
 const TextContent = S.createWrapper({
   name: 'TextContent',
   wrappedSchema: ContentRichText,
-  wrap: (value) => ({type: ContentType.Text, content: value}),
+  wrap: (value) => ({ type: ContentType.Text, content: value }),
   unwrap: (value) => value.content,
 })
 
 const FillInTheBlankExercise = S.createWrapper({
   name: 'FillInTheBlankExercise',
   wrappedSchema: FillInTheBlankRichText,
-  wrap: (value) => ({type: ContentType.FillInTheBlank, content: value}),
+  wrap: (value) => ({ type: ContentType.FillInTheBlank, content: value }),
   unwrap: (value) => value.content,
 })
 
@@ -62,17 +62,20 @@ const MultipleChoiceExercise = S.createObject({
           text: InlineRichText,
         },
         keyOrder: ['isCorrect', 'text'],
+        htmlTag: 'li',
       }),
+      htmlTag: 'ul',
+      className: 'list-none',
     }),
   },
   keyOrder: ['question', 'options'],
   customBehavior: {
-    render: ({node, store, renderChild}) => {
-      const question = F.getProperty({node, store, propertyName: 'question'})
-      const options = F.getProperty({node, store, propertyName: 'options'})
+    render: ({ node, store, renderChild }) => {
+      const question = F.getProperty({ node, store, propertyName: 'question' })
+      const options = F.getProperty({ node, store, propertyName: 'options' })
 
       return (
-        <div key={node.key} className='exercise multiple-choice-exercise'>
+        <div key={node.key} className="exercise multiple-choice-exercise">
           <p>
             <strong>Multiple Choice Exercise: </strong> {renderChild(question)}
           </p>
