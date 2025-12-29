@@ -29,7 +29,6 @@ export interface RichTextSchema
   }> {
   readonly features: Array<RichTextFeature>
   customBehavior?: CustomBehavior<this>
-  htmlTag?: 'div' | 'span'
 }
 
 export interface LiteralSchema<

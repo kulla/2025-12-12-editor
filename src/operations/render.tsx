@@ -1,6 +1,7 @@
 import { ProseKit } from 'prosekit/react'
 import type { ReactNode } from 'react'
 import * as F from '../nodes/flat'
+import { isInline } from '../rich-text/types'
 import * as S from '../schema'
 import type { EditorStore } from '../store/editor-store'
 
@@ -23,7 +24,7 @@ export function render(args: {
       <input key={node.key} type="checkbox" checked={node.value} readOnly />
     )
   } else if (F.isRichText(node)) {
-    const HTMLTag = node.schema.htmlTag ?? 'div'
+    const HTMLTag = isInline(node.schema.features) ? 'span' : 'div'
     const editor = store.getEditor(node)
 
     return (

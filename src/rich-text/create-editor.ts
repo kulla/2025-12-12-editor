@@ -21,7 +21,7 @@ import { defineText } from 'prosekit/extensions/text'
 import type * as F from '../nodes/flat'
 import type { RichTextSchema } from '../schema'
 import type { EditorStore } from '../store/editor-store'
-import { RichTextFeature } from './types'
+import { isInline, RichTextFeature } from './types'
 
 export function createRichTextEditor({
   node,
@@ -57,9 +57,7 @@ export function createRichTextEditor({
 }
 
 function defineDoc(features: Array<RichTextFeature>): Extension {
-  const content = features.includes(RichTextFeature.Paragraph)
-    ? 'block+'
-    : 'inline*'
+  const content = isInline(features) ? 'inline*' : 'block+'
 
   return defineNodeSpec({ name: 'doc', content, topNode: true })
 }
