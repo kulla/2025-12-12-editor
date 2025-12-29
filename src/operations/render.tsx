@@ -27,7 +27,7 @@ export function render(args: {
     const editor = store.getEditor(node)
 
     return (
-      <ProseKit editor={editor}>
+      <ProseKit key={node.key} editor={editor}>
         <HTMLTag ref={editor.mount} />
       </ProseKit>
     )
