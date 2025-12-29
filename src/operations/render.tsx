@@ -24,12 +24,13 @@ export function render(args: {
       <input key={node.key} type="checkbox" checked={node.value} readOnly />
     )
   } else if (F.isRichText(node)) {
-    const HTMLTag = isInline(node.schema.features) ? 'span' : 'div'
+    const isInlineMode = isInline(node.schema.features)
+    const HTMLTag = isInlineMode ? 'span' : 'div'
     const editor = store.getEditor(node)
 
     return (
       <ProseKit key={node.key} editor={editor}>
-        <HTMLTag ref={editor.mount} />
+        <HTMLTag ref={editor.mount} className={isInlineMode ? 'inline' : ''} />
       </ProseKit>
     )
   } else if (F.isSingleton(node)) {
