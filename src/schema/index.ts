@@ -17,9 +17,7 @@ export interface TruthValueSchema
     kind: 'boolean'
     FlatValue: boolean
     JSONValue: boolean
-  }> {
-  customBehavior?: CustomBehavior<this>
-}
+  }> {}
 
 export interface RichTextSchema
   extends Schema<{
@@ -28,7 +26,6 @@ export interface RichTextSchema
     JSONValue: NodeJSON
   }> {
   readonly features: Array<RichTextFeature>
-  customBehavior?: CustomBehavior<this>
 }
 
 export interface LiteralSchema<
@@ -39,7 +36,6 @@ export interface LiteralSchema<
     JSONValue: T
   }> {
   readonly value: T
-  customBehavior?: CustomBehavior<this>
 }
 
 export interface WrapperSchema<S extends Schema = Schema, J = JSONValue<S>>
@@ -51,7 +47,6 @@ export interface WrapperSchema<S extends Schema = Schema, J = JSONValue<S>>
   wrappedSchema: S
   wrap(inner: JSONValue<S>): J
   unwrap(outer: J): JSONValue<S>
-  customBehavior?: CustomBehavior<this>
 }
 
 export interface UnionSchema<S extends readonly Schema[] = readonly Schema[]>
@@ -62,7 +57,6 @@ export interface UnionSchema<S extends readonly Schema[] = readonly Schema[]>
   }> {
   options: S
   getOption(value: JSONValue<S[number]>): S[number]
-  customBehavior?: CustomBehavior<this>
 }
 
 export interface ArraySchema<S extends Schema = Schema>
@@ -74,7 +68,6 @@ export interface ArraySchema<S extends Schema = Schema>
   itemSchema: S
   htmlTag?: React.HTMLElementType
   className?: string
-  customBehavior?: CustomBehavior<this>
 }
 
 export interface ObjectSchema<
@@ -88,7 +81,6 @@ export interface ObjectSchema<
   keyOrder: readonly (keyof P)[]
   htmlTag?: React.HTMLElementType
   className?: string
-  customBehavior?: CustomBehavior<this>
 }
 
 interface CustomBehavior<S extends Schema = Schema> {
@@ -163,7 +155,7 @@ export function createObject<Props extends Record<string, Schema>>(
 type FactoryArguments<S extends Schema> = Omit<
   OmitTypeInfo<S>,
   'kind' | 'isFlatValue'
->
+> & { customBehavior?: CustomBehavior<S> }
 
 export const hasCustomBehavior = (
   schema: Schema,
