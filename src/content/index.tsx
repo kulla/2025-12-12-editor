@@ -43,6 +43,19 @@ const FillInTheBlankExercise = S.createWrapper({
   wrappedSchema: FillInTheBlankRichText,
   wrap: (value) => ({ type: ContentType.FillInTheBlank, content: value }),
   unwrap: (value) => value.content,
+  customBehavior: {
+    render: ({ node, store, renderChild }) => {
+      const content = F.getSingletonChild({ node, store })
+      return (
+        <div key={node.key} className="exercise fill-in-the-blank-exercise">
+          <p>
+            <strong>Fill in the Blank Exercise: </strong>
+          </p>
+          {renderChild(content)}
+        </div>
+      )
+    },
+  },
 })
 
 const MultipleChoiceExercise = S.createObject({
