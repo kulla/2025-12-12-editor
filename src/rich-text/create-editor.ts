@@ -1,4 +1,6 @@
+import { Cursor } from 'loro-crdt'
 import {
+  type CursorAwareness,
   type LoroDocType,
   type LoroNodeMapping,
   updateLoroToPmState,
@@ -21,6 +23,8 @@ import { defineText } from 'prosekit/extensions/text'
 import type * as F from '../nodes/flat'
 import type { RichTextSchema } from '../schema'
 import type { EditorStore } from '../store/editor-store'
+import type { Key } from '../store/key'
+import { createProxyWithChangedMethods } from '../utils/proxy'
 import { isInline, RichTextFeature } from './types'
 
 export function createRichTextEditor({
@@ -37,7 +41,7 @@ export function createRichTextEditor({
   const extension = union(
     defineRichTextExtensions(node.schema.features),
     defineLoro({
-      awareness: store.awareness,
+      awareness: createEditorSpecificCursorAwareness(node.key, store.awareness),
       doc: store.loroDoc as LoroDocType,
       sync: { containerId, mapping },
     }),
@@ -54,6 +58,54 @@ export function createRichTextEditor({
   }
 
   return editor
+}
+
+function createEditorSpecificCursorAwareness(
+  editorId: Key,
+  awareness: CursorAwareness,
+): CursorAwareness {
+  return createProxyWithChangedMethods(awareness, {
+    getAll() {
+      return Object.fromEntries(
+        Object.entries(awareness.getAllStates())
+          .filter(
+            ([_peer, state]) =>
+              'editorId' in state && state.editorId === editorId,
+          )
+          .map(([peer, state]) => [
+            peer,
+            {
+              anchor: state.anchor ? Cursor.decode(state.anchor) : undefined,
+              focus: state.focus ? Cursor.decode(state.focus) : undefined,
+              user: state.user ? state.user : undefined,
+            },
+          ]),
+      )
+    },
+
+    getLocal() {
+      const state = awareness.getLocal()
+
+      if (state && 'editorId' in state && state.editorId !== editorId) {
+        return undefined
+      }
+
+      return state
+    },
+
+    setLocal: (state: {
+      anchor?: Cursor
+      focus?: Cursor
+      user?: { name?: string; color?: string }
+    }) => {
+      awareness.setLocalState({
+        editorId,
+        anchor: state.anchor?.encode() || null,
+        focus: state.focus?.encode() || null,
+        user: state.user || null,
+      } as Parameters<CursorAwareness['setLocalState']>[0])
+    },
+  })
 }
 
 function defineDoc(features: Array<RichTextFeature>): Extension {

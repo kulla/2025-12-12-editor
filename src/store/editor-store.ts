@@ -10,7 +10,7 @@ import { collectSchemas } from '../schema/collect-schemas'
 import { type Key, type KeyGenerator, PrefixKeyGenerator } from './key'
 
 export class EditorStore {
-  public readonly awareness = new CursorAwareness(this.loroDoc.peerIdStr)
+  public readonly awareness: CursorAwareness
   private nodes = this.loroDoc.getMap('nodes') as FlatNodeMap
   private metadata = this.loroDoc.getMap('metadata') as LoroMap<Metadata>
   private currentTransaction: Transaction | null = null
@@ -19,8 +19,11 @@ export class EditorStore {
 
   constructor(
     public readonly loroDoc: LoroDoc,
+    awareness?: CursorAwareness,
     private readonly keyGenerator: KeyGenerator = new PrefixKeyGenerator('n'),
-  ) {}
+  ) {
+    this.awareness = awareness ?? new CursorAwareness(loroDoc.peerIdStr)
+  }
 
   addUpdateListener(listener: () => void) {
     return this.loroDoc.subscribe(listener)
