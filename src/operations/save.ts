@@ -14,7 +14,10 @@ export function saveRoot(args: {
 }): Key {
   const { tx, node, rootKey } = args
 
-  return tx.attachRoot(rootKey, save({ tx, parentKey: rootKey, node }))
+  return tx.attachRoot(
+    rootKey,
+    save({ tx, parentKey: rootKey, node: N.getSingletonChild(node) }),
+  )
 }
 
 export function save(args: {
