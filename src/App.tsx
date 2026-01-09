@@ -1,7 +1,8 @@
 import './App.css'
 
 import { padStart } from 'es-toolkit/compat'
-import { LoroDoc } from 'loro-crdt'
+import { type AwarenessListener, LoroDoc } from 'loro-crdt'
+import { CursorAwareness } from 'loro-prosemirror'
 import { useEffect, useRef } from 'react'
 import { Root } from './content'
 import { initialContent } from './content/initial-content'
@@ -15,39 +16,78 @@ import { useEditorStore } from './store/use-editor-store'
 
 export default function App() {
   const rootKey = 'root' as Key
-  const loroDoc = useRef(new LoroDoc()).current
-  const { store } = useEditorStore(loroDoc)
-  const rootNode = store.has(rootKey) ? store.get(rootKey) : null
+  const { doc: loroA, awareness: awarenessA } = useLoroDoc()
+  const { doc: loroB, awareness: awarenessB } = useLoroDoc()
+  const { store: storeA } = useEditorStore(loroA)
+  const { store: storeB } = useEditorStore(loroB)
+  const rootNodeA = storeA.has(rootKey) ? storeA.get(rootKey) : null
+  const rootNodeB = storeB.has(rootKey) ? storeB.get(rootKey) : null
 
   useEffect(() => {
-    if (store.has(rootKey)) return
+    // Code taken from https://prosekit.dev/extensions/loro/
+    loroA.import(loroB.export({ mode: 'update' }))
+    loroB.import(loroA.export({ mode: 'update' }))
 
-    store.update((tx) => {
+    const unsubscribeA = loroA.subscribeLocalUpdates((bytes) =>
+      loroB.import(bytes),
+    )
+    const unsubscribeB = loroB.subscribeLocalUpdates((bytes) =>
+      loroA.import(bytes),
+    )
+
+    const awarenessAListener: AwarenessListener = (_, origin) => {
+      if (origin === 'local') {
+        awarenessB.apply(awarenessA.encode([loroA.peerIdStr]))
+      }
+    }
+    const awarenessBListener: AwarenessListener = (_, origin) => {
+      if (origin === 'local') {
+        awarenessA.apply(awarenessB.encode([loroB.peerIdStr]))
+      }
+    }
+    awarenessA.addListener(awarenessAListener)
+    awarenessB.addListener(awarenessBListener)
+
+    return () => {
+      unsubscribeA()
+      unsubscribeB()
+      awarenessA.removeListener(awarenessAListener)
+      awarenessB.removeListener(awarenessBListener)
+    }
+  }, [loroA, loroB, awarenessA, awarenessB])
+
+  useEffect(() => {
+    if (storeA.has(rootKey)) return
+
+    storeA.update((tx) => {
       const rootNode = { schema: Root, value: initialContent }
 
       saveRoot({ tx, rootKey, node: rootNode })
     })
-  }, [rootKey, store])
+  }, [rootKey, storeA])
 
   return (
     <main className="p-10">
-      <h1>Editor</h1>
-      {rootNode ? render({ store, node: rootNode }) : 'Loading...'}
+      <h1>Synchronisierte Editoren</h1>
+      <div className="flex gap-10 mb-10">
+        {rootNodeA ? render({ store: storeA, node: rootNodeA }) : 'Loading...'}
+        {rootNodeB ? render({ store: storeB, node: rootNodeB }) : 'Loading...'}
+      </div>
       <DebugPanel
         labels={{ json: 'External JSON value', entries: 'Internal flat nodes' }}
         showOnStartup={{ json: true, entries: true }}
         getCurrentValue={{
           json: () => {
-            if (rootNode == null) return 'Loading...'
+            if (rootNodeA == null) return 'Loading...'
 
-            const jsonValue = load({ store, node: rootNode })
+            const jsonValue = load({ store: storeA, node: rootNodeA })
             return JSON.stringify(jsonValue, null, 2)
           },
           entries: () => {
             const stringifyEntry = ([key, entry]: [string, FlatNode]) =>
               `${padStart(key, 4)}: ${JSON.stringify(entry.value)}`
 
-            const lines = store.getEntries().map(stringifyEntry)
+            const lines = storeA.getEntries().map(stringifyEntry)
 
             lines.sort()
 
@@ -57,4 +97,11 @@ export default function App() {
       />
     </main>
   )
+}
+
+function useLoroDoc() {
+  const doc = useRef(new LoroDoc()).current
+  const awareness = useRef(new CursorAwareness(doc.peerIdStr)).current
+
+  return { doc, awareness }
 }
