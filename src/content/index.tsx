@@ -126,11 +126,7 @@ export const Root = S.createWrapper({
   customBehavior: {
     render: ({ node, store, renderChild }) => {
       const content = F.getSingletonChild({ node, store })
-      return (
-        <div key={node.key} className="p-4 border rounded-lg">
-          {renderChild(content)}
-        </div>
-      )
+      return <div className="p-4 border rounded-lg">{renderChild(content)}</div>
     },
   },
 })
