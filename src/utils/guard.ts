@@ -27,3 +27,19 @@ export const isArrayOf = <T>(elementGuard: Guard<T>): Guard<T[]> => {
   return (value: unknown): value is T[] =>
     Array.isArray(value) && value.every((item) => elementGuard(item))
 }
+
+export function isObject(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null
+}
+
+export const isObjectOf = <M extends Record<string, Guard<unknown>>>(
+  guardObj: M,
+): Guard<{ [K in keyof M]: M[K] extends Guard<infer U> ? U : never }> => {
+  // biome-ignore lint/suspicious/noExplicitAny: Makes code simpler
+  return (value: unknown): value is any => {
+    return (
+      isObject(value) &&
+      Object.keys(guardObj).every((key) => guardObj[key](value[key]))
+    )
+  }
+}
