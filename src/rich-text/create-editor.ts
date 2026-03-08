@@ -36,7 +36,7 @@ export function createRichTextEditor({
   store: EditorStore
   defaultContent?: NodeJSON
 }) {
-  const containerId = node.value.id
+  const containerId = node.value.loroMap.id
   const mapping: LoroNodeMapping = new Map()
   const extension = union(
     defineRichTextExtensions(node.schema.features),

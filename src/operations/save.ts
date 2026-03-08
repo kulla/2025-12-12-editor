@@ -30,7 +30,9 @@ export function save(args: {
   if (N.isPrimitive(node)) {
     return tx.insert(node.schema, parentKey, () => node.value)
   } else if (N.isRichText(node)) {
-    const key = tx.insert(node.schema, parentKey, () => new LoroMap())
+    const key = tx.insert(node.schema, parentKey, () => {
+      return { loroMap: new LoroMap() }
+    })
     const storedNode = tx.store.get(key)
     invariant(F.isRichText(storedNode), 'Stored node must be rich text')
 

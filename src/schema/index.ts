@@ -22,7 +22,7 @@ export interface TruthValueSchema
 export interface RichTextSchema
   extends Schema<{
     kind: 'richText'
-    FlatValue: LoroMap
+    FlatValue: { loroMap: LoroMap }
     JSONValue: NodeJSON
   }> {
   readonly features: Array<RichTextFeature>
@@ -100,7 +100,11 @@ export function createTruthValue(
 export function createRichText(
   args: FactoryArguments<RichTextSchema>,
 ): RichTextSchema {
-  return { kind: 'richText', isFlatValue: isLoroMap, ...args }
+  return {
+    kind: 'richText',
+    isFlatValue: G.isObjectOf({ loroMap: isLoroMap }),
+    ...args,
+  }
 }
 
 export function createLiteral<T extends string | number | boolean>(
