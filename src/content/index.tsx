@@ -123,10 +123,4 @@ export const Root = S.createWrapper({
   wrappedSchema: EducationalContent,
   wrap: (value) => value,
   unwrap: (value) => value,
-  customBehavior: {
-    render: ({ node, store, renderChild }) => {
-      const content = F.getSingletonChild({ node, store })
-      return <div className="p-4 border rounded-lg">{renderChild(content)}</div>
-    },
-  },
 })

@@ -23,6 +23,8 @@ export default function App() {
   const rootNodeA = storeA.has(rootKey) ? storeA.get(rootKey) : null
   const rootNodeB = storeB.has(rootKey) ? storeB.get(rootKey) : null
 
+  console.log('Render App')
+
   useEffect(() => {
     // Code taken from https://prosekit.dev/extensions/loro/
     loroA.import(loroB.export({ mode: 'update' }))
@@ -70,8 +72,16 @@ export default function App() {
     <main className="p-10">
       <h1>Synchronisierte Editoren</h1>
       <div className="flex gap-10 mb-10">
-        {rootNodeA ? render({ store: storeA, node: rootNodeA }) : 'Loading...'}
-        {rootNodeB ? render({ store: storeB, node: rootNodeB }) : 'Loading...'}
+        <div className="p-4 rounded-lg border">
+          {rootNodeA
+            ? render({ store: storeA, node: rootNodeA })
+            : 'Loading...'}
+        </div>
+        <div className="p-4 rounded-lg border">
+          {rootNodeB
+            ? render({ store: storeB, node: rootNodeB })
+            : 'Loading...'}
+        </div>
       </div>
       <DebugPanel
         labels={{ json: 'External JSON value', entries: 'Internal flat nodes' }}
