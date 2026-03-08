@@ -1,5 +1,7 @@
 export type Guard<T> = (value: unknown) => value is T
 
+export const isNull: Guard<null> = (value) => value === null
+
 export const isString: Guard<string> = (value) => typeof value === 'string'
 
 export const isBoolean: Guard<boolean> = (value) => typeof value === 'boolean'

@@ -44,15 +44,15 @@ export class EditorStore {
     }
   }
 
-  getEditor(node: FlatNode<RichTextSchema>): Editor {
-    const editor = this.editors.get(node.key)
+  getEditor({ key, schema }: FlatNode<RichTextSchema>): Editor {
+    const editor = this.editors.get(key)
 
     if (editor != null) {
       return editor
     } else {
-      const editor = createRichTextEditor({ node, store: this })
+      const editor = createRichTextEditor({ key, schema, store: this })
 
-      this.editors.set(node.key, editor)
+      this.editors.set(key, editor)
 
       return editor
     }

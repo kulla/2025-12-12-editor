@@ -20,7 +20,6 @@ import { defineList } from 'prosekit/extensions/list'
 import { defineLoro } from 'prosekit/extensions/loro'
 import { defineParagraph } from 'prosekit/extensions/paragraph'
 import { defineText } from 'prosekit/extensions/text'
-import type * as F from '../nodes/flat'
 import type { RichTextSchema } from '../schema'
 import type { EditorStore } from '../store/editor-store'
 import type { Key } from '../store/key'
@@ -28,20 +27,22 @@ import { createProxyWithChangedMethods } from '../utils/proxy'
 import { isInline, RichTextFeature } from './types'
 
 export function createRichTextEditor({
-  node,
+  key,
+  schema,
   store,
   defaultContent,
 }: {
-  node: F.FlatNode<RichTextSchema>
+  key: Key
+  schema: RichTextSchema
   store: EditorStore
   defaultContent?: NodeJSON
 }) {
-  const containerId = node.value.loroMap.id
+  const containerId = store.loroDoc.getMap(`prosemirror:${key}`).id
   const mapping: LoroNodeMapping = new Map()
   const extension = union(
-    defineRichTextExtensions(node.schema.features),
+    defineRichTextExtensions(schema.features),
     defineLoro({
-      awareness: createEditorSpecificCursorAwareness(node.key, store.awareness),
+      awareness: createEditorSpecificCursorAwareness(key, store.awareness),
       doc: store.loroDoc as LoroDocType,
       sync: { containerId, mapping },
     }),

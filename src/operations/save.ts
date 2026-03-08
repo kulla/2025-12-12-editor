@@ -1,7 +1,5 @@
-import { invariant } from 'es-toolkit'
 import { LoroList, LoroMap } from 'loro-crdt'
 import type { Root } from '../content'
-import * as F from '../nodes/flat'
 import * as N from '../nodes/nested'
 import { createRichTextEditor } from '../rich-text/create-editor'
 import type { Transaction } from '../store/editor-store'
@@ -30,14 +28,11 @@ export function save(args: {
   if (N.isPrimitive(node)) {
     return tx.insert(node.schema, parentKey, () => node.value)
   } else if (N.isRichText(node)) {
-    const key = tx.insert(node.schema, parentKey, () => {
-      return { loroMap: new LoroMap() }
-    })
-    const storedNode = tx.store.get(key)
-    invariant(F.isRichText(storedNode), 'Stored node must be rich text')
+    const key = tx.insert(node.schema, parentKey, () => null)
 
     const editor = createRichTextEditor({
-      node: storedNode,
+      key,
+      schema: node.schema,
       store: tx.store,
       defaultContent: node.value,
     })
