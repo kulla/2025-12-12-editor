@@ -1,6 +1,6 @@
 import { invariant } from 'es-toolkit'
 import { type LoroDoc, LoroList, LoroMap } from 'loro-crdt'
-import { CursorAwareness } from 'loro-prosemirror'
+import type { CursorAwareness } from 'loro-prosemirror'
 import type { Editor } from 'prosekit/core'
 import { Root } from '../content'
 import type { FlatNode } from '../nodes/flat'
@@ -18,7 +18,7 @@ export class EditorStore {
 
   constructor(
     public readonly loroDoc: LoroDoc,
-    public readonly awareness = new CursorAwareness(loroDoc.peerIdStr),
+    public readonly awareness: CursorAwareness,
     private readonly keyGenerator: KeyGenerator = new PrefixKeyGenerator('n'),
   ) {}
 

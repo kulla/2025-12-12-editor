@@ -18,8 +18,8 @@ export default function App() {
   const rootKey = 'root' as Key
   const { doc: loroA, awareness: awarenessA } = useLoroDoc()
   const { doc: loroB, awareness: awarenessB } = useLoroDoc()
-  const { store: storeA } = useEditorStore(loroA)
-  const { store: storeB } = useEditorStore(loroB)
+  const { store: storeA } = useEditorStore(loroA, awarenessA)
+  const { store: storeB } = useEditorStore(loroB, awarenessB)
   const rootNodeA = storeA.has(rootKey) ? storeA.get(rootKey) : null
   const rootNodeB = storeB.has(rootKey) ? storeB.get(rootKey) : null
 

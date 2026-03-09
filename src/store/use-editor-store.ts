@@ -1,9 +1,13 @@
 import type { LoroDoc } from 'loro-crdt'
+import type { CursorAwareness } from 'loro-prosemirror'
 import { useMemo, useRef, useSyncExternalStore } from 'react'
 import { EditorStore } from './editor-store'
 
-export function useEditorStore(loroDoc: LoroDoc) {
-  const store = useMemo(() => new EditorStore(loroDoc), [loroDoc])
+export function useEditorStore(loroDoc: LoroDoc, awareness: CursorAwareness) {
+  const store = useMemo(
+    () => new EditorStore(loroDoc, awareness),
+    [loroDoc, awareness],
+  )
   const lastReturn = useRef({ store, updateCount: store.updateCount })
 
   return useSyncExternalStore(
