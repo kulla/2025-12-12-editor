@@ -23,8 +23,6 @@ export default function App() {
   const rootNodeA = storeA.has(rootKey) ? storeA.get(rootKey) : null
   const rootNodeB = storeB.has(rootKey) ? storeB.get(rootKey) : null
 
-  console.log('Render App')
-
   useEffect(() => {
     // Code taken from https://prosekit.dev/extensions/loro/
     loroA.import(loroB.export({ mode: 'update' }))
