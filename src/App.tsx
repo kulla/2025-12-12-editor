@@ -68,7 +68,7 @@ export default function App() {
 
       setIsInitialized(true)
     })
-  }, [rootKey, storeA, setIsInitialized])
+  }, [rootKey, storeA])
 
   return (
     <main className="p-10">
