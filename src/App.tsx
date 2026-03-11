@@ -3,7 +3,7 @@ import './App.css'
 import { padStart } from 'es-toolkit/compat'
 import { type AwarenessListener, LoroDoc } from 'loro-crdt'
 import { CursorAwareness } from 'loro-prosemirror'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Root } from './content'
 import { initialContent } from './content/initial-content'
 import { DebugPanel } from './debug-panel'
@@ -22,6 +22,8 @@ export default function App() {
   const { store: storeB } = useEditorStore(loroB, awarenessB)
   const rootNodeA = storeA.has(rootKey) ? storeA.get(rootKey) : null
   const rootNodeB = storeB.has(rootKey) ? storeB.get(rootKey) : null
+  // hotfix
+  const [_isInitialized, setIsInitialized] = useState(false)
 
   useEffect(() => {
     // Code taken from https://prosekit.dev/extensions/loro/
@@ -63,8 +65,10 @@ export default function App() {
       const rootNode = { schema: Root, value: initialContent }
 
       saveRoot({ tx, rootKey, node: rootNode })
+
+      setIsInitialized(true)
     })
-  }, [rootKey, storeA])
+  }, [rootKey, storeA, setIsInitialized])
 
   return (
     <main className="p-10">
