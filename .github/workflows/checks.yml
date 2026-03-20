@@ -29,7 +29,7 @@ jobs:
         uses: ./.github/actions/setup-bun
 
       - name: Check repository with biome
-        run: bun check
+        run: bun check:lint
 
   tsc:
     runs-on: ubuntu-latest
@@ -41,4 +41,4 @@ jobs:
         uses: ./.github/actions/setup-bun
 
       - name: Check TypeScript types
-        run: bun run tsc --noEmit
+        run: bun check:tsc

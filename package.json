@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "build": "rsbuild build",
-    "check": "biome check --write",
+    "check": "bun run check:tsc && bun run check:lint",
+    "check:lint": "biome check --write",
+    "check:tsc": "tsc --noEmit",
     "dev": "rsbuild dev --open",
     "format": "biome format --write",
     "preview": "rsbuild preview"
