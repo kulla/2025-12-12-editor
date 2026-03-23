@@ -7,19 +7,19 @@
         "@picocss/pico": "^2.1.1",
         "clsx": "^2.1.1",
         "es-toolkit": "^1.45.1",
-        "loro-crdt": "^1.10.6",
+        "loro-crdt": "^1.10.7",
         "loro-prosemirror": "^0.4.3",
         "prosekit": "^0.18.4",
         "react": "^19.2.4",
         "react-dom": "^19.2.4",
       },
       "devDependencies": {
-        "@biomejs/biome": "^2.4.7",
+        "@biomejs/biome": "^2.4.8",
         "@rsbuild/core": "^1.7.3",
         "@rsbuild/plugin-react": "^1.4.6",
-        "@tailwindcss/postcss": "^4.2.1",
+        "@tailwindcss/postcss": "^4.2.2",
         "@types/react-dom": "^19.2.3",
-        "tailwindcss": "^4.2.1",
+        "tailwindcss": "^4.2.2",
         "typescript": "^5.9.3",
       },
     },
@@ -343,7 +343,7 @@
 
     "lightningcss-win32-x64-msvc": ["lightningcss-win32-x64-msvc@1.32.0", "", { "os": "win32", "cpu": "x64" }, "sha512-Amq9B/SoZYdDi1kFrojnoqPLxYhQ4Wo5XiL8EVJrVsB8ARoC1PWW6VGtT0WKCemjy8aC+louJnjS7U18x3b06Q=="],
 
-    "loro-crdt": ["loro-crdt@1.10.7", "", {}, "sha512-V28QlZ9LNcscRNssaDwiTvpXpvtPuYb/mFOQpeWl/n2iHNp4w2OaFXGp6gR9Cc/P7tLheG1U7MyG7xHt4WCifA=="],
+    "loro-crdt": ["loro-crdt@1.10.8", "", {}, "sha512-GvH8fSJST1VDHRGzlQml80pBYoFbIP4ULeV1S8fD4ffmA8m+icoPORyVUW2AkJBY3dxKIcMMn0WqaJmpCmnbkQ=="],
 
     "loro-prosemirror": ["loro-prosemirror@0.4.3", "", { "dependencies": { "lib0": "^0.2.42", "prosemirror-model": "^1.18.1", "prosemirror-state": "^1.4.1", "prosemirror-view": "^1.28.0" }, "peerDependencies": { "loro-crdt": "^1.10.2" } }, "sha512-stAWIWs54LfXx0mvCzXF02XpEv9AKgrhSBPt44eT4SsrBEWZaq0jTFuzs8EyBmipBBcuC2ooRRX4NQjwSeQl9Q=="],
 
