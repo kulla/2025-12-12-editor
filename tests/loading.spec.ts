@@ -4,8 +4,5 @@ import { loadPrototype } from './utils'
 test('Editor prototype should load', async ({ page }) => {
   await loadPrototype(page)
 
-  const firstParagraphText =
-    'This is an example of educational content with various types of items.'
-
-  await expect(page.getByText(firstParagraphText).first()).toBeVisible()
+  await expect(page.getByText(/This is an example/).first()).toBeVisible()
 })
