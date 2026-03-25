@@ -16,16 +16,19 @@ import { useEditorStore } from './store/use-editor-store'
 
 export default function App() {
   const rootKey = 'root' as Key
-  const { doc: loroA, awareness: awarenessA } = useCDRTInstance()
-  const { doc: loroB, awareness: awarenessB } = useCDRTInstance()
-  const { store: storeA } = useEditorStore(loroA, awarenessA)
-  const { store: storeB } = useEditorStore(loroB, awarenessB)
+  const cdrtA = useCDRTInstance()
+  const cdrtB = useCDRTInstance()
+  const { store: storeA } = useEditorStore(cdrtA)
+  const { store: storeB } = useEditorStore(cdrtB)
   const rootNodeA = storeA.has(rootKey) ? storeA.get(rootKey) : null
   const rootNodeB = storeB.has(rootKey) ? storeB.get(rootKey) : null
   // hotfix
   const [_isInitialized, setIsInitialized] = useState(false)
 
   useEffect(() => {
+    const { doc: loroA, awareness: awarenessA } = cdrtA
+    const { doc: loroB, awareness: awarenessB } = cdrtB
+
     // Code taken from https://prosekit.dev/extensions/loro/
     loroA.import(loroB.export({ mode: 'update' }))
     loroB.import(loroA.export({ mode: 'update' }))
@@ -56,7 +59,7 @@ export default function App() {
       awarenessA.removeListener(awarenessAListener)
       awarenessB.removeListener(awarenessBListener)
     }
-  }, [loroA, loroB, awarenessA, awarenessB])
+  }, [cdrtA, cdrtB])
 
   useEffect(() => {
     if (storeA.has(rootKey)) return

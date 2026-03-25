@@ -1,7 +1,7 @@
 import { invariant } from 'es-toolkit'
-import { type LoroDoc, LoroList, LoroMap } from 'loro-crdt'
-import type { CursorAwareness } from 'loro-prosemirror'
+import { LoroList, LoroMap } from 'loro-crdt'
 import type { Editor } from 'prosekit/core'
+import type { CDRTInstance } from '../cdrt/types'
 import { Root } from '../content'
 import type { FlatNode } from '../nodes/flat'
 import { createRichTextEditor } from '../rich-text/create-editor'
@@ -10,20 +10,19 @@ import { collectSchemas } from '../schema/collect-schemas'
 import { type Key, type KeyGenerator, PrefixKeyGenerator } from './key'
 
 export class EditorStore {
-  private nodes = this.loroDoc.getMap('nodes') as FlatNodeMap
-  private metadata = this.loroDoc.getMap('metadata') as LoroMap<Metadata>
+  private nodes = this.cdrt.doc.getMap('nodes') as FlatNodeMap
+  private metadata = this.cdrt.doc.getMap('metadata') as LoroMap<Metadata>
   private currentTransaction: Transaction | null = null
   private schemaRegistry = createSchemaRegistry(Root)
   private editors = new Map<Key, Editor | undefined>()
 
   constructor(
-    public readonly loroDoc: LoroDoc,
-    public readonly awareness: CursorAwareness,
+    public readonly cdrt: CDRTInstance,
     private readonly keyGenerator: KeyGenerator = new PrefixKeyGenerator('n'),
   ) {}
 
   addUpdateListener(listener: () => void) {
-    return this.loroDoc.subscribe(listener)
+    return this.cdrt.doc.subscribe(listener)
   }
 
   get(key: Key): FlatNode {

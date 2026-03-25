@@ -37,25 +37,21 @@ export function createRichTextEditor({
   store: EditorStore
   defaultContent?: NodeJSON
 }) {
-  const containerId = store.loroDoc.getMap(`prosemirror:${key}`).id
+  const { doc, awareness } = store.cdrt
+  const containerId = doc.getMap(`prosemirror:${key}`).id
   const mapping: LoroNodeMapping = new Map()
   const extension = union(
     defineRichTextExtensions(schema.features),
     defineLoro({
-      awareness: createEditorSpecificCursorAwareness(key, store.awareness),
-      doc: store.loroDoc as LoroDocType,
+      awareness: createEditorSpecificCursorAwareness(key, awareness),
+      doc: doc as LoroDocType,
       sync: { containerId, mapping },
     }),
   )
   const editor = createEditor({ extension, defaultContent })
 
   if (defaultContent != null) {
-    updateLoroToPmState(
-      store.loroDoc as LoroDocType,
-      mapping,
-      editor.state,
-      containerId,
-    )
+    updateLoroToPmState(doc as LoroDocType, mapping, editor.state, containerId)
   }
 
   return editor
