@@ -1,8 +1,8 @@
 import { useMemo, useRef, useSyncExternalStore } from 'react'
-import type { CDRTInstance } from '../cdrt/types'
+import type { CDRT } from '../cdrt/types'
 import { EditorStore } from './editor-store'
 
-export function useEditorStore(cdrt: CDRTInstance) {
+export function useEditorStore(cdrt: CDRT) {
   const store = useMemo(() => new EditorStore(cdrt), [cdrt])
   const lastReturn = useRef({ store, updateCount: store.updateCount })
 

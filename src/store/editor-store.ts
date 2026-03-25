@@ -1,7 +1,7 @@
 import { invariant } from 'es-toolkit'
 import { LoroList, LoroMap } from 'loro-crdt'
 import type { Editor } from 'prosekit/core'
-import type { CDRTInstance } from '../cdrt/types'
+import type { CDRT } from '../cdrt/types'
 import { Root } from '../content'
 import type { FlatNode } from '../nodes/flat'
 import { createRichTextEditor } from '../rich-text/create-editor'
@@ -17,7 +17,7 @@ export class EditorStore {
   private editors = new Map<Key, Editor | undefined>()
 
   constructor(
-    public readonly cdrt: CDRTInstance,
+    public readonly cdrt: CDRT,
     private readonly keyGenerator: KeyGenerator = new PrefixKeyGenerator('n'),
   ) {}
 
