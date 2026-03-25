@@ -16,41 +16,41 @@ import { useEditorStore } from './store/use-editor-store'
 
 export default function App() {
   const rootKey = 'root' as Key
-  const cdrtA = useCDRTInstance()
-  const cdrtB = useCDRTInstance()
-  const { store: storeA } = useEditorStore(cdrtA)
-  const { store: storeB } = useEditorStore(cdrtB)
-  const rootNodeA = storeA.has(rootKey) ? storeA.get(rootKey) : null
-  const rootNodeB = storeB.has(rootKey) ? storeB.get(rootKey) : null
+  const cdrt1 = useCDRTInstance()
+  const cdrt2 = useCDRTInstance()
+  const { store: store1 } = useEditorStore(cdrt1)
+  const { store: store2 } = useEditorStore(cdrt2)
+  const rootNode1 = store1.has(rootKey) ? store1.get(rootKey) : null
+  const rootNode2 = store2.has(rootKey) ? store2.get(rootKey) : null
   // hotfix
   const [_isInitialized, setIsInitialized] = useState(false)
 
-  useEffect(() => syncCDRTs(cdrtA, cdrtB), [cdrtA, cdrtB])
+  useEffect(() => syncCDRTs(cdrt1, cdrt2), [cdrt1, cdrt2])
 
   useEffect(() => {
-    if (storeA.has(rootKey)) return
+    if (store1.has(rootKey)) return
 
-    storeA.update((tx) => {
+    store1.update((tx) => {
       const rootNode = { schema: Root, value: initialContent }
 
       saveRoot({ tx, rootKey, node: rootNode })
 
       setIsInitialized(true)
     })
-  }, [rootKey, storeA])
+  }, [rootKey, store1])
 
   return (
     <main className="p-10">
       <h1>Synchronisierte Editoren</h1>
       <div className="flex gap-10 mb-10">
         <div className="p-4 rounded-lg border">
-          {rootNodeA
-            ? render({ store: storeA, node: rootNodeA })
+          {rootNode1
+            ? render({ store: store1, node: rootNode1 })
             : 'Loading...'}
         </div>
         <div className="p-4 rounded-lg border">
-          {rootNodeB
-            ? render({ store: storeB, node: rootNodeB })
+          {rootNode2
+            ? render({ store: store2, node: rootNode2 })
             : 'Loading...'}
         </div>
       </div>
@@ -59,16 +59,16 @@ export default function App() {
         showOnStartup={{ json: true, entries: true }}
         getCurrentValue={{
           json: () => {
-            if (rootNodeA == null) return 'Loading...'
+            if (rootNode1 == null) return 'Loading...'
 
-            const jsonValue = load({ store: storeA, node: rootNodeA })
+            const jsonValue = load({ store: store1, node: rootNode1 })
             return JSON.stringify(jsonValue, null, 2)
           },
           entries: () => {
             const stringifyEntry = ([key, entry]: [string, FlatNode]) =>
               `${padStart(key, 4)}: ${JSON.stringify(entry.value)}`
 
-            const lines = storeA.getEntries().map(stringifyEntry)
+            const lines = store1.getEntries().map(stringifyEntry)
 
             lines.sort()
 
