@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test'
+import { loadPrototype } from './utils'
 
 test('Editor prototype should load', async ({ page }) => {
-  await page.goto('http://localhost:3000')
-  await page.waitForSelector('.ProseMirror')
+  await loadPrototype(page)
 
   const firstParagraphText =
     'This is an example of educational content with various types of items.'
