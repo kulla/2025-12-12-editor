@@ -1,8 +1,8 @@
 import './App.css'
 
 import { padStart } from 'es-toolkit/compat'
-import type { AwarenessListener } from 'loro-crdt'
 import { useEffect, useState } from 'react'
+import { syncCDRTs } from './cdrt/sync'
 import { useLoroDoc as useCDRTInstance } from './cdrt/use-cdrt'
 import { Root } from './content'
 import { initialContent } from './content/initial-content'
@@ -25,41 +25,7 @@ export default function App() {
   // hotfix
   const [_isInitialized, setIsInitialized] = useState(false)
 
-  useEffect(() => {
-    const { doc: loroA, awareness: awarenessA } = cdrtA
-    const { doc: loroB, awareness: awarenessB } = cdrtB
-
-    // Code taken from https://prosekit.dev/extensions/loro/
-    loroA.import(loroB.export({ mode: 'update' }))
-    loroB.import(loroA.export({ mode: 'update' }))
-
-    const unsubscribeA = loroA.subscribeLocalUpdates((bytes) =>
-      loroB.import(bytes),
-    )
-    const unsubscribeB = loroB.subscribeLocalUpdates((bytes) =>
-      loroA.import(bytes),
-    )
-
-    const awarenessAListener: AwarenessListener = (_, origin) => {
-      if (origin === 'local') {
-        awarenessB.apply(awarenessA.encode([loroA.peerIdStr]))
-      }
-    }
-    const awarenessBListener: AwarenessListener = (_, origin) => {
-      if (origin === 'local') {
-        awarenessA.apply(awarenessB.encode([loroB.peerIdStr]))
-      }
-    }
-    awarenessA.addListener(awarenessAListener)
-    awarenessB.addListener(awarenessBListener)
-
-    return () => {
-      unsubscribeA()
-      unsubscribeB()
-      awarenessA.removeListener(awarenessAListener)
-      awarenessB.removeListener(awarenessBListener)
-    }
-  }, [cdrtA, cdrtB])
+  useEffect(() => syncCDRTs(cdrtA, cdrtB), [cdrtA, cdrtB])
 
   useEffect(() => {
     if (storeA.has(rootKey)) return
