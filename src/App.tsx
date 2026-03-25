@@ -1,9 +1,9 @@
 import './App.css'
 
 import { padStart } from 'es-toolkit/compat'
-import { type AwarenessListener, LoroDoc } from 'loro-crdt'
-import { CursorAwareness } from 'loro-prosemirror'
-import { useEffect, useRef, useState } from 'react'
+import type { AwarenessListener } from 'loro-crdt'
+import { useEffect, useState } from 'react'
+import { useLoroDoc as useCDRTInstance } from './cdrt/use-cdrt-instance'
 import { Root } from './content'
 import { initialContent } from './content/initial-content'
 import { DebugPanel } from './debug-panel'
@@ -16,8 +16,8 @@ import { useEditorStore } from './store/use-editor-store'
 
 export default function App() {
   const rootKey = 'root' as Key
-  const { doc: loroA, awareness: awarenessA } = useLoroDoc()
-  const { doc: loroB, awareness: awarenessB } = useLoroDoc()
+  const { doc: loroA, awareness: awarenessA } = useCDRTInstance()
+  const { doc: loroB, awareness: awarenessB } = useCDRTInstance()
   const { store: storeA } = useEditorStore(loroA, awarenessA)
   const { store: storeB } = useEditorStore(loroB, awarenessB)
   const rootNodeA = storeA.has(rootKey) ? storeA.get(rootKey) : null
@@ -109,11 +109,4 @@ export default function App() {
       />
     </main>
   )
-}
-
-function useLoroDoc() {
-  const doc = useRef(new LoroDoc()).current
-  const awareness = useRef(new CursorAwareness(doc.peerIdStr)).current
-
-  return { doc, awareness }
 }
