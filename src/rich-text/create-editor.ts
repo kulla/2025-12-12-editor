@@ -37,7 +37,7 @@ export function createRichTextEditor({
   store: EditorStore
   defaultContent?: NodeJSON
 }) {
-  const { doc, awareness } = store.cdrt
+  const { name, doc, awareness, color } = store.cdrt
   const containerId = doc.getMap(`prosemirror:${key}`).id
   const mapping: LoroNodeMapping = new Map()
   const extension = union(
@@ -46,6 +46,7 @@ export function createRichTextEditor({
       awareness: createEditorSpecificCursorAwareness(key, awareness),
       doc: doc as LoroDocType,
       sync: { containerId, mapping },
+      cursor: { user: { name, color } },
     }),
   )
   const editor = createEditor({ extension, defaultContent })

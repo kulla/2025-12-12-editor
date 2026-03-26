@@ -5,4 +5,5 @@ export interface CDRT {
   name: string
   doc: LoroDoc
   awareness: CursorAwareness
+  color: string
 }
