@@ -9,8 +9,8 @@ import { Editor, getDebugValues } from './editor'
 import type { EditorStore } from './store/editor-store'
 
 export default function App() {
-  const cdrt1 = useCDRT()
-  const cdrt2 = useCDRT()
+  const cdrt1 = useCDRT('Editor 1')
+  const cdrt2 = useCDRT('Editor 2')
   const [debugValues, setDebugValues] = useState({
     json: () => 'Loading...' as string,
     entries: () => 'Loading...' as string,
