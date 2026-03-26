@@ -39,14 +39,14 @@ export function Editor({ cdrt, initialContent, afterUpdate }: EditorProps) {
   }, [store, initialContent])
 
   return (
-    <div className="sm:w-[48%]">
+    <form className="sm:w-[48%]" aria-label={cdrt.name}>
       <h3>{cdrt.name}</h3>
       <div className="p-4 rounded-lg border">
         {store.has(ROOT_KEY)
           ? render({ store, node: store.get(ROOT_KEY) })
           : 'Loading...'}
       </div>
-    </div>
+    </form>
   )
 }
 

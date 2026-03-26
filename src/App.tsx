@@ -2,6 +2,7 @@ import './App.css'
 
 import { useCallback, useEffect, useState } from 'react'
 import { syncCDRTs } from './cdrt/sync'
+import { EditorName } from './cdrt/types'
 import { useCDRT } from './cdrt/use-cdrt'
 import { initialContent } from './content/initial-content'
 import { DebugPanel } from './debug-panel'
@@ -9,8 +10,8 @@ import { Editor, getDebugValues } from './editor'
 import type { EditorStore } from './store/editor-store'
 
 export default function App() {
-  const cdrt1 = useCDRT('Editor 1', '#00E5FF')
-  const cdrt2 = useCDRT('Editor 2', '#FF2D95')
+  const cdrt1 = useCDRT(EditorName.Editor1, '#00E5FF')
+  const cdrt2 = useCDRT(EditorName.Editor2, '#FF2D95')
   const [debugValues, setDebugValues] = useState({
     json: () => 'Loading...' as string,
     entries: () => 'Loading...' as string,
