@@ -3,7 +3,7 @@ import { CursorAwareness } from 'loro-prosemirror'
 import { useRef } from 'react'
 import type { CDRT } from './types'
 
-export function useLoroDoc(): CDRT {
+export function useCDRT(): CDRT {
   const doc = useRef(new LoroDoc()).current
   const awareness = useRef(new CursorAwareness(doc.peerIdStr)).current
 
