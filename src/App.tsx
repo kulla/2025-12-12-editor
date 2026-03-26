@@ -42,13 +42,13 @@ export default function App() {
   return (
     <main className="p-10">
       <h1>Synchronisierte Editoren</h1>
-      <div className="flex gap-10 mb-10">
-        <div className="p-4 rounded-lg border">
+      <div className="sm:flex gap-[4%] mb-10">
+        <div className="p-4 rounded-lg border sm:w-[48%]">
           {rootNode1
             ? render({ store: store1, node: rootNode1 })
             : 'Loading...'}
         </div>
-        <div className="p-4 rounded-lg border">
+        <div className="p-4 rounded-lg border sm:w-[48%]">
           {rootNode2
             ? render({ store: store2, node: rootNode2 })
             : 'Loading...'}
