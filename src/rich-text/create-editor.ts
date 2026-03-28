@@ -115,15 +115,27 @@ function decodeCursorState(
 }
 
 function defineDoc(features: Array<RichTextFeature>): Extension {
-  const content = isInline(features) ? 'inline*' : 'block+'
+  const content = isInline(features) ? 'inlineBlock' : 'block+'
 
   return defineNodeSpec({ name: 'doc', content, topNode: true })
+}
+
+function defineInlineBlockNode() {
+  return defineNodeSpec({
+    name: 'inlineBlock',
+    content: 'inline*',
+    group: 'block',
+    toDOM() {
+      return ['span', { class: 'inline-rich-text' }, 0]
+    },
+  })
 }
 
 function defineRichTextExtensions(features: Array<RichTextFeature>): Extension {
   return union(
     defineDoc(features),
     defineText(),
+    ...(isInline(features) ? [defineInlineBlockNode()] : []),
     ...features.map((feature) => createExtension(feature)),
   )
 }

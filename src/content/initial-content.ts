@@ -41,15 +41,30 @@ export const initialContent: JSONValue<Root> = [
     options: [
       {
         isCorrect: false,
-        text: { type: 'doc', content: [{ type: 'text', text: '3' }] },
+        text: {
+          type: 'doc',
+          content: [
+            { type: 'inlineBlock', content: [{ type: 'text', text: '3' }] },
+          ],
+        },
       },
       {
         isCorrect: true,
-        text: { type: 'doc', content: [{ type: 'text', text: '4' }] },
+        text: {
+          type: 'doc',
+          content: [
+            { type: 'inlineBlock', content: [{ type: 'text', text: '4' }] },
+          ],
+        },
       },
       {
         isCorrect: false,
-        text: { type: 'doc', content: [{ type: 'text', text: '5' }] },
+        text: {
+          type: 'doc',
+          content: [
+            { type: 'inlineBlock', content: [{ type: 'text', text: '5' }] },
+          ],
+        },
       },
     ],
   },
