@@ -66,10 +66,7 @@ function createEditorSpecificCursorAwareness(
     getAll() {
       return Object.fromEntries(
         Object.entries(awareness.getAllStates())
-          .filter(
-            ([_peer, state]) =>
-              'editorId' in state && state?.editorId === editorId,
-          )
+          .filter(([_peer, state]) => hasEditorId(state, editorId))
           .map(([peer, state]) => [peer, decodeCursorState(state) ?? {}]),
       )
     },
@@ -77,14 +74,7 @@ function createEditorSpecificCursorAwareness(
     getLocal() {
       const state = awareness.getLocalState()
 
-      if (
-        state == null ||
-        ('editorId' in state && state.editorId !== editorId)
-      ) {
-        return undefined
-      }
-
-      return decodeCursorState(state)
+      return hasEditorId(state, editorId) ? decodeCursorState(state) : undefined
     },
 
     setLocal: (state: {
@@ -104,6 +94,13 @@ function createEditorSpecificCursorAwareness(
 
 type CursorAwarenessState =
   CursorAwareness extends Awareness<infer T> ? T : never
+
+function hasEditorId(
+  state: object | undefined,
+  editorId: Key,
+): state is { editorId: Key } {
+  return state != null && 'editorId' in state && state.editorId === editorId
+}
 
 function decodeCursorState(
   state?: CursorAwarenessState | null,
