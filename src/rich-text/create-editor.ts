@@ -1,4 +1,4 @@
-import { Cursor } from 'loro-crdt'
+import { type Awareness, Cursor } from 'loro-crdt'
 import {
   type CursorAwareness,
   type LoroDocType,
@@ -68,27 +68,23 @@ function createEditorSpecificCursorAwareness(
         Object.entries(awareness.getAllStates())
           .filter(
             ([_peer, state]) =>
-              'editorId' in state && state.editorId === editorId,
+              'editorId' in state && state?.editorId === editorId,
           )
-          .map(([peer, state]) => [
-            peer,
-            {
-              anchor: state.anchor ? Cursor.decode(state.anchor) : undefined,
-              focus: state.focus ? Cursor.decode(state.focus) : undefined,
-              user: state.user ? state.user : undefined,
-            },
-          ]),
+          .map(([peer, state]) => [peer, decodeCursorState(state) ?? {}]),
       )
     },
 
     getLocal() {
-      const state = awareness.getLocal()
+      const state = awareness.getLocalState()
 
-      if (state && 'editorId' in state && state.editorId !== editorId) {
+      if (
+        state == null ||
+        ('editorId' in state && state.editorId !== editorId)
+      ) {
         return undefined
       }
 
-      return state
+      return decodeCursorState(state)
     },
 
     setLocal: (state: {
@@ -104,6 +100,21 @@ function createEditorSpecificCursorAwareness(
       } as Parameters<CursorAwareness['setLocalState']>[0])
     },
   })
+}
+
+type CursorAwarenessState =
+  CursorAwareness extends Awareness<infer T> ? T : never
+
+function decodeCursorState(
+  state?: CursorAwarenessState | null,
+): ReturnType<CursorAwareness['getLocal']> {
+  if (!state) return undefined
+
+  return {
+    anchor: state.anchor ? Cursor.decode(state.anchor) : null,
+    focus: state.focus ? Cursor.decode(state.focus) : null,
+    user: state.user ?? null,
+  }
 }
 
 function defineDoc(features: Array<RichTextFeature>): Extension {
