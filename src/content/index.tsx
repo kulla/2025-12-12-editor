@@ -89,9 +89,9 @@ const MultipleChoiceExercise = S.createObject({
 
       return (
         <div key={node.key} className="exercise multiple-choice-exercise">
-          <p>
+          <div>
             <strong>Multiple Choice Exercise: </strong> {renderChild(question)}
-          </p>
+          </div>
           {renderChild(options)}
         </div>
       )

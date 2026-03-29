@@ -1,6 +1,7 @@
 import { ProseKit } from 'prosekit/react'
 import type { ReactNode } from 'react'
 import * as F from '../nodes/flat'
+import { Toolbar } from '../rich-text/toolbar'
 import { isInline } from '../rich-text/types'
 import * as S from '../schema'
 import type { EditorStore } from '../store/editor-store'
@@ -30,7 +31,13 @@ export function render(args: {
 
     return (
       <ProseKit key={node.key} editor={editor}>
-        <HTMLTag ref={editor.mount} className={isInlineMode ? 'inline' : ''} />
+        <div className="editor-wrapper">
+          <Toolbar features={node.schema.features} />
+          <HTMLTag
+            ref={editor.mount}
+            className={isInlineMode ? 'inline' : ''}
+          />
+        </div>
       </ProseKit>
     )
   } else if (F.isSingleton(node)) {
