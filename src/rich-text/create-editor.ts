@@ -115,8 +115,8 @@ function decodeCursorState(
   }
 }
 
-function defineDoc(features: Array<RichTextFeature>): Extension {
-  const content = isInline(features) ? 'inlineBlock' : 'block+'
+function defineDoc(isInline: boolean): Extension {
+  const content = isInline ? 'inlineBlock' : 'block+'
 
   return defineNodeSpec({ name: 'doc', content, topNode: true })
 }
@@ -133,11 +133,13 @@ function defineInlineBlockNode() {
 }
 
 function defineRichTextExtensions(features: Array<RichTextFeature>): Extension {
+  const editorIsInline = isInline(features)
+
   return union(
     defineBaseKeymap(),
-    defineDoc(features),
+    defineDoc(editorIsInline),
     defineText(),
-    ...(isInline(features) ? [defineInlineBlockNode()] : []),
+    ...(editorIsInline ? [defineInlineBlockNode()] : []),
     ...features.map((feature) => createExtension(feature)),
   )
 }
