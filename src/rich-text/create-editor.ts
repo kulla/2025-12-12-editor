@@ -7,6 +7,7 @@ import {
 } from 'loro-prosemirror'
 import {
   createEditor,
+  defineBaseKeymap,
   defineKeymap,
   defineNodeSpec,
   type Extension,
@@ -138,7 +139,7 @@ function defineRichTextExtensions(features: Array<RichTextFeature>): Extension {
     defineText(),
     ...(isInline(features)
       ? [defineInlineBlockNode(), defineInlineKeymap()]
-      : []),
+      : [defineBaseKeymap()]),
     ...features.map((feature) => createExtension(feature)),
   )
 }
