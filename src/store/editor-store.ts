@@ -124,8 +124,7 @@ export class EditorStore {
   }
 
   private incrementUpdateCount(): void {
-    const currentCount = this.updateCount
-    this.metadata.set('updateCount', currentCount + 1)
+    this.metadata.set('updateCount', this.updateCount + 1)
   }
 }
 
