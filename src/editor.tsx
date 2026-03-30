@@ -1,11 +1,14 @@
 import { padStart } from 'es-toolkit/compat'
-import { useEffect } from 'react'
+import type { Editor as ProseKitEditor } from 'prosekit/core'
+import { ProseKit } from 'prosekit/react'
+import { useEffect, useState } from 'react'
 import type { CDRT } from './cdrt/types'
 import { Root } from './content'
 import type { FlatNode } from './nodes/flat'
 import { load } from './operations/load'
 import { render } from './operations/render'
 import { saveRoot } from './operations/save'
+import { Toolbar } from './rich-text/toolbar'
 import type { JSONValue } from './schema'
 import type { EditorStore } from './store/editor-store'
 import type { Key } from './store/key'
@@ -21,6 +24,7 @@ interface EditorProps {
 
 export function Editor({ cdrt, initialContent, afterUpdate }: EditorProps) {
   const { store } = useEditorStore(cdrt)
+  const [activeEditor, setActiveEditor] = useState<ProseKitEditor | null>(null)
 
   useEffect(() => {
     if (afterUpdate == null) return
@@ -41,9 +45,18 @@ export function Editor({ cdrt, initialContent, afterUpdate }: EditorProps) {
   return (
     <form className="sm:w-[48%]" aria-label={cdrt.name}>
       <h3>{cdrt.name}</h3>
+      {activeEditor && (
+        <ProseKit editor={activeEditor}>
+          <Toolbar />
+        </ProseKit>
+      )}
       <div className="p-4 rounded-lg border">
         {store.has(ROOT_KEY)
-          ? render({ store, node: store.get(ROOT_KEY) })
+          ? render({
+              store,
+              node: store.get(ROOT_KEY),
+              setActiveEditor,
+            })
           : 'Loading...'}
       </div>
     </form>
