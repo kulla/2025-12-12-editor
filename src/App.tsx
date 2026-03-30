@@ -27,11 +27,12 @@ export default function App() {
       <h1>Synchronisierte Editoren</h1>
       <div className="sm:flex gap-[4%] mb-10">
         <Editor
+          key={cdrt1.name}
           cdrt={cdrt1}
           initialContent={initialContent}
           afterUpdate={afterUpdate}
         />
-        <Editor cdrt={cdrt2} />
+        <Editor key={cdrt2.name} cdrt={cdrt2} />
       </div>
       <DebugPanel
         labels={{ json: 'External JSON value', entries: 'Internal flat nodes' }}
