@@ -5,6 +5,7 @@ import { pluginReact } from '@rsbuild/plugin-react'
 const mode = process.env.NODE_ENV || 'development'
 
 export default defineConfig({
+  dev: { hmr: false },
   html: {
     title: 'Editor Prototype',
   },
