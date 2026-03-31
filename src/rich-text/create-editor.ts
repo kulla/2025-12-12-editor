@@ -1,7 +1,6 @@
 import {
   createEditor,
   defineBaseKeymap,
-  defineDefaultState,
   defineNodeSpec,
   type Extension,
   type NodeJSON,
@@ -37,7 +36,6 @@ export function createRichTextEditor({
   const fragment = doc.getXmlFragment(`prosemirror:${key}`)
   const extension = union(
     defineRichTextExtensions(schema.features),
-    defineDefaultState({ defaultContent }),
     defineYjs({
       awareness: createEditorSpecificCursorAwareness(key, awareness),
       doc,
