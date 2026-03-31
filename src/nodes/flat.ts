@@ -1,3 +1,4 @@
+import { invariant } from 'es-toolkit'
 import * as S from '../schema'
 import type { EditorStore } from '../store/editor-store'
 import type { Key } from '../store/key'
@@ -50,6 +51,12 @@ export function getProperty<P extends Record<string, S.Schema>>({
   propertyName: keyof P & string
 }): FlatNode {
   const propertyKey = node.value.get(propertyName)
+
+  invariant(
+    propertyKey !== undefined,
+    `Property ${propertyName} is missing in node ${node.key}`,
+  )
+
   return store.get(propertyKey)
 }
 
