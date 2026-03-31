@@ -48,6 +48,7 @@ export function EditorDebugPanel({ cdrt }: { cdrt: CDRT }) {
 
   return (
     <DebugPanel
+      name={cdrt.name}
       labels={{
         json: 'External JSON value',
         entries: 'Internal flat nodes',

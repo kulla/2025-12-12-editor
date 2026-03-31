@@ -1,6 +1,7 @@
 import { useId, useReducer } from 'react'
 
 export interface DebugPanelProps<T extends string> {
+  name: string
   labels: Record<T, string>
   getCurrentValue: Record<T, () => string>
   showOnStartup: Record<T, boolean>
@@ -10,6 +11,7 @@ export interface DebugPanelProps<T extends string> {
  * A debug panel component that allows toggling the visibility of various debug information.
  */
 export function DebugPanel<T extends string>({
+  name,
   labels,
   getCurrentValue,
   showOnStartup,
@@ -23,7 +25,7 @@ export function DebugPanel<T extends string>({
 
   return (
     <>
-      <h2 id={`${panelId}-header`}>Debug Panel</h2>
+      <h2 id={`${panelId}-header`}>Debug Panel: {name}</h2>
       <fieldset aria-labelledby={`${panelId}-header`}>
         <legend>Options</legend>
         {options.map((option) => (
