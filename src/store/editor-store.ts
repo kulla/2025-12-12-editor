@@ -48,6 +48,10 @@ export class EditorStore {
     return { schema, key, parentKey, value }
   }
 
+  getEditorFragment(key: Key): Y.XmlFragment {
+    return this.cdrt.doc.getXmlFragment(`prosemirror:${key}`)
+  }
+
   getEditor({ key, schema }: FlatNode<RichTextSchema>): Editor {
     const editor = this.editors.get(key)
 

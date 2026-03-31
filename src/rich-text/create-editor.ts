@@ -34,7 +34,7 @@ export function createRichTextEditor({
 }) {
   const { doc, awareness } = store.cdrt
   const editorAwareness = createEditorSpecificAwareness(key, awareness)
-  const fragment = doc.getXmlFragment(`prosemirror:${key}`)
+  const fragment = store.getEditorFragment(key)
   const extension = union(
     defineRichTextExtensions(schema.features),
     defineYjs({ awareness: editorAwareness, doc, fragment }),

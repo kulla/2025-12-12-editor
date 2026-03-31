@@ -1,3 +1,4 @@
+import { yXmlFragmentToProseMirrorRootNode } from 'y-prosemirror'
 import * as F from '../nodes/flat'
 import type { JSONValue, Schema } from '../schema'
 import type { EditorStore } from '../store/editor-store'
@@ -12,7 +13,10 @@ export function load<S extends Schema>({
   if (F.isPrimitive(node)) {
     return node.value
   } else if (F.isRichText(node)) {
-    return store.getEditor(node).state.toJSON().doc
+    return yXmlFragmentToProseMirrorRootNode(
+      store.getEditorFragment(node.key),
+      store.getEditor(node).schema,
+    )
   } else if (F.isWrapper(node)) {
     return node.schema.wrap(load({ store, node: store.get(node.value) }))
   } else if (F.isUnion(node)) {
