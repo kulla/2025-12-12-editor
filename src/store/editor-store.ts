@@ -90,14 +90,16 @@ export class EditorStore {
       // If we're already in a transaction, just call the update function directly
       return updater(this.currentTransaction)
     } else {
-      this.currentTransaction = this.createTransaction()
+      return this.cdrt.doc.transact(() => {
+        this.currentTransaction = this.createTransaction()
 
-      try {
-        return updater(this.currentTransaction)
-      } finally {
-        this.incrementUpdateCount()
-        this.currentTransaction = null
-      }
+        try {
+          return updater(this.currentTransaction)
+        } finally {
+          this.incrementUpdateCount()
+          this.currentTransaction = null
+        }
+      }, 'editor-store-update')
     }
   }
 
