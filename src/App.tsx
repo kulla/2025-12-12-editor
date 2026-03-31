@@ -1,24 +1,15 @@
 import './App.css'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { syncCDRTs } from './cdrt/sync'
 import { EditorName } from './cdrt/types'
 import { useCDRT } from './cdrt/use-cdrt'
 import { initialContent } from './content/initial-content'
-import { DebugPanel } from './debug-panel'
-import { Editor, getDebugValues } from './editor'
-import type { EditorStore } from './store/editor-store'
+import { Editor, EditorDebugPanel } from './editor'
 
 export default function App() {
   const cdrt1 = useCDRT(EditorName.Editor1, '#00E5FF')
   const cdrt2 = useCDRT(EditorName.Editor2, '#FF2D95')
-  const [debugValues, setDebugValues] = useState({
-    json: () => 'Loading...' as string,
-    entries: () => 'Loading...' as string,
-  })
-  const afterUpdate = useCallback((store: EditorStore) => {
-    setDebugValues(getDebugValues(store))
-  }, [])
 
   useEffect(() => syncCDRTs(cdrt1, cdrt2), [cdrt1, cdrt2])
 
@@ -26,19 +17,10 @@ export default function App() {
     <main className="p-10">
       <h1>Synchronisierte Editoren</h1>
       <div className="sm:flex gap-[4%] mb-10">
-        <Editor
-          key={cdrt1.name}
-          cdrt={cdrt1}
-          initialContent={initialContent}
-          afterUpdate={afterUpdate}
-        />
+        <Editor key={cdrt1.name} cdrt={cdrt1} initialContent={initialContent} />
         <Editor key={cdrt2.name} cdrt={cdrt2} />
       </div>
-      <DebugPanel
-        labels={{ json: 'External JSON value', entries: 'Internal flat nodes' }}
-        showOnStartup={{ json: true, entries: true }}
-        getCurrentValue={debugValues}
-      />
+      <EditorDebugPanel cdrt={cdrt1} />
     </main>
   )
 }

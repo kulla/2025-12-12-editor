@@ -7,26 +7,19 @@ import { load } from './operations/load'
 import { render } from './operations/render'
 import { saveRoot } from './operations/save'
 import type { JSONValue } from './schema'
-import type { EditorStore } from './store/editor-store'
 import type { Key } from './store/key'
 import { useEditorStore } from './store/use-editor-store'
+import { DebugPanel } from './debug-panel'
 
 const ROOT_KEY = 'root' as Key
 
 interface EditorProps {
   cdrt: CDRT
   initialContent?: JSONValue<Root>
-  afterUpdate?: (store: EditorStore) => void
 }
 
-export function Editor({ cdrt, initialContent, afterUpdate }: EditorProps) {
+export function Editor({ cdrt, initialContent }: EditorProps) {
   const { store } = useEditorStore(cdrt)
-
-  useEffect(() => {
-    if (afterUpdate == null) return
-
-    return store.addUpdateListener(() => afterUpdate(store))
-  }, [store, afterUpdate])
 
   useEffect(() => {
     if (initialContent == null || store.has(ROOT_KEY)) return
@@ -50,23 +43,31 @@ export function Editor({ cdrt, initialContent, afterUpdate }: EditorProps) {
   )
 }
 
-export function getDebugValues(store: EditorStore) {
-  return {
-    json: () => {
-      if (!store.has(ROOT_KEY)) return 'Loading...'
+export function EditorDebugPanel({ cdrt }: { cdrt: CDRT }) {
+  const { store } = useEditorStore(cdrt)
 
-      const jsonValue = load({ store, node: store.get(ROOT_KEY) })
-      return JSON.stringify(jsonValue, null, 2)
-    },
-    entries: () => {
-      const stringifyEntry = ([key, entry]: [string, FlatNode]) =>
-        `${padStart(key, 4)}: ${JSON.stringify(entry.value)}`
+  return (
+    <DebugPanel
+      labels={{ json: 'External JSON value', entries: 'Internal flat nodes' }}
+      showOnStartup={{ json: true, entries: true }}
+      getCurrentValue={{
+        json: () => {
+          if (!store.has(ROOT_KEY)) return 'Loading...'
 
-      const lines = store.getEntries().map(stringifyEntry)
+          const jsonValue = load({ store, node: store.get(ROOT_KEY) })
+          return JSON.stringify(jsonValue, null, 2)
+        },
+        entries: () => {
+          const stringifyEntry = ([key, entry]: [string, FlatNode]) =>
+            `${padStart(key, 4)}: ${JSON.stringify(entry.value)}`
 
-      lines.sort()
+          const lines = store.getEntries().map(stringifyEntry)
 
-      return lines.join('\n')
-    },
-  }
+          lines.sort()
+
+          return lines.join('\n')
+        },
+      }}
+    />
+  )
 }
