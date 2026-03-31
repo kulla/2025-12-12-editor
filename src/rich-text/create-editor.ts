@@ -33,14 +33,11 @@ export function createRichTextEditor({
   defaultContent?: NodeJSON
 }) {
   const { doc, awareness } = store.cdrt
+  const editorAwareness = createEditorSpecificAwareness(key, awareness)
   const fragment = doc.getXmlFragment(`prosemirror:${key}`)
   const extension = union(
     defineRichTextExtensions(schema.features),
-    defineYjs({
-      awareness: createEditorSpecificCursorAwareness(key, awareness),
-      doc,
-      fragment,
-    }),
+    defineYjs({ awareness: editorAwareness, doc, fragment }),
   )
 
   const editor = createEditor({ extension })
@@ -52,7 +49,7 @@ export function createRichTextEditor({
   return editor
 }
 
-function createEditorSpecificCursorAwareness(
+function createEditorSpecificAwareness(
   editorId: Key,
   awareness: Awareness,
 ): Awareness {
