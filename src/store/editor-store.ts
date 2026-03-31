@@ -7,6 +7,7 @@ import type { FlatNode } from '../nodes/flat'
 import { createRichTextEditor } from '../rich-text/create-editor'
 import type { FlatValue, RichTextSchema, Schema } from '../schema'
 import { collectSchemas } from '../schema/collect-schemas'
+import type { EditorSelection } from '../selection/types'
 import { type Key, type KeyGenerator, PrefixKeyGenerator } from './key'
 
 export class EditorStore {
@@ -17,6 +18,7 @@ export class EditorStore {
   private currentTransaction: Transaction | null = null
   private schemaRegistry = createSchemaRegistry(Root)
   private editors = new Map<Key, Editor | undefined>()
+  private _selection: EditorSelection | null = null
 
   constructor(
     public readonly cdrt: CDRT,
@@ -81,6 +83,10 @@ export class EditorStore {
     ])
   }
 
+  get selection(): EditorSelection | null {
+    return this._selection
+  }
+
   get updateCount(): number {
     return this.metadata.get('updateCount') ?? 0
   }
@@ -121,6 +127,9 @@ export class EditorStore {
       setEditor: (key, editor) => {
         this.editors.set(key, editor)
       },
+      setSelection: (selection) => {
+        this._selection = selection
+      },
       store: this,
     }
   }
@@ -152,5 +161,6 @@ export interface Transaction {
     createValue: (key: Key) => FlatValue<S>,
   ): Key
   setEditor(key: Key, editor: Editor): void
+  setSelection(selection: EditorSelection | null): void
   store: EditorStore
 }

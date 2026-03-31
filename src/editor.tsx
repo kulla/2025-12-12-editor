@@ -48,8 +48,12 @@ export function EditorDebugPanel({ cdrt }: { cdrt: CDRT }) {
 
   return (
     <DebugPanel
-      labels={{ json: 'External JSON value', entries: 'Internal flat nodes' }}
-      showOnStartup={{ json: true, entries: true }}
+      labels={{
+        json: 'External JSON value',
+        entries: 'Internal flat nodes',
+        selection: 'Current selection',
+      }}
+      showOnStartup={{ json: true, entries: false, selection: true }}
       getCurrentValue={{
         json: () => {
           if (!store.has(ROOT_KEY)) return 'Loading...'
@@ -66,6 +70,9 @@ export function EditorDebugPanel({ cdrt }: { cdrt: CDRT }) {
           lines.sort()
 
           return lines.join('\n')
+        },
+        selection: () => {
+          return JSON.stringify(store.selection, null, 2)
         },
       }}
     />

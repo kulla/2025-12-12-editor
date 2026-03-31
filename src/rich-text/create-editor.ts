@@ -1,8 +1,8 @@
 import {
   createEditor,
   defineBaseKeymap,
-  defineDocChangeHandler,
   defineNodeSpec,
+  defineUpdateHandler,
   type Extension,
   type NodeJSON,
   union,
@@ -38,8 +38,16 @@ export function createRichTextEditor({
   const fragment = store.getEditorFragment(key)
   const extension = union(
     defineRichTextExtensions(schema.features),
-    defineDocChangeHandler(() => {
-      store.update(() => void 0)
+    defineUpdateHandler((view, prevState) => {
+      if (view.hasFocus() && store.selection?.key !== key) {
+        store.update((tx) => tx.setSelection({ key }))
+      } else if (!view.hasFocus() && store.selection?.key === key) {
+        store.update((tx) => tx.setSelection(null))
+      } else if (view.hasFocus() && !view.state.doc.eq(prevState.doc)) {
+        // If the document has changed, we need to update the store to reflect
+        // the changes in the debug panel (to update the update count)
+        store.update(() => void 0)
+      }
     }),
     defineYjs({ awareness: editorAwareness, doc, fragment }),
   )
