@@ -1,6 +1,7 @@
 import {
   createEditor,
   defineBaseKeymap,
+  defineDocChangeHandler,
   defineNodeSpec,
   type Extension,
   type NodeJSON,
@@ -37,6 +38,9 @@ export function createRichTextEditor({
   const fragment = store.getEditorFragment(key)
   const extension = union(
     defineRichTextExtensions(schema.features),
+    defineDocChangeHandler(() => {
+      store.update(() => void 0)
+    }),
     defineYjs({ awareness: editorAwareness, doc, fragment }),
   )
 
