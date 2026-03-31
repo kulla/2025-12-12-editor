@@ -1,4 +1,4 @@
-import { useCallback, useId, useReducer } from 'react'
+import { useId, useReducer } from 'react'
 
 export interface DebugPanelProps<T extends string> {
   labels: Record<T, string>
@@ -18,16 +18,6 @@ export function DebugPanel<T extends string>({
   const [show, toggleOption] = useReducer(
     (prev, key: T) => ({ ...prev, [key]: !prev[key] }),
     showOnStartup,
-  )
-  const getDebugValue = useCallback(
-    (option: T) => {
-      try {
-        return getCurrentValue[option]()
-      } catch (error) {
-        return `Error retrieving value for "${labels[option]}": ${error}`
-      }
-    },
-    [getCurrentValue, labels],
   )
   const options = Object.keys(labels) as T[]
 
@@ -59,7 +49,7 @@ export function DebugPanel<T extends string>({
               aria-label={`Debug info for ${labels[option]}`}
               aria-live="off"
             >
-              {getDebugValue(option)}
+              {getCurrentValue[option]()}
             </pre>
           ) : null,
         )}
