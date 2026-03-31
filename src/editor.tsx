@@ -2,6 +2,7 @@ import { padStart } from 'es-toolkit/compat'
 import { useEffect } from 'react'
 import type { CDRT } from './cdrt/types'
 import { Root } from './content'
+import { DebugPanel } from './debug-panel'
 import type { FlatNode } from './nodes/flat'
 import { load } from './operations/load'
 import { render } from './operations/render'
@@ -9,7 +10,6 @@ import { saveRoot } from './operations/save'
 import type { JSONValue } from './schema'
 import type { Key } from './store/key'
 import { useEditorStore } from './store/use-editor-store'
-import { DebugPanel } from './debug-panel'
 
 const ROOT_KEY = 'root' as Key
 
