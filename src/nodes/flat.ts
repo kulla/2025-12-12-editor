@@ -34,8 +34,8 @@ export function getVisibleChildren({
   if (isArray(node)) {
     return node.value.toArray().map((itemKey) => store.get(itemKey))
   } else {
-    return node.schema.keyOrder.map((propKey) =>
-      store.get(node.value.get(propKey)),
+    return node.schema.keyOrder.map((propertyName) =>
+      getProperty({ store, node, propertyName }),
     )
   }
 }
