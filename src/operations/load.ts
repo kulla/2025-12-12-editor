@@ -1,7 +1,6 @@
 import * as F from '../nodes/flat'
 import type { JSONValue, Schema } from '../schema'
 import type { EditorStore } from '../store/editor-store'
-import type { Key } from '../store/key'
 
 export function load<S extends Schema>({
   store,
@@ -24,10 +23,9 @@ export function load<S extends Schema>({
       .map((childKey) => load({ store, node: store.get(childKey) }))
   } else if (F.isObject(node)) {
     return Object.fromEntries(
-      node.value.entries().map(([key, childKey]) => [
+      [...node.value.entries()].map(([key, childKey]) => [
         key,
-        // TODO: Remove the 'as Key' cast when possible
-        load({ store, node: store.get(childKey as Key) }),
+        load({ store, node: store.get(childKey) }),
       ]),
     )
   } else {

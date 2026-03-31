@@ -1,11 +1,10 @@
-import type { LoroDoc } from 'loro-crdt'
-import type { CursorAwareness } from 'loro-prosemirror'
+import type { Awareness } from 'y-protocols/awareness'
+import type { Doc } from 'yjs'
 
 export interface CDRT {
   name: EditorName
-  doc: LoroDoc
-  awareness: CursorAwareness
-  color: string
+  doc: Doc
+  awareness: Awareness
 }
 
 export enum EditorName {

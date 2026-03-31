@@ -1,13 +1,15 @@
-import { LoroDoc } from 'loro-crdt'
-import { CursorAwareness } from 'loro-prosemirror'
 import { useMemo } from 'react'
+import { Awareness } from 'y-protocols/awareness'
+import { Doc } from 'yjs'
 import type { CDRT, EditorName } from './types'
 
 export function useCDRT(name: EditorName, color: string): CDRT {
   return useMemo(() => {
-    const doc = new LoroDoc()
-    const awareness = new CursorAwareness(doc.peerIdStr)
+    const doc = new Doc()
+    const awareness = new Awareness(doc)
 
-    return { name, doc, awareness, color }
+    awareness.setLocalStateField('user', { name, color })
+
+    return { name, doc, awareness }
   }, [name, color])
 }

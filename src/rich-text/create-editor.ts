@@ -1,13 +1,7 @@
-import { type Awareness, Cursor } from 'loro-crdt'
-import {
-  type CursorAwareness,
-  type LoroDocType,
-  type LoroNodeMapping,
-  updateLoroToPmState,
-} from 'loro-prosemirror'
 import {
   createEditor,
   defineBaseKeymap,
+  defineDefaultState,
   defineNodeSpec,
   type Extension,
   type NodeJSON,
@@ -18,9 +12,10 @@ import { defineCode } from 'prosekit/extensions/code'
 import { defineHeading } from 'prosekit/extensions/heading'
 import { defineItalic } from 'prosekit/extensions/italic'
 import { defineList } from 'prosekit/extensions/list'
-import { defineLoro } from 'prosekit/extensions/loro'
 import { defineParagraph } from 'prosekit/extensions/paragraph'
 import { defineText } from 'prosekit/extensions/text'
+import { type Awareness, defineYjs } from 'prosekit/extensions/yjs'
+import { prosemirrorJSONToYXmlFragment } from 'y-prosemirror'
 import type { RichTextSchema } from '../schema'
 import type { EditorStore } from '../store/editor-store'
 import type { Key } from '../store/key'
@@ -38,22 +33,22 @@ export function createRichTextEditor({
   store: EditorStore
   defaultContent?: NodeJSON
 }) {
-  const { name, doc, awareness, color } = store.cdrt
-  const containerId = doc.getMap(`prosemirror:${key}`).id
-  const mapping: LoroNodeMapping = new Map()
+  const { doc, awareness } = store.cdrt
+  const fragment = doc.getXmlFragment(`prosemirror:${key}`)
   const extension = union(
     defineRichTextExtensions(schema.features),
-    defineLoro({
+    defineDefaultState({ defaultContent }),
+    defineYjs({
       awareness: createEditorSpecificCursorAwareness(key, awareness),
-      doc: doc as LoroDocType,
-      sync: { containerId, mapping },
-      cursor: { user: { name, color } },
+      doc,
+      fragment,
     }),
   )
-  const editor = createEditor({ extension, defaultContent })
+
+  const editor = createEditor({ extension })
 
   if (defaultContent != null) {
-    updateLoroToPmState(doc as LoroDocType, mapping, editor.state, containerId)
+    prosemirrorJSONToYXmlFragment(editor.schema, defaultContent, fragment)
   }
 
   return editor
@@ -61,58 +56,42 @@ export function createRichTextEditor({
 
 function createEditorSpecificCursorAwareness(
   editorId: Key,
-  awareness: CursorAwareness,
-): CursorAwareness {
+  awareness: Awareness,
+): Awareness {
   return createProxyWithChangedMethods(awareness, {
-    getAll() {
-      return Object.fromEntries(
-        Object.entries(awareness.getAllStates())
-          .filter(([_peer, state]) => hasEditorId(state, editorId))
-          .map(([peer, state]) => [peer, decodeCursorState(state) ?? {}]),
-      )
+    getStates() {
+      const result = new Map()
+
+      for (const [peer, state] of awareness.getStates().entries()) {
+        if (hasEditorId(state, editorId)) {
+          result.set(peer, state)
+        }
+      }
+
+      return result
     },
 
-    getLocal() {
+    getLocalState() {
       const state = awareness.getLocalState()
 
-      return hasEditorId(state, editorId) ? decodeCursorState(state) : undefined
+      return hasEditorId(state, editorId) ? state : null
     },
 
-    setLocal: (state: {
-      anchor?: Cursor
-      focus?: Cursor
-      user?: { name?: string; color?: string }
-    }) => {
-      awareness.setLocalState({
-        editorId,
-        anchor: state.anchor?.encode() || null,
-        focus: state.focus?.encode() || null,
-        user: state.user || null,
-      } as Parameters<CursorAwareness['setLocalState']>[0])
+    setLocalStateField(field: string, value: unknown) {
+      const state = awareness.getLocalState()
+
+      if (value != null || hasEditorId(state, editorId)) {
+        awareness.setLocalState({ ...state, editorId, [field]: value })
+      }
     },
   })
 }
 
-type CursorAwarenessState =
-  CursorAwareness extends Awareness<infer T> ? T : never
-
 function hasEditorId(
-  state: object | undefined,
+  state: object | null,
   editorId: Key,
 ): state is { editorId: Key } {
   return state != null && 'editorId' in state && state.editorId === editorId
-}
-
-function decodeCursorState(
-  state?: CursorAwarenessState | null,
-): ReturnType<CursorAwareness['getLocal']> {
-  if (!state) return undefined
-
-  return {
-    anchor: state.anchor ? Cursor.decode(state.anchor) : null,
-    focus: state.focus ? Cursor.decode(state.focus) : null,
-    user: state.user ?? null,
-  }
 }
 
 function defineDoc(isInline: boolean): Extension {

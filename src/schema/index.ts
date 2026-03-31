@@ -1,13 +1,12 @@
 import { invariant } from 'es-toolkit'
-import type { LoroList, LoroMap } from 'loro-crdt'
 import type { NodeJSON } from 'prosekit/core'
 import type { ReactNode } from 'react'
+import * as Y from 'yjs'
 import type { FlatNode } from '../nodes/flat'
 import type { RichTextFeature } from '../rich-text/types'
 import type { EditorStore } from '../store/editor-store'
 import { isKey, type Key } from '../store/key'
 import * as G from '../utils/guard'
-import { isLoroList, isLoroMap } from '../utils/loro'
 import type { JSONValue, OmitTypeInfo, Schema } from './types'
 
 export type { FlatValue, JSONValue, Schema } from './types'
@@ -62,7 +61,7 @@ export interface UnionSchema<S extends readonly Schema[] = readonly Schema[]>
 export interface ArraySchema<S extends Schema = Schema>
   extends Schema<{
     kind: 'array'
-    FlatValue: LoroList<Key>
+    FlatValue: Y.Array<Key>
     JSONValue: JSONValue<S>[]
   }> {
   itemSchema: S
@@ -74,7 +73,7 @@ export interface ObjectSchema<
   P extends Record<string, Schema> = Record<string, Schema>,
 > extends Schema<{
     kind: 'object'
-    FlatValue: LoroMap<{ [K in keyof P]: Key }>
+    FlatValue: Y.Map<Key>
     JSONValue: { [K in keyof P]: JSONValue<P[K]> }
   }> {
   properties: Readonly<P>
@@ -130,8 +129,8 @@ export function createArray<S extends Schema>(
 ): ArraySchema<S> {
   return {
     kind: 'array',
-    isFlatValue(value): value is LoroList<Key> {
-      return isLoroList(value) && value.toArray().every(isKey)
+    isFlatValue(value): value is Y.Array<Key> {
+      return value instanceof Y.Array && value.toArray().every(isKey)
     },
     ...args,
   }
@@ -149,8 +148,8 @@ export function createObject<Props extends Record<string, Schema>>(
 
   return {
     kind: 'object',
-    isFlatValue(value): value is LoroMap<{ [K in keyof Props]: Key }> {
-      return isLoroMap(value) && value.values().every(isKey)
+    isFlatValue(value): value is Y.Map<Key> {
+      return value instanceof Y.Map && [...value.values()].every(isKey)
     },
     ...args,
   }

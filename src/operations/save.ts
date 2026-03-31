@@ -1,4 +1,4 @@
-import { LoroList, LoroMap } from 'loro-crdt'
+import * as Y from 'yjs'
 import type { Root } from '../content'
 import * as N from '../nodes/nested'
 import { createRichTextEditor } from '../rich-text/create-editor'
@@ -46,17 +46,19 @@ export function save(args: {
     )
   } else if (N.isArray(node)) {
     return tx.insert(node.schema, parentKey, (key) => {
-      const list = new LoroList<Key>()
+      const list = new Y.Array<Key>()
 
-      N.getItems(node).forEach((itemNode) => {
-        list.push(save({ tx, parentKey: key, node: itemNode }))
-      })
+      list.push(
+        N.getItems(node).map((itemNode) =>
+          save({ tx, parentKey: key, node: itemNode }),
+        ),
+      )
 
       return list
     })
   } else if (N.isObject(node)) {
     return tx.insert(node.schema, parentKey, (key) => {
-      const map = new LoroMap<Record<string, Key>>()
+      const map = new Y.Map<Key>()
 
       for (const propertyName of Object.keys(node.schema.properties)) {
         const propertyNode = N.getProperty(node, propertyName)

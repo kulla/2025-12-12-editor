@@ -1,38 +1,59 @@
-import type { AwarenessListener } from 'loro-crdt'
+import {
+  applyAwarenessUpdate,
+  encodeAwarenessUpdate,
+} from 'y-protocols/awareness.js'
+import * as Y from 'yjs'
 import type { CDRT } from './types'
 
 export function syncCDRTs(cdrt1: CDRT, cdrt2: CDRT) {
-  const { doc: loro1, awareness: awareness1 } = cdrt1
-  const { doc: loro2, awareness: awareness2 } = cdrt2
+  const { doc: doc1, awareness: awareness1 } = cdrt1
+  const { doc: doc2, awareness: awareness2 } = cdrt2
 
-  // Code taken from https://prosekit.dev/extensions/loro/
-  loro1.import(loro2.export({ mode: 'update' }))
-  loro2.import(loro1.export({ mode: 'update' }))
+  Y.applyUpdate(doc2, Y.encodeStateAsUpdate(doc1))
+  Y.applyUpdate(doc1, Y.encodeStateAsUpdate(doc2))
 
-  const unsubscribe1 = loro1.subscribeLocalUpdates((bytes) =>
-    loro2.import(bytes),
-  )
-  const unsubscribe2 = loro2.subscribeLocalUpdates((bytes) =>
-    loro1.import(bytes),
-  )
+  const doc1Listener = doc1.on('update', (update, origin) => {
+    if (origin != null) Y.applyUpdate(doc2, update)
+  })
 
-  const awareness1Listener: AwarenessListener = (_, origin) => {
+  const doc2Listener = doc2.on('update', (update, origin) => {
+    if (origin != null) Y.applyUpdate(doc1, update)
+  })
+
+  const awareness1Listener: AwarenessListener = (
+    { added, updated, removed },
+    origin,
+  ) => {
     if (origin === 'local') {
-      awareness2.apply(awareness1.encode([loro1.peerIdStr]))
+      const changedClients = added.concat(updated).concat(removed)
+      const awarenessUpdate = encodeAwarenessUpdate(awareness1, changedClients)
+      applyAwarenessUpdate(awareness2, awarenessUpdate, 'remote')
     }
   }
-  const awareness2Listener: AwarenessListener = (_, origin) => {
+
+  const awareness2Listener: AwarenessListener = (
+    { added, updated, removed },
+    origin,
+  ) => {
     if (origin === 'local') {
-      awareness1.apply(awareness2.encode([loro2.peerIdStr]))
+      const changedClients = added.concat(updated).concat(removed)
+      const awarenessUpdate = encodeAwarenessUpdate(awareness2, changedClients)
+      applyAwarenessUpdate(awareness1, awarenessUpdate, 'remote')
     }
   }
-  awareness1.addListener(awareness1Listener)
-  awareness2.addListener(awareness2Listener)
+
+  awareness1.on('update', awareness1Listener)
+  awareness2.on('update', awareness2Listener)
 
   return () => {
-    unsubscribe1()
-    unsubscribe2()
-    awareness1.removeListener(awareness1Listener)
-    awareness2.removeListener(awareness2Listener)
+    doc1.off('update', doc1Listener)
+    doc2.off('update', doc2Listener)
+    awareness1.off('update', awareness1Listener)
+    awareness2.off('update', awareness2Listener)
   }
 }
+
+type AwarenessListener = (
+  args: { added: number[]; updated: number[]; removed: number[] },
+  origin: unknown,
+) => void

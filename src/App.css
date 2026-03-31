@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @import "@picocss/pico/css/pico.min.css";
-@import "prosekit/extensions/loro/style.css";
+@import "prosekit/extensions/yjs/style.css";
 
 @import "prosekit/basic/style.css";
 @import "prosekit/basic/typography.css";
