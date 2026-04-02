@@ -71,26 +71,28 @@ main {
   justify-content: center;
 }
 
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 1.5rem;
+  box-shadow: var(--shadow-soft);
+}
+
 .editor-instance {
   width: calc(50% - 1.5em);
   min-width: 400px;
-  padding: 1.5rem;
   background: linear-gradient(
     145deg,
     rgba(15, 23, 42, 0.9),
     rgba(7, 11, 24, 0.9)
   );
-  border: 1px solid var(--border);
-  border-radius: 1.6rem;
-  box-shadow: var(--shadow-soft);
 }
 
 h2 {
   font-size: 1.3rem;
-}
-
-.editor-instance h2 {
-  margin-bottom: 1.2rem;
 }
 
 .editor-instance .accent {
@@ -187,14 +189,7 @@ h2 {
 }
 
 .debug-shell {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  padding: clamp(1.25rem, 2vw, 2rem);
   background: rgba(6, 9, 18, 0.85);
-  border: 1px solid var(--border);
-  border-radius: 1.5rem;
-  box-shadow: var(--shadow-soft);
 }
 
 fieldset {

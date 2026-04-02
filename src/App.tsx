@@ -24,7 +24,7 @@ export default function App() {
         <Editor key={cdrt2.name} cdrt={cdrt2} />
       </section>
 
-      <section className="debug-shell">
+      <section className="debug-shell panel">
         <EditorDebugPanel cdrt={cdrt1} />
       </section>
     </main>

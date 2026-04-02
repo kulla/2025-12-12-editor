@@ -33,7 +33,7 @@ export function Editor({ cdrt, initialContent }: EditorProps) {
   }, [store, initialContent])
 
   return (
-    <form className="editor-instance" aria-label={cdrt.name}>
+    <form className="editor-instance panel" aria-label={cdrt.name}>
       <h2>
         <span
           className="accent"
