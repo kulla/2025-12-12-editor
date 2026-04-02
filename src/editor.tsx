@@ -33,9 +33,9 @@ export function Editor({ cdrt, initialContent }: EditorProps) {
   }, [store, initialContent])
 
   return (
-    <form className="editor-panel" aria-label={cdrt.name}>
-      <header className="editor-panel__heading">
-        <span className="editor-panel__badge">Instanz</span>
+    <form className="editor-instance" aria-label={cdrt.name}>
+      <header>
+        <div className="badge">Instance</div>
         <div className="editor-panel__title">
           <span
             className="editor-panel__accent"
@@ -44,9 +44,6 @@ export function Editor({ cdrt, initialContent }: EditorProps) {
           />
           <h3>{cdrt.name}</h3>
         </div>
-        <p className="editor-panel__hint">
-          Teilt denselben Loro-Zustand mit allen weiteren Editoren.
-        </p>
       </header>
 
       <div className="editor-frame">

@@ -71,13 +71,13 @@ main {
   justify-content: center;
 }
 
-.editor-panel {
+.editor-instance {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
   width: calc(50% - 1.5em);
   min-width: 400px;
-  padding: clamp(1.25rem, 2.5vw, 1.75rem);
+  padding: 1.5rem;
   background: linear-gradient(
     145deg,
     rgba(15, 23, 42, 0.9),
@@ -88,15 +88,10 @@ main {
   box-shadow: var(--shadow-soft);
 }
 
-.editor-panel__heading {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.editor-panel__badge {
-  align-self: flex-start;
+.editor-instance .badge {
+  width: fit-content;
   padding: 0.2rem 0.85rem;
+  margin-bottom: 0.5rem;
   font-size: 0.75rem;
   color: var(--accent);
   text-transform: uppercase;
@@ -121,12 +116,6 @@ main {
   height: 0.75rem;
   border-radius: 50%;
   box-shadow: 0 0 15px rgba(98, 245, 213, 0.7);
-}
-
-.editor-panel__hint {
-  margin: 0;
-  font-size: 0.9rem;
-  color: var(--text-muted);
 }
 
 .editor-frame {
