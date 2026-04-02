@@ -34,16 +34,14 @@ export function Editor({ cdrt, initialContent }: EditorProps) {
 
   return (
     <form className="editor-instance" aria-label={cdrt.name}>
-      <header>
-        <div className="editor-panel__title">
-          <span
-            className="editor-panel__accent"
-            style={{ backgroundColor: cdrt.color }}
-            aria-hidden="true"
-          />
-          <h3>{cdrt.name}</h3>
-        </div>
-      </header>
+      <h3>
+        <span
+          className="accent"
+          style={{ backgroundColor: cdrt.color }}
+          aria-hidden="true"
+        />{' '}
+        {cdrt.name}
+      </h3>
 
       <div className="editor-frame">
         <div className="editor-toolbar-shell">

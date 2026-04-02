@@ -85,21 +85,16 @@ main {
   box-shadow: var(--shadow-soft);
 }
 
-.editor-panel__title {
-  display: flex;
-  gap: 0.6rem;
-  align-items: center;
+.editor-instance h3 {
   margin-bottom: 1.2rem;
-  margin-left: 0.3rem;
-}
-
-.editor-panel__title h3 {
   font-size: 1.3rem;
 }
 
-.editor-panel__accent {
+.editor-instance h3 .accent {
+  display: inline-block;
   width: 0.75rem;
   height: 0.75rem;
+  margin: 0 0.3rem;
   border-radius: 50%;
   box-shadow: 0 0 15px rgba(98, 245, 213, 0.7);
 }
