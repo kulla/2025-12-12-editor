@@ -19,19 +19,13 @@ export default function App() {
         <h1>Prototype: Collaborative editing</h1>
       </header>
 
-      <section>
-        <div className="editor-grid">
-          <Editor
-            key={cdrt1.name}
-            cdrt={cdrt1}
-            initialContent={initialContent}
-          />
-          <Editor key={cdrt2.name} cdrt={cdrt2} />
-        </div>
+      <section className="editor-grid">
+        <Editor key={cdrt1.name} cdrt={cdrt1} initialContent={initialContent} />
+        <Editor key={cdrt2.name} cdrt={cdrt2} />
+      </section>
 
-        <div className="debug-shell">
-          <EditorDebugPanel cdrt={cdrt1} />
-        </div>
+      <section className="debug-shell">
+        <EditorDebugPanel cdrt={cdrt1} />
       </section>
     </main>
   )
