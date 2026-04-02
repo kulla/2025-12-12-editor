@@ -10,6 +10,6 @@ export function useCDRT(name: EditorName, color: string): CDRT {
 
     awareness.setLocalStateField('user', { name, color })
 
-    return { name, doc, awareness }
+    return { name, doc, awareness, color }
   }, [name, color])
 }

@@ -119,8 +119,7 @@ main {
 .editor-panel__accent {
   width: 0.75rem;
   height: 0.75rem;
-  background: var(--editor-accent, var(--accent));
-  border-radius: 999px;
+  border-radius: 50%;
   box-shadow: 0 0 15px rgba(98, 245, 213, 0.7);
 }
 
