@@ -10,6 +10,7 @@ import { saveRoot } from './operations/save'
 import type { JSONValue } from './schema'
 import type { Key } from './store/key'
 import { useEditorStore } from './store/use-editor-store'
+import { Toolbar } from './toolbar'
 
 const ROOT_KEY = 'root' as Key
 
@@ -35,6 +36,7 @@ export function Editor({ cdrt, initialContent }: EditorProps) {
     <form className="sm:w-[48%]" aria-label={cdrt.name}>
       <h3>{cdrt.name}</h3>
       <div className="p-4 rounded-lg border">
+        <Toolbar store={store} />
         {store.has(ROOT_KEY)
           ? render({ store, node: store.get(ROOT_KEY) })
           : 'Loading...'}
