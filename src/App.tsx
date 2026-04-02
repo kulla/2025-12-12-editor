@@ -14,13 +14,38 @@ export default function App() {
   useEffect(() => syncCDRTs(cdrt1, cdrt2), [cdrt1, cdrt2])
 
   return (
-    <main className="p-10">
-      <h1>Synchronisierte Editoren</h1>
-      <div className="sm:flex gap-[4%] mb-10">
-        <Editor key={cdrt1.name} cdrt={cdrt1} initialContent={initialContent} />
-        <Editor key={cdrt2.name} cdrt={cdrt2} />
-      </div>
-      <EditorDebugPanel cdrt={cdrt1} />
+    <main className="app-shell">
+      <header className="hero">
+        <p className="hero-label">Loro + ProseMirror</p>
+        <div className="hero-title-row">
+          <h1>Synchronisierte Editoren</h1>
+          <span className="hero-pill">CRDT Playground</span>
+        </div>
+        <p className="hero-subtitle">
+          Zwei voneinander getrennte ProseMirror-Instanzen werden über einen
+          gemeinsamen Loro-Doc synchronisiert. Bearbeite beide Seiten frei, der
+          CRDT sorgt für Konsistenz und verhindert Konflikte.
+        </p>
+        <div className="hero-meta">
+          <span>Realtime Merge Safety</span>
+          <span>Kontextuelles Bold/Italic</span>
+        </div>
+      </header>
+
+      <section className="editor-section">
+        <div className="editor-grid">
+          <Editor
+            key={cdrt1.name}
+            cdrt={cdrt1}
+            initialContent={initialContent}
+          />
+          <Editor key={cdrt2.name} cdrt={cdrt2} />
+        </div>
+
+        <div className="debug-shell">
+          <EditorDebugPanel cdrt={cdrt1} />
+        </div>
+      </section>
     </main>
   )
 }

@@ -1,5 +1,5 @@
 import { padStart } from 'es-toolkit/compat'
-import { useEffect } from 'react'
+import { type CSSProperties, useEffect } from 'react'
 import type { CDRT } from './cdrt/types'
 import { Root } from './content'
 import { DebugPanel } from './debug-panel'
@@ -13,6 +13,9 @@ import { useEditorStore } from './store/use-editor-store'
 import { Toolbar } from './toolbar'
 
 const ROOT_KEY = 'root' as Key
+type PanelStyle = CSSProperties & {
+  '--editor-accent'?: string
+}
 
 interface EditorProps {
   cdrt: CDRT
@@ -21,6 +24,10 @@ interface EditorProps {
 
 export function Editor({ cdrt, initialContent }: EditorProps) {
   const { store } = useEditorStore(cdrt)
+  const accentColor = getEditorAccent(cdrt)
+  const panelStyle: PanelStyle = {
+    '--editor-accent': accentColor,
+  }
 
   useEffect(() => {
     if (initialContent == null || store.has(ROOT_KEY)) return
@@ -33,15 +40,27 @@ export function Editor({ cdrt, initialContent }: EditorProps) {
   }, [store, initialContent])
 
   return (
-    <form className="sm:w-[48%]" aria-label={cdrt.name}>
-      <h3>{cdrt.name}</h3>
-      <div className="rounded-b-2xl border">
-        <Toolbar store={store} />
-        <div className="px-4 pb-4">
+    <form className="editor-panel" aria-label={cdrt.name} style={panelStyle}>
+      <header className="editor-panel__heading">
+        <span className="editor-panel__badge">Instanz</span>
+        <div className="editor-panel__title">
+          <span className="editor-panel__accent" aria-hidden="true" />
+          <h3>{cdrt.name}</h3>
+        </div>
+        <p className="editor-panel__hint">
+          Teilt denselben Loro-Zustand mit allen weiteren Editoren.
+        </p>
+      </header>
+
+      <div className="editor-frame">
+        <div className="editor-toolbar-shell">
+          <Toolbar store={store} />
+        </div>
+        <section className="editor-surface" aria-live="polite">
           {store.has(ROOT_KEY)
             ? render({ store, node: store.get(ROOT_KEY) })
             : 'Loading...'}
-        </div>
+        </section>
       </div>
     </form>
   )
@@ -82,4 +101,13 @@ export function EditorDebugPanel({ cdrt }: { cdrt: CDRT }) {
       }}
     />
   )
+}
+
+function getEditorAccent(cdrt: CDRT): string {
+  const localState = cdrt.awareness.getLocalState() as
+    | { user?: { color?: string | undefined } }
+    | null
+    | undefined
+
+  return localState?.user?.color ?? '#62f5d5'
 }
