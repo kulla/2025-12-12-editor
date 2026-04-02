@@ -16,7 +16,7 @@ export default function App() {
   return (
     <main className="app-shell">
       <header>
-        <h1 className="text-5xl">Prototype: Collaborative editing</h1>
+        <h1>Prototype: Collaborative editing</h1>
       </header>
 
       <section className="editor-section">
