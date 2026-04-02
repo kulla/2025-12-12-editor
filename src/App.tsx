@@ -15,10 +15,8 @@ export default function App() {
 
   return (
     <main className="app-shell">
-      <header className="hero">
-        <div className="hero-title-row">
-          <h1>Synchronisierte Editoren</h1>
-        </div>
+      <header>
+        <h1 className="text-5xl">Prototype: Collaborative editing</h1>
       </header>
 
       <section className="editor-section">
