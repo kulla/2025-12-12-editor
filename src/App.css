@@ -58,21 +58,25 @@ header h1 {
 main {
   display: flex;
   flex-direction: column;
-  gap: clamp(2.5rem, 4vw, 4.5rem);
+  gap: clamp(1.5rem, 4vw, 3rem);
   min-height: 100vh;
   padding: clamp(1.5rem, 3vw, 3.5rem);
 }
 
-.editor-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 1.75rem;
+.editor-instances {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 3rem;
+  justify-content: center;
 }
 
 .editor-panel {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
+  width: calc(50% - 1.5em);
+  min-width: 400px;
   padding: clamp(1.25rem, 2.5vw, 1.75rem);
   background: linear-gradient(
     145deg,

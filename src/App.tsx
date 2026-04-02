@@ -19,7 +19,7 @@ export default function App() {
         <h1>Prototype: Collaborative editing</h1>
       </header>
 
-      <section className="editor-grid">
+      <section className="editor-instances">
         <Editor key={cdrt1.name} cdrt={cdrt1} initialContent={initialContent} />
         <Editor key={cdrt2.name} cdrt={cdrt2} />
       </section>
