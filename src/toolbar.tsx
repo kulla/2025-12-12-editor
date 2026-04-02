@@ -62,6 +62,7 @@ function ToolbarButton({
       aria-label={label}
       aria-pressed={isActive}
       disabled={!canExec}
+      onMouseDown={(e) => e.preventDefault()}
       onClick={onClick}
     >
       {shortLabel}
