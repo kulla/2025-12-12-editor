@@ -196,27 +196,19 @@ fieldset {
   display: flex;
   flex-wrap: wrap;
   gap: 0.85rem;
-  padding: 1rem 1.25rem 1.25rem;
-  margin-bottom: 1.25rem;
+  color: var(--text-muted);
   background: rgba(255, 255, 255, 0.02);
-  border: 1px solid var(--border);
-  border-radius: 1.1rem;
 }
 
 legend {
   padding: 0 0.5rem;
   font-size: 0.75rem;
-  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.3em;
 }
 
 label {
-  display: inline-flex;
-  gap: 0.35rem;
-  align-items: center;
   font-size: 0.9rem;
-  color: var(--text-muted);
 }
 
 input[type="checkbox"] {
@@ -226,10 +218,17 @@ input[type="checkbox"] {
 }
 
 pre {
+  max-width: 50%;
+  max-height: clamp(300px, 40vh, 600px);
   overflow: auto;
   font-family: monospace;
   color: var(--accent);
   background: rgba(2, 6, 23, 0.95);
-  border: 1px solid var(--border-accent);
+  border-color: var(--border-accent);
+}
+
+.inner-panel {
+  padding: 1rem;
+  border: 1px solid var(--border);
   border-radius: 1.1rem;
 }
