@@ -55,7 +55,7 @@ header h1 {
   text-align: center;
 }
 
-.app-shell {
+main {
   display: flex;
   flex-direction: column;
   gap: clamp(2.5rem, 4vw, 4.5rem);

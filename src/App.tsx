@@ -14,7 +14,7 @@ export default function App() {
   useEffect(() => syncCDRTs(cdrt1, cdrt2), [cdrt1, cdrt2])
 
   return (
-    <main className="app-shell">
+    <main>
       <header>
         <h1>Prototype: Collaborative editing</h1>
       </header>
