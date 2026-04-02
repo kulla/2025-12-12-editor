@@ -16,18 +16,8 @@ export default function App() {
   return (
     <main className="app-shell">
       <header className="hero">
-        <p className="hero-label">Loro + ProseMirror</p>
         <div className="hero-title-row">
           <h1>Synchronisierte Editoren</h1>
-        </div>
-        <p className="hero-subtitle">
-          Zwei voneinander getrennte ProseMirror-Instanzen werden über einen
-          gemeinsamen Loro-Doc synchronisiert. Bearbeite beide Seiten frei, der
-          CRDT sorgt für Konsistenz und verhindert Konflikte.
-        </p>
-        <div className="hero-meta">
-          <span>Realtime Merge Safety</span>
-          <span>Kontextuelles Bold/Italic</span>
         </div>
       </header>
 

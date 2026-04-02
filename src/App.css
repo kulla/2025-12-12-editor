@@ -64,13 +64,6 @@ body {
   margin: 0 auto;
 }
 
-.hero-label {
-  font-size: 0.85rem;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: 0.35em;
-}
-
 .hero-title-row {
   display: flex;
   flex-wrap: wrap;
@@ -82,19 +75,6 @@ body {
   margin: 0;
   font-size: clamp(2.5rem, 7vw, 4.5rem);
   line-height: 1.05;
-}
-
-.hero-subtitle {
-  max-width: 64ch;
-  margin: 0;
-  font-size: 1.1rem;
-  color: var(--text-muted);
-}
-
-.hero-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.8rem;
 }
 
 .hero-meta span {
