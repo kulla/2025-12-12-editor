@@ -115,6 +115,7 @@ const EducationalContent = S.createArray({
       }
     },
   }),
+  className: 'content',
 })
 
 export type Root = typeof Root

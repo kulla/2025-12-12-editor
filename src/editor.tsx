@@ -43,16 +43,14 @@ export function Editor({ cdrt, initialContent }: EditorProps) {
         {cdrt.name}
       </h2>
 
-      <div className="editor-frame">
+      <section className="editor-frame inner-panel">
         <div className="editor-toolbar-shell">
           <Toolbar store={store} />
         </div>
-        <section className="editor-surface" aria-live="polite">
-          {store.has(ROOT_KEY)
-            ? render({ store, node: store.get(ROOT_KEY) })
-            : 'Loading...'}
-        </section>
-      </div>
+        {store.has(ROOT_KEY)
+          ? render({ store, node: store.get(ROOT_KEY) })
+          : 'Loading...'}
+      </section>
     </form>
   )
 }

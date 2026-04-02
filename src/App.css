@@ -15,7 +15,6 @@
   --bg: #030712;
   --bg-soft: #050c1b;
   --bg-panel: #0f172a;
-  --bg-panel-muted: #141f35;
   --border: rgba(255, 255, 255, 0.08);
   --border-accent: rgba(100, 181, 246, 0.3);
   --text-primary: #f4f7ff;
@@ -81,6 +80,11 @@ main {
   box-shadow: var(--shadow-soft);
 }
 
+.inner-panel {
+  border: 1px solid var(--border);
+  border-radius: 1.1rem;
+}
+
 .editor-instance {
   width: calc(50% - 1.5em);
   min-width: 400px;
@@ -106,9 +110,6 @@ h2 {
 
 .editor-frame {
   overflow: hidden;
-  background: var(--bg-panel-muted);
-  border: 1px solid var(--border);
-  border-radius: 1.25rem;
 }
 
 .editor-toolbar-shell > div {
@@ -154,9 +155,11 @@ h2 {
   outline-offset: 2px;
 }
 
-.editor-surface {
-  min-height: 14rem;
-  padding: 1.25rem 1.5rem 1.75rem;
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
   background: var(--bg-panel);
 }
 
@@ -181,7 +184,6 @@ h2 {
 
 .exercise {
   padding: 1rem 1.1rem;
-  margin-bottom: 0.9rem;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 1rem;
@@ -190,6 +192,10 @@ h2 {
 
 .debug-shell {
   background: rgba(6, 9, 18, 0.85);
+}
+
+.debug-shell .inner-panel {
+  padding: 1rem;
 }
 
 fieldset {
@@ -225,10 +231,4 @@ pre {
   color: var(--accent);
   background: rgba(2, 6, 23, 0.95);
   border-color: var(--border-accent);
-}
-
-.inner-panel {
-  padding: 1rem;
-  border: 1px solid var(--border);
-  border-radius: 1.1rem;
 }
