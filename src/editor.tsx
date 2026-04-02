@@ -34,14 +34,14 @@ export function Editor({ cdrt, initialContent }: EditorProps) {
 
   return (
     <form className="editor-instance" aria-label={cdrt.name}>
-      <h3>
+      <h2>
         <span
           className="accent"
           style={{ backgroundColor: cdrt.color }}
           aria-hidden="true"
         />{' '}
         {cdrt.name}
-      </h3>
+      </h2>
 
       <div className="editor-frame">
         <div className="editor-toolbar-shell">
