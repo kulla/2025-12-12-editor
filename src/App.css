@@ -72,9 +72,6 @@ main {
 }
 
 .editor-instance {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
   width: calc(50% - 1.5em);
   min-width: 400px;
   padding: 1.5rem;
@@ -88,26 +85,15 @@ main {
   box-shadow: var(--shadow-soft);
 }
 
-.editor-instance .badge {
-  width: fit-content;
-  padding: 0.2rem 0.85rem;
-  margin-bottom: 0.5rem;
-  font-size: 0.75rem;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  border: 1px solid rgba(98, 245, 213, 0.45);
-  border-radius: 999px;
-}
-
 .editor-panel__title {
   display: flex;
   gap: 0.6rem;
   align-items: center;
+  margin-bottom: 1.2rem;
+  margin-left: 0.3rem;
 }
 
 .editor-panel__title h3 {
-  margin: 0;
   font-size: 1.3rem;
 }
 

@@ -35,7 +35,6 @@ export function Editor({ cdrt, initialContent }: EditorProps) {
   return (
     <form className="editor-instance" aria-label={cdrt.name}>
       <header>
-        <div className="badge">Instance</div>
         <div className="editor-panel__title">
           <span
             className="editor-panel__accent"
