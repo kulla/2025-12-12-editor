@@ -1,10 +1,10 @@
-@import "tailwindcss";
-
 @import "@picocss/pico/css/pico.min.css";
-@import "prosekit/extensions/yjs/style.css";
+
+@import "tailwindcss";
 
 @import "prosekit/basic/style.css";
 @import "prosekit/basic/typography.css";
+@import "prosekit/extensions/yjs/style.css";
 
 .exercise {
   @apply p-4 mb-2 rounded-lg shadow-md bg-gray-100 dark:bg-gray-800 border-0;

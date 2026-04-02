@@ -1,13 +1,15 @@
-import { isMarkActive, type CommandAction, type Editor } from 'prosekit/core'
+import clsx from 'clsx'
+import { type CommandAction, type Editor, isMarkActive } from 'prosekit/core'
 import * as F from './nodes/flat'
 import type { EditorStore } from './store/editor-store'
-import clsx from 'clsx'
 
 export function Toolbar({ store }: { store: EditorStore }) {
   const editor = getFocusedEditor(store)
 
+  console.log('toolbar render', store.cdrt.name)
+
   return (
-    <div className="sticky top-0 z-10 -mx-4 flex gap-2 border-b p-4">
+    <div className="sticky top-0 z-2 flex border-b group">
       <ToolbarButton
         label="Toggle Bold"
         shortLabel="B"
@@ -49,9 +51,11 @@ function ToolbarButton({
   isActive: boolean
   onClick: () => void
 }) {
+  console.log('toolbar render', { label, canExec, isActive })
+
   const className = clsx(
     'rounded-md border px-3 py-1 text-sm font-semibold transition-colors',
-    canExec ? 'opacity-40 cursor-not-allowed' : 'hover:bg-gray-100',
+    canExec ? 'hover:bg-gray-100' : 'opacity-40 cursor-not-allowed',
     isActive ? 'bg-gray-200 text-gray-900' : 'bg-white',
   )
 
@@ -59,6 +63,7 @@ function ToolbarButton({
     <button
       type="button"
       className={className}
+      style={{ marginBottom: 0 }}
       aria-label={label}
       aria-pressed={isActive}
       disabled={!canExec}

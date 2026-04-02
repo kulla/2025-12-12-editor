@@ -35,11 +35,13 @@ export function Editor({ cdrt, initialContent }: EditorProps) {
   return (
     <form className="sm:w-[48%]" aria-label={cdrt.name}>
       <h3>{cdrt.name}</h3>
-      <div className="p-4 rounded-lg border">
+      <div className="rounded-b-2xl border">
         <Toolbar store={store} />
-        {store.has(ROOT_KEY)
-          ? render({ store, node: store.get(ROOT_KEY) })
-          : 'Loading...'}
+        <div className="px-4 pb-4">
+          {store.has(ROOT_KEY)
+            ? render({ store, node: store.get(ROOT_KEY) })
+            : 'Loading...'}
+        </div>
       </div>
     </form>
   )
