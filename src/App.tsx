@@ -19,7 +19,6 @@ export default function App() {
         <p className="hero-label">Loro + ProseMirror</p>
         <div className="hero-title-row">
           <h1>Synchronisierte Editoren</h1>
-          <span className="hero-pill">CRDT Playground</span>
         </div>
         <p className="hero-subtitle">
           Zwei voneinander getrennte ProseMirror-Instanzen werden über einen
