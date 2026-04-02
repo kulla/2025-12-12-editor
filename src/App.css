@@ -63,12 +63,6 @@ main {
   padding: clamp(1.5rem, 3vw, 3.5rem);
 }
 
-.editor-section {
-  display: flex;
-  flex-direction: column;
-  gap: 2.5rem;
-}
-
 .editor-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
