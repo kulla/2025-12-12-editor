@@ -1,10 +1,15 @@
-@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap");
-
 @import "tailwindcss";
 
 @import "prosekit/basic/style.css";
 @import "prosekit/basic/typography.css";
 @import "prosekit/extensions/yjs/style.css";
+
+@font-face {
+  font-family: "Inter";
+  src: url("./assets/inter.woff2") format("woff2");
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
   --bg: #030712;
@@ -30,9 +35,8 @@
 body {
   min-height: 100vh;
   margin: 0;
-  font-family: sans-serif;
+  font-family: "Inter" sans-serif;
   color: var(--text-primary);
-  letter-spacing: 0.01em;
   background:
     radial-gradient(circle at 10% 20%, rgba(0, 229, 255, 0.16), transparent 55%),
     radial-gradient(circle at 85% 0%, rgba(255, 45, 149, 0.16), transparent 40%),
