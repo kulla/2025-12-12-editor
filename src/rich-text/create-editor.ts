@@ -124,7 +124,7 @@ function defineGap(): Extension {
       toggleGap: () => toggleMark({ type: 'gap' }),
     }),
     defineKeymap({
-      'Mod-g': toggleMark({ type: 'gap' }),
+      'Mod-Alt-g': toggleMark({ type: 'gap' }),
     }),
   )
 }
