@@ -6,8 +6,6 @@ import type { EditorStore } from './store/editor-store'
 export function Toolbar({ store }: { store: EditorStore }) {
   const editor = getFocusedEditor(store)
 
-  console.log('toolbar render', store.cdrt.name)
-
   return (
     <div className="sticky top-0 z-2 flex border-b group">
       <ToolbarButton
@@ -51,8 +49,6 @@ function ToolbarButton({
   isActive: boolean
   onClick: () => void
 }) {
-  console.log('toolbar render', { label, canExec, isActive })
-
   const className = clsx(
     'rounded-md border px-3 py-1 text-sm font-semibold transition-colors',
     canExec ? 'hover:bg-gray-100' : 'opacity-40 cursor-not-allowed',
