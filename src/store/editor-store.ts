@@ -24,10 +24,10 @@ export class EditorStore {
     public readonly cdrt: CDRT,
     private readonly keyGenerator: KeyGenerator = new PrefixKeyGenerator('n'),
   ) {
-    this.schemaNames = this.cdrt.doc.getMap('schemaNames') as Y.Map<string>
-    this.parentKeys = this.cdrt.doc.getMap('parentKeys') as Y.Map<Key | null>
-    this.values = this.cdrt.doc.getMap('values') as Y.Map<unknown>
-    this.metadata = this.cdrt.doc.getMap('metadata') as Y.Map<number>
+    this.schemaNames = this.cdrt.doc.getMap('schemaNames')
+    this.parentKeys = this.cdrt.doc.getMap('parentKeys')
+    this.values = this.cdrt.doc.getMap('values')
+    this.metadata = this.cdrt.doc.getMap('metadata')
   }
 
   addUpdateListener(listener: () => void) {
