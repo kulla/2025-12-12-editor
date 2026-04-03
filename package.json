@@ -7,7 +7,7 @@
   "scripts": {
     "build": "rsbuild build",
     "check": "bun run check:tsc && bun run check:lint",
-    "check:lint": "biome check --write",
+    "check:format": "biome check --write",
     "check:tsc": "tsc --noEmit",
     "dev": "rsbuild dev --open",
     "format": "biome format --write",

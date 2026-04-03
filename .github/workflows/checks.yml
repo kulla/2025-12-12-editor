@@ -23,16 +23,16 @@ jobs:
       - uses: ./.github/actions/setup-bun
       - run: bun run build
 
-  biome:
+  format:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-bun
-      - run: bun check
+      - run: bun check:format
 
   tsc:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-bun
-      - run: bun run tsc --noEmit
+      - run: bun check:tsc
