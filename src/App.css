@@ -146,6 +146,11 @@ h2 {
   box-shadow: 0 5px 15px rgba(98, 245, 213, 0.3);
 }
 
+.editor-toolbar-shell button[aria-pressed="true"]:hover {
+  background: var(--editor-accent, var(--accent));
+  opacity: 0.8;
+}
+
 .editor-toolbar-shell button:disabled {
   opacity: 0.35;
 }
