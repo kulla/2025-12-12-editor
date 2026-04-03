@@ -212,6 +212,7 @@ label {
 input[type="checkbox"] {
   width: 1rem;
   height: 1rem;
+  margin-right: 0.35rem;
   accent-color: var(--accent);
 }
 
