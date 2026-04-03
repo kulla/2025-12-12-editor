@@ -11,16 +11,23 @@ export function Toolbar({ store }: { store: EditorStore }) {
       <ToolbarButton
         label="Toggle Bold"
         shortLabel="B"
-        isActive={editor !== null && isMarkActive(editor.state, 'bold')}
+        isActive={isMarkActiveInEditor(editor, 'bold')}
         canExec={canExecCommand(editor, 'toggleBold')}
         onClick={() => execCommand(editor, 'toggleBold')}
       />
       <ToolbarButton
         label="Italic"
         shortLabel="I"
-        isActive={editor !== null && isMarkActive(editor.state, 'italic')}
+        isActive={isMarkActiveInEditor(editor, 'italic')}
         canExec={canExecCommand(editor, 'toggleItalic')}
         onClick={() => execCommand(editor, 'toggleItalic')}
+      />
+      <ToolbarButton
+        label="Gap"
+        shortLabel="Gap"
+        isActive={isMarkActiveInEditor(editor, 'gap')}
+        canExec={canExecCommand(editor, 'toggleGap')}
+        onClick={() => execCommand(editor, 'toggleGap')}
       />
     </div>
   )
@@ -69,6 +76,16 @@ function ToolbarButton({
       {shortLabel}
     </button>
   )
+}
+
+function isMarkActiveInEditor(
+  editor: Editor | null,
+  markName: string,
+): boolean {
+  if (editor == null) return false
+  if (!(markName in editor.schema.marks)) return false
+
+  return isMarkActive(editor.state, markName)
 }
 
 function execCommand(editor: Editor | null, commandName: string): void {
