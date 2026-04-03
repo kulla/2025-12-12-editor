@@ -129,6 +129,16 @@ export class EditorStore {
 
         return key
       },
+      update: (key, updateValue) => {
+        invariant(
+          this.has(key),
+          `Cannot update non-existent node with key ${key}`,
+        )
+
+        const newValue = updateValue(this.values.get(key))
+
+        this.values.set(key, newValue)
+      },
       setEditor: (key, editor) => {
         this.editors.set(key, editor)
       },
@@ -165,6 +175,10 @@ export interface Transaction {
     parentKey: Key,
     createValue: (key: Key) => FlatValue<S>,
   ): Key
+  update<S extends Schema>(
+    key: Key,
+    updateValue: (value: FlatValue<S>) => FlatValue<S>,
+  ): void
   setEditor(key: Key, editor: Editor): void
   setSelection(selection: EditorSelection | null): void
   store: EditorStore

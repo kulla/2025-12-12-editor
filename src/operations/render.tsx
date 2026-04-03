@@ -21,7 +21,16 @@ export function render(args: {
     return String(node.value)
   } else if (F.isTruthValue(node)) {
     return (
-      <input key={node.key} type="checkbox" checked={node.value} readOnly />
+      <input
+        key={node.key}
+        type="checkbox"
+        checked={node.value}
+        onChange={(e) =>
+          store.update((tx) =>
+            tx.update(node.key, () => e.currentTarget.checked),
+          )
+        }
+      />
     )
   } else if (F.isRichText(node)) {
     const isInlineMode = isInline(node.schema.features)
