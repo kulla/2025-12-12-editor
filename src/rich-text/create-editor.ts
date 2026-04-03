@@ -1,14 +1,17 @@
 import {
   createEditor,
   defineBaseKeymap,
+  defineCommands,
+  defineKeymap,
+  defineMarkSpec,
   defineNodeSpec,
   defineUpdateHandler,
   type Extension,
   type NodeJSON,
+  toggleMark,
   union,
 } from 'prosekit/core'
 import { defineBold } from 'prosekit/extensions/bold'
-import { defineCode } from 'prosekit/extensions/code'
 import { defineHeading } from 'prosekit/extensions/heading'
 import { defineItalic } from 'prosekit/extensions/italic'
 import { defineList } from 'prosekit/extensions/list'
@@ -108,6 +111,24 @@ function defineDoc(isInline: boolean): Extension {
   return defineNodeSpec({ name: 'doc', content, topNode: true })
 }
 
+function defineGap(): Extension {
+  return union(
+    defineMarkSpec({
+      name: 'gap',
+      parseDOM: [{ tag: 'span[data-gap="true"]' }],
+      toDOM() {
+        return ['span', { class: 'gap-mark', 'data-gap': 'true' }, 0]
+      },
+    }),
+    defineCommands({
+      toggleGap: () => toggleMark({ type: 'gap' }),
+    }),
+    defineKeymap({
+      'Mod-Alt-g': toggleMark({ type: 'gap' }),
+    }),
+  )
+}
+
 function defineInlineBlockNode() {
   return defineNodeSpec({
     name: 'inlineBlock',
@@ -138,8 +159,7 @@ function createExtension(feature: RichTextFeature): Extension {
     case RichTextFeature.Italic:
       return defineItalic()
     case RichTextFeature.Blank:
-      // TODO: Define Blank Extension
-      return defineCode()
+      return defineGap()
     case RichTextFeature.Paragraph:
       return defineParagraph()
     case RichTextFeature.Heading:
