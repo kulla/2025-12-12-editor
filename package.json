@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "rsbuild build",
-    "check": "bun run check:tsc && bun run check:lint",
+    "check": "bun run check:tsc && bun run check:format",
     "check:format": "biome check --write",
     "check:tsc": "tsc --noEmit",
     "dev": "rsbuild dev --open",
@@ -29,6 +29,8 @@
     "@rsbuild/core": "1.7.5",
     "@rsbuild/plugin-react": "1.4.6",
     "@tailwindcss/postcss": "4.2.2",
+    "@tsconfig/bun": "1.0.10",
+    "@types/bun": "1.3.11",
     "@types/react-dom": "19.2.3",
     "tailwindcss": "4.2.2",
     "typescript": "6.0.2"

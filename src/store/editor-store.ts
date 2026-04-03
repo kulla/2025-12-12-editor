@@ -11,10 +11,10 @@ import type { EditorSelection } from '../selection/types'
 import { type Key, type KeyGenerator, PrefixKeyGenerator } from './key'
 
 export class EditorStore {
-  private schemaNames = this.cdrt.doc.getMap('schemaNames') as Y.Map<string>
-  private parentKeys = this.cdrt.doc.getMap('parentKeys') as Y.Map<Key | null>
-  private values = this.cdrt.doc.getMap('values') as Y.Map<unknown>
-  private metadata = this.cdrt.doc.getMap('metadata') as Y.Map<number>
+  private schemaNames: Y.Map<string>
+  private parentKeys: Y.Map<Key | null>
+  private values: Y.Map<unknown>
+  private metadata: Y.Map<number>
   private currentTransaction: Transaction | null = null
   private schemaRegistry = createSchemaRegistry(Root)
   private editors = new Map<Key, Editor | undefined>()
@@ -23,7 +23,12 @@ export class EditorStore {
   constructor(
     public readonly cdrt: CDRT,
     private readonly keyGenerator: KeyGenerator = new PrefixKeyGenerator('n'),
-  ) {}
+  ) {
+    this.schemaNames = this.cdrt.doc.getMap('schemaNames')
+    this.parentKeys = this.cdrt.doc.getMap('parentKeys')
+    this.values = this.cdrt.doc.getMap('values')
+    this.metadata = this.cdrt.doc.getMap('metadata')
+  }
 
   addUpdateListener(listener: () => void) {
     this.cdrt.doc.on('update', listener)

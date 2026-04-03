@@ -41,7 +41,9 @@ export const isObjectOf = <M extends Record<string, Guard<unknown>>>(
   return (value: unknown): value is any => {
     return (
       isObject(value) &&
-      Object.keys(guardObj).every((key) => guardObj[key](value[key]))
+      Object.entries(guardObj).every(([key, propertyGuard]) =>
+        propertyGuard(value[key]),
+      )
     )
   }
 }

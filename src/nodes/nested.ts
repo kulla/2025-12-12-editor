@@ -27,11 +27,13 @@ export function getItems({ schema, value }: NestedNode<S.ArraySchema>) {
   })
 }
 
-export function getProperty(
-  { schema, value }: NestedNode<S.ObjectSchema>,
-  key: string,
-) {
-  return { schema: schema.properties[key], value: value[key] }
+export function getProperty<
+  P extends Record<string, S.Schema>,
+  K extends keyof P,
+>({ schema, value }: NestedNode<S.ObjectSchema<P>>, key: K): NestedNode<P[K]> {
+  return { schema: schema.properties[key], value: value[key] } as NestedNode<
+    P[K]
+  >
 }
 
 export const isTruthValue = createGuard(S.isTruthValue)
