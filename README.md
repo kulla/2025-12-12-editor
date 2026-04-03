@@ -16,7 +16,7 @@ Create a prototype of a web-based text WYSIWYG Editor with ProseMirror for rich-
 - [x] Formatting:
   - [x] Bold
   - [x] Italic
-- [ ] Toolbar
+- [x] Toolbar
 - [ ] Later: Selection of one / multiple elements
 - [ ] Later: Insertions of elements via `/` + toolbar button
   - [ ] Insert ProseMirror elements
