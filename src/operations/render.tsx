@@ -25,8 +25,10 @@ export function render(args: {
         key={node.key}
         type="checkbox"
         checked={node.value}
-        onClick={() =>
-          store.update((tx) => tx.update(node.key, () => !node.value))
+        onChange={(e) =>
+          store.update((tx) =>
+            tx.update(node.key, () => e.currentTarget.checked),
+          )
         }
       />
     )
