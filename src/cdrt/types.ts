@@ -5,6 +5,7 @@ export interface CDRT {
   name: EditorName
   doc: Doc
   awareness: Awareness
+  color: string
 }
 
 export enum EditorName {

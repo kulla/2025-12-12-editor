@@ -4,7 +4,6 @@
     "": {
       "name": "rsbuild-react-bun-biome-starter-template",
       "dependencies": {
-        "@picocss/pico": "^2.1.1",
         "clsx": "^2.1.1",
         "es-toolkit": "^1.45.1",
         "prosekit": "^0.18.4",
@@ -132,8 +131,6 @@
     "@napi-rs/wasm-runtime": ["@napi-rs/wasm-runtime@1.0.7", "", { "dependencies": { "@emnapi/core": "^1.5.0", "@emnapi/runtime": "^1.5.0", "@tybys/wasm-util": "^0.10.1" } }, "sha512-SeDnOO0Tk7Okiq6DbXmmBODgOAb9dp9gjlphokTUxmt8U3liIP1ZsozBahH69j/RJv+Rfs6IwUKHTgQYJ/HBAw=="],
 
     "@ocavue/utils": ["@ocavue/utils@1.4.0", "", {}, "sha512-hB6uTz58shfG/ZyrBkMjub2YyJ1ue0vE14zRLZWJl/zEcgMBFTX6nBBV6ncyRHK4qOIBwFNpXzZrjTFj1ofxRA=="],
-
-    "@picocss/pico": ["@picocss/pico@2.1.1", "", {}, "sha512-kIDugA7Ps4U+2BHxiNHmvgPIQDWPDU4IeU6TNRdvXQM1uZX+FibqDQT2xUOnnO2yq/LUHcwnGlu1hvf4KfXnMg=="],
 
     "@playwright/test": ["@playwright/test@1.58.2", "", { "dependencies": { "playwright": "1.58.2" }, "bin": { "playwright": "cli.js" } }, "sha512-akea+6bHYBBfA9uQqSYmlJXn61cTa+jbO87xVLCWbTqbWadRVmhxlXATaOjOgcBaWU4ePo0wB41KMFv3o35IXA=="],
 

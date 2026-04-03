@@ -14,13 +14,19 @@ export default function App() {
   useEffect(() => syncCDRTs(cdrt1, cdrt2), [cdrt1, cdrt2])
 
   return (
-    <main className="p-10">
-      <h1>Synchronisierte Editoren</h1>
-      <div className="sm:flex gap-[4%] mb-10">
+    <main>
+      <header>
+        <h1>Prototype: Collaborative editing</h1>
+      </header>
+
+      <section className="editor-instances">
         <Editor key={cdrt1.name} cdrt={cdrt1} initialContent={initialContent} />
         <Editor key={cdrt2.name} cdrt={cdrt2} />
-      </div>
-      <EditorDebugPanel cdrt={cdrt1} />
+      </section>
+
+      <section className="debug-shell panel">
+        <EditorDebugPanel cdrt={cdrt1} />
+      </section>
     </main>
   )
 }
