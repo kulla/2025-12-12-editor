@@ -28,11 +28,11 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-bun
-      - run: bun check:format
+      - run: bun run check:format
 
   tsc:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/actions/setup-bun
-      - run: bun check:tsc
+      - run: bun run check:tsc
