@@ -11,4 +11,5 @@ jobs:
       - uses: kulla/sync-to-gitlab@v1
         with:
           owner: stephan_kulla
+          repo: 2025-12-12-editor
           token: ${{ secrets.GITLAB_TOKEN }}
