@@ -6,10 +6,10 @@ const mode = process.env.NODE_ENV || 'development'
 export default defineConfig({
   dev: { hmr: false },
   html: {
-    title: 'Editor Prototype',
+    title: 'Technical Prototype for the Serlo Editor',
   },
   output: {
-    assetPrefix: '/2025-12-12-editor/',
+    assetPrefix: '/serlo-editor-prototype/',
     sourceMap: {
       js: mode === 'development' ? 'eval-source-map' : 'source-map',
       css: true,
