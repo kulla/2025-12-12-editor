@@ -7,7 +7,7 @@ export function Toolbar({ store }: { store: EditorStore }) {
   const editor = getFocusedEditor(store)
 
   return (
-    <div className="sticky top-0 z-2 flex border-b group">
+    <div className="toolbar" role="toolbar" aria-label="Formatting controls">
       <ToolbarButton
         label="Toggle Bold"
         shortLabel="B"
@@ -57,16 +57,15 @@ function ToolbarButton({
   onClick: () => void
 }) {
   const className = clsx(
-    'rounded-md border px-3 py-1 text-sm font-semibold transition-colors',
-    canExec ? 'hover:bg-gray-100' : 'opacity-40 cursor-not-allowed',
-    isActive ? 'bg-gray-200 text-gray-900' : 'bg-white',
+    'toolbar__button',
+    canExec ? 'toolbar__button--enabled' : 'toolbar__button--disabled',
+    isActive ? 'toolbar__button--active' : 'toolbar__button--idle',
   )
 
   return (
     <button
       type="button"
       className={className}
-      style={{ marginBottom: 0 }}
       aria-label={label}
       aria-pressed={isActive}
       disabled={!canExec}

@@ -47,7 +47,7 @@ const FillInTheBlankExercise = S.createWrapper({
     render: ({ node, store, renderChild }) => {
       const content = F.getSingletonChild({ node, store })
       return (
-        <div key={node.key} className="exercise fill-in-the-blank-exercise">
+        <div key={node.key} className="exercise exercise--fill-blank">
           <p>
             <strong>Fill in the Blank Exercise: </strong>
           </p>
@@ -78,7 +78,7 @@ const MultipleChoiceExercise = S.createObject({
         htmlTag: 'li',
       }),
       htmlTag: 'ul',
-      className: 'list-none',
+      className: 'multiple-choice-options',
     }),
   },
   keyOrder: ['question', 'options'],
@@ -88,7 +88,7 @@ const MultipleChoiceExercise = S.createObject({
       const options = F.getProperty({ node, store, propertyName: 'options' })
 
       return (
-        <div key={node.key} className="exercise multiple-choice-exercise">
+        <div key={node.key} className="exercise exercise--multiple-choice">
           <p>
             <strong>Multiple Choice Exercise: </strong> {renderChild(question)}
           </p>
@@ -115,7 +115,7 @@ const EducationalContent = S.createArray({
       }
     },
   }),
-  className: 'content',
+  className: 'editor-content',
 })
 
 export type Root = typeof Root

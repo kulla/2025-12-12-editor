@@ -26,7 +26,10 @@ export function DebugPanel<T extends string>({
   return (
     <>
       <h2 id={`${panelId}-header`}>Debug Panel: {name}</h2>
-      <fieldset aria-labelledby={`${panelId}-header`} className="inner-panel">
+      <fieldset
+        aria-labelledby={`${panelId}-header`}
+        className="debug-panel__options surface"
+      >
         <legend>Options</legend>
         {options.map((option) => (
           <label key={option} htmlFor={`${panelId}-${option}-toggle`}>
@@ -41,12 +44,12 @@ export function DebugPanel<T extends string>({
           </label>
         ))}
       </fieldset>
-      <div className="flex gap-4">
+      <div className="debug-panel__values">
         {options.map((option) =>
           show[option] ? (
             <pre
               key={option}
-              className="inner-panel"
+              className="debug-panel__value surface"
               role="log"
               aria-label={`Debug info for ${labels[option]}`}
               aria-live="off"

@@ -14,17 +14,17 @@ export default function App() {
   useEffect(() => syncCDRTs(cdrt1, cdrt2), [cdrt1, cdrt2])
 
   return (
-    <main>
-      <header>
-        <h1>Prototype: Collaborative editing</h1>
+    <main className="app">
+      <header className="app__header">
+        <h1 className="app__title">Prototype: Collaborative editing</h1>
       </header>
 
-      <section className="editor-instances">
+      <section className="app__editors">
         <Editor key={cdrt1.name} cdrt={cdrt1} initialContent={initialContent} />
         <Editor key={cdrt2.name} cdrt={cdrt2} />
       </section>
 
-      <section className="debug-shell panel">
+      <section className="app__debug panel">
         <EditorDebugPanel cdrt={cdrt1} />
       </section>
     </main>

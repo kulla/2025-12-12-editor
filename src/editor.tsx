@@ -1,4 +1,5 @@
 import { padStart } from 'es-toolkit/compat'
+import type { CSSProperties } from 'react'
 import { useEffect } from 'react'
 import type { CDRT } from './cdrt/types'
 import { Root } from './content'
@@ -33,17 +34,17 @@ export function Editor({ cdrt, initialContent }: EditorProps) {
   }, [store, initialContent])
 
   return (
-    <form className="editor-instance panel" aria-label={cdrt.name}>
-      <h2>
+    <form className="editor-card panel" aria-label={cdrt.name}>
+      <h2 className="editor-card__title">
         <span
-          className="accent"
-          style={{ backgroundColor: cdrt.color }}
+          className="editor-card__accent"
+          style={{ '--accent-color': cdrt.color } as CSSProperties}
           aria-hidden="true"
         />{' '}
         {cdrt.name}
       </h2>
 
-      <section className="editor-frame inner-panel">
+      <section className="editor-frame surface">
         <div className="editor-toolbar-shell">
           <Toolbar store={store} />
         </div>
