@@ -2,28 +2,7 @@
 
 ## Goal
 
-Create a prototype of a web-based text WYSIWYG Editor with ProseMirror for rich-text editing capabilities. Features to include:
-
-- [x] Collaboration similar to https://github.com/kulla/2025-11-19-experiment-with-two-editor-instances
-- [x] Interactive exercises:
-  - [x] Fill-in-the-blanks
-    - [x] Add gap formatting
-  - [x] Multiple-choice questions
-- [ ] Later: ProseMirror elements:
-  - [x] Paragraphs
-  - [ ] Headings
-  - [ ] Lists
-- [x] Formatting:
-  - [x] Bold
-  - [x] Italic
-- [x] Toolbar
-- [ ] Later: Selection of one / multiple elements
-- [ ] Later: Insertions of elements via `/` + toolbar button
-  - [ ] Insert ProseMirror elements
-    - [ ] Use only configured elements
-  - [ ] Insert interactive exercises
-    - [ ] Split elements
-    - [ ] Check which elements can be inserted
+Create a prototype of a web-based text WYSIWYG Editor with ProseMirror for rich-text editing capabilities.
 
 ## Setup
 
