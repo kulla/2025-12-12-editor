@@ -20,6 +20,8 @@
   --color-text-muted: #6b7280;
   --color-accent: #2f76ff;
   --color-accent-contrast: #ffffff;
+  --color-fill-blank: #c9a800;
+  --color-multiple-choice: #2f76ff;
 
   --space-1: 0.5rem;
   --space-2: 1rem;
@@ -187,14 +189,12 @@ body {
   display: inline;
 }
 
-
-/* ── Exercise base ─────────────────────────────────────────── */
+/* ── Exercises ─────────────────────────────────────────────── */
 .exercise {
   padding: var(--space-2) var(--space-3);
   background: #fffef7;
   border: 1.5px solid #e2d89a;
   border-radius: var(--radius-2);
-  font-size: 1rem;
   line-height: 1.6;
 }
 
@@ -207,30 +207,25 @@ body {
   color: #8a7a30;
 }
 
-/* ── Fill in the blank ─────────────────────────────────────── */
 .exercise--fill-blank {
-  border-left: 4px solid #c9a800;
+  border-left: 4px solid var(--color-fill-blank);
   background: #fffef5;
 }
 
 .ProseMirror .gap-mark {
   display: inline-block;
   min-width: 3rem;
-  min-height: 1.4em;
   padding: 0 0.35rem;
   margin: 0 0.1rem;
   font-weight: 600;
   color: #7a5c00;
   background: rgba(201, 168, 0, 0.1);
-  border: none;
-  border-bottom: 2px solid #c9a800;
-  border-radius: 0;
+  border-bottom: 2px solid var(--color-fill-blank);
   vertical-align: baseline;
 }
 
-/* ── Multiple choice ───────────────────────────────────────── */
 .exercise--multiple-choice {
-  border-left: 4px solid #2f76ff;
+  border-left: 4px solid var(--color-multiple-choice);
   background: #f8fbff;
 }
 
@@ -252,9 +247,9 @@ body {
   gap: 0.6rem;
   padding: 0.45rem 0.6rem;
   margin-bottom: 0.4rem;
+  background: var(--color-surface);
   border: 1px solid #d6e4ff;
   border-radius: var(--radius-1);
-  background: #ffffff;
 }
 
 .multiple-choice-options li::before {
@@ -262,9 +257,10 @@ body {
   flex-shrink: 0;
   min-width: 1.4rem;
   font-weight: 600;
-  color: #2f76ff;
+  color: var(--color-multiple-choice);
 }
 
+/* ── Debug panel ───────────────────────────────────────────── */
 .debug-panel__options {
   display: flex;
   flex-wrap: wrap;
