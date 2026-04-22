@@ -20,6 +20,8 @@
   --color-text-muted: #6b7280;
   --color-accent: #2f76ff;
   --color-accent-contrast: #ffffff;
+  --color-fill-blank: #c9a800;
+  --color-multiple-choice: #2f76ff;
 
   --space-1: 0.5rem;
   --space-2: 1rem;
@@ -129,29 +131,30 @@ body {
   position: sticky;
   top: 0;
   z-index: 2;
+  background: #ffffff;
 }
 
 .toolbar {
   display: flex;
-  gap: var(--space-1);
-  padding: var(--space-2);
-  background: var(--color-surface-subtle);
-  border-bottom: 1px solid var(--color-border);
+  gap: 0.3rem;
+  padding: 0.3rem 0.45rem;
+  background: #ffffff;
+  border-bottom: 1px solid #e0e3e7;
 }
 
 .toolbar__button {
   min-width: 2.25rem;
-  padding: 0.4rem 0.65rem;
+  padding: 0.3rem 0.5rem;
   font: inherit;
   color: var(--color-text);
   cursor: pointer;
-  background: transparent;
-  border: 1px solid var(--color-border);
+  background: #ffffff;
+  border: 1px solid #dadce0;
   border-radius: var(--radius-1);
 }
 
 .toolbar__button--enabled:hover:not(:disabled) {
-  background: #f4f4f3;
+  opacity: 0.6;
 }
 
 .toolbar__button--active {
@@ -187,31 +190,78 @@ body {
   display: inline;
 }
 
-.ProseMirror .gap-mark {
-  display: inline-block;
-  min-width: 2.5rem;
-  min-height: 1.75em;
-  padding: 0.1rem 0.5rem;
-  margin: 0 0.15rem;
-  font-weight: 600;
-  color: var(--color-text);
-  background: rgba(47, 118, 255, 0.1);
-  border: 1px dashed var(--color-accent);
-  border-radius: 999px;
-}
-
+/* ── Exercises ─────────────────────────────────────────────── */
 .exercise {
-  padding: var(--space-2);
-  background: #fcfcfb;
-  border: 1px solid var(--color-border);
+  padding: var(--space-2) var(--space-3);
+  line-height: 1.6;
+  background: #fffef7;
+  border: 1.5px solid #e2d89a;
   border-radius: var(--radius-2);
 }
 
-.multiple-choice-options {
-  padding-left: 1.25rem;
-  margin: 0;
+.exercise > p:first-child {
+  margin: 0 0 var(--space-1);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #8a7a30;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
+.exercise--fill-blank {
+  background: #fffef5;
+  border-left: 4px solid var(--color-fill-blank);
+}
+
+.ProseMirror .gap-mark {
+  display: inline-block;
+  min-width: 3rem;
+  padding: 0 0.35rem;
+  margin: 0 0.1rem;
+  font-weight: 600;
+  vertical-align: baseline;
+  color: #7a5c00;
+  background: rgba(201, 168, 0, 0.1);
+  border-bottom: 2px solid var(--color-fill-blank);
+}
+
+.exercise--multiple-choice {
+  background: #f8fbff;
+  border-left: 4px solid var(--color-multiple-choice);
+}
+
+.exercise--multiple-choice > p:first-child {
+  color: #1a52c2;
+}
+
+.multiple-choice-options {
+  padding: 0;
+  margin: var(--space-1) 0 0;
+  list-style: none;
+  counter-reset: mc-option;
+}
+
+.multiple-choice-options li {
+  display: flex;
+  gap: 0.6rem;
+  align-items: baseline;
+  padding: 0.45rem 0.6rem;
+  margin-bottom: 0.4rem;
+  counter-increment: mc-option;
+  background: var(--color-surface);
+  border: 1px solid #d6e4ff;
+  border-radius: var(--radius-1);
+}
+
+.multiple-choice-options li::before {
+  flex-shrink: 0;
+  min-width: 1.4rem;
+  font-weight: 600;
+  color: var(--color-multiple-choice);
+  content: counter(mc-option, upper-alpha) ".";
+}
+
+/* ── Debug panel ───────────────────────────────────────────── */
 .debug-panel__options {
   display: flex;
   flex-wrap: wrap;
