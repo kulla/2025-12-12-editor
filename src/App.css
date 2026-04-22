@@ -100,7 +100,10 @@ body {
 }
 
 .editor-card {
-  width: min(100%, 50rem);
+  flex: 1 1 24rem;
+  width: 100%;
+  min-width: 24rem;
+  max-width: 48rem;
 }
 
 .editor-card__title {
