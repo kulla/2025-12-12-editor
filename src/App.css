@@ -187,29 +187,82 @@ body {
   display: inline;
 }
 
-.ProseMirror .gap-mark {
-  display: inline-block;
-  min-width: 2.5rem;
-  min-height: 1.75em;
-  padding: 0.1rem 0.5rem;
-  margin: 0 0.15rem;
-  font-weight: 600;
-  color: var(--color-text);
-  background: rgba(47, 118, 255, 0.1);
-  border: 1px dashed var(--color-accent);
-  border-radius: 999px;
+
+/* ── Exercise base ─────────────────────────────────────────── */
+.exercise {
+  padding: var(--space-2) var(--space-3);
+  background: #fffef7;
+  border: 1.5px solid #e2d89a;
+  border-radius: var(--radius-2);
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
-.exercise {
-  padding: var(--space-2);
-  background: #fcfcfb;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-2);
+.exercise > p:first-child {
+  margin: 0 0 var(--space-1);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #8a7a30;
+}
+
+/* ── Fill in the blank ─────────────────────────────────────── */
+.exercise--fill-blank {
+  border-left: 4px solid #c9a800;
+  background: #fffef5;
+}
+
+.ProseMirror .gap-mark {
+  display: inline-block;
+  min-width: 3rem;
+  min-height: 1.4em;
+  padding: 0 0.35rem;
+  margin: 0 0.1rem;
+  font-weight: 600;
+  color: #7a5c00;
+  background: rgba(201, 168, 0, 0.1);
+  border: none;
+  border-bottom: 2px solid #c9a800;
+  border-radius: 0;
+  vertical-align: baseline;
+}
+
+/* ── Multiple choice ───────────────────────────────────────── */
+.exercise--multiple-choice {
+  border-left: 4px solid #2f76ff;
+  background: #f8fbff;
+}
+
+.exercise--multiple-choice > p:first-child {
+  color: #1a52c2;
 }
 
 .multiple-choice-options {
-  padding-left: 1.25rem;
-  margin: 0;
+  padding: 0;
+  margin: var(--space-1) 0 0;
+  list-style: none;
+  counter-reset: mc-option;
+}
+
+.multiple-choice-options li {
+  counter-increment: mc-option;
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.45rem 0.6rem;
+  margin-bottom: 0.4rem;
+  border: 1px solid #d6e4ff;
+  border-radius: var(--radius-1);
+  background: #ffffff;
+}
+
+.multiple-choice-options li::before {
+  content: counter(mc-option, upper-alpha) ".";
+  flex-shrink: 0;
+  min-width: 1.4rem;
+  font-weight: 600;
+  color: #2f76ff;
 }
 
 .debug-panel__options {
