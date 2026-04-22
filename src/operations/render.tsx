@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { ProseKit } from 'prosekit/react'
 import type { ReactNode } from 'react'
 import * as F from '../nodes/flat'
@@ -39,7 +40,13 @@ export function render(args: {
 
     return (
       <ProseKit key={node.key} editor={editor}>
-        <HTMLTag ref={editor.mount} className={isInlineMode ? 'inline' : ''} />
+        <HTMLTag
+          ref={editor.mount}
+          className={clsx(
+            'editor-rich-text',
+            isInlineMode ? 'editor-rich-text--inline' : null,
+          )}
+        />
       </ProseKit>
     )
   } else if (F.isSingleton(node)) {
