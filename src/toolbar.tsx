@@ -5,6 +5,7 @@ import type { EditorStore } from './store/editor-store'
 
 export function Toolbar({ store }: { store: EditorStore }) {
   const editor = getFocusedEditor(store)
+  const canToggleGap = canExecCommand(editor, 'toggleGap')
 
   return (
     <div className="toolbar" role="toolbar" aria-label="Formatting controls">
@@ -22,13 +23,15 @@ export function Toolbar({ store }: { store: EditorStore }) {
         canExec={canExecCommand(editor, 'toggleItalic')}
         onClick={() => execCommand(editor, 'toggleItalic')}
       />
-      <ToolbarButton
-        label="Gap"
-        shortLabel="Gap"
-        isActive={isMarkActiveInEditor(editor, 'gap')}
-        canExec={canExecCommand(editor, 'toggleGap')}
-        onClick={() => execCommand(editor, 'toggleGap')}
-      />
+      {canToggleGap ? (
+        <ToolbarButton
+          label="Gap"
+          shortLabel="Gap"
+          isActive={isMarkActiveInEditor(editor, 'gap')}
+          canExec={canToggleGap}
+          onClick={() => execCommand(editor, 'toggleGap')}
+        />
+      ) : null}
     </div>
   )
 }
