@@ -8,8 +8,8 @@ import { initialContent } from './content/initial-content'
 import { Editor, EditorDebugPanel } from './editor'
 
 export default function App() {
-  const cdrt1 = useCDRT(EditorName.Editor1, '#00E5FF')
-  const cdrt2 = useCDRT(EditorName.Editor2, '#FF2D95')
+  const cdrt1 = useCDRT(EditorName.Editor1, '#2563eb')
+  const cdrt2 = useCDRT(EditorName.Editor2, '#b45309')
 
   useEffect(() => syncCDRTs(cdrt1, cdrt2), [cdrt1, cdrt2])
 
