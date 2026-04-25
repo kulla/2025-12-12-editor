@@ -13,7 +13,7 @@ export const initialContent: JSONValue<Root> = [
           content: [
             {
               type: 'text',
-              text: 'Willkommen zur Mathe-Stunde in Klasse 9. Heute üben wir ',
+              text: 'This is an example of educational content with various types of items.',
             },
           ],
         },
@@ -28,18 +28,9 @@ export const initialContent: JSONValue<Root> = [
         {
           type: 'paragraph',
           content: [
-            { type: 'text', text: 'Ein Pullover kostet 40 Euro, mit ' },
-            { type: 'text', text: '25 %', marks: [{ type: 'gap' }] },
-            { type: 'text', text: ' Rabatt kostet er 30 Euro.' },
-          ],
-        },
-        {
-          type: 'paragraph',
-          content: [
-            {
-              type: 'text',
-              text: 'Ein Buch kostet 20 Euro, mit 10 % Rabatt kostet es ',
-            },
+            { type: 'text', text: 'The capital of France is ' },
+            { type: 'text', text: 'Paris', marks: [{ type: 'gap' }] },
+            { type: 'text', text: '.' },
           ],
         },
       ],
@@ -52,7 +43,7 @@ export const initialContent: JSONValue<Root> = [
       content: [
         {
           type: 'inlineBlock',
-          content: [{ type: 'text', text: 'Wie viel sind 15 % von 200?' }],
+          content: [{ type: 'text', text: 'What is 2 + 2?' }],
         },
       ],
     },
@@ -62,7 +53,16 @@ export const initialContent: JSONValue<Root> = [
         text: {
           type: 'doc',
           content: [
-            { type: 'inlineBlock', content: [{ type: 'text', text: '20' }] },
+            { type: 'inlineBlock', content: [{ type: 'text', text: '3' }] },
+          ],
+        },
+      },
+      {
+        isCorrect: true,
+        text: {
+          type: 'doc',
+          content: [
+            { type: 'inlineBlock', content: [{ type: 'text', text: '4' }] },
           ],
         },
       },
@@ -71,16 +71,7 @@ export const initialContent: JSONValue<Root> = [
         text: {
           type: 'doc',
           content: [
-            { type: 'inlineBlock', content: [{ type: 'text', text: '30' }] },
-          ],
-        },
-      },
-      {
-        isCorrect: false,
-        text: {
-          type: 'doc',
-          content: [
-            { type: 'inlineBlock', content: [{ type: 'text', text: '40' }] },
+            { type: 'inlineBlock', content: [{ type: 'text', text: '5' }] },
           ],
         },
       },
