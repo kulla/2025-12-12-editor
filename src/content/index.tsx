@@ -49,7 +49,7 @@ const FillInTheBlankExercise = S.createWrapper({
       return (
         <div key={node.key} className="exercise exercise--fill-blank">
           <p>
-            <strong>Fill in the Blank Exercise: </strong>
+            <strong>Lückentext: </strong>
           </p>
           {renderChild(content)}
         </div>
@@ -90,7 +90,7 @@ const MultipleChoiceExercise = S.createObject({
       return (
         <div key={node.key} className="exercise exercise--multiple-choice">
           <p>
-            <strong>Multiple Choice Exercise: </strong> {renderChild(question)}
+            <strong>Multiple-Choice: </strong> {renderChild(question)}
           </p>
           {renderChild(options)}
         </div>

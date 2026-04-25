@@ -16,16 +16,12 @@ export default function App() {
   return (
     <main className="app">
       <header className="app__header">
-        <h1 className="app__title">Prototype: Collaborative editing</h1>
+        <h1 className="app__title">Echtzeit-Kollaboration</h1>
       </header>
 
       <section className="app__editors">
         <Editor key={cdrt1.name} cdrt={cdrt1} initialContent={initialContent} />
         <Editor key={cdrt2.name} cdrt={cdrt2} />
-      </section>
-
-      <section className="app__debug panel">
-        <EditorDebugPanel cdrt={cdrt1} />
       </section>
     </main>
   )

@@ -46,6 +46,7 @@ export function render(args: {
             'editor-rich-text',
             isInlineMode ? 'editor-rich-text--inline' : null,
           )}
+          spellCheck={false}
         />
       </ProseKit>
     )
