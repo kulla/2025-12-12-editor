@@ -7,7 +7,7 @@
       "dependencies": {
         "clsx": "2.1.1",
         "es-toolkit": "1.46.1",
-        "prosekit": "0.20.0",
+        "prosekit": "0.20.1",
         "react": "19.2.5",
         "react-dom": "19.2.5",
         "y-prosemirror": "1.3.7",
@@ -77,7 +77,7 @@
 
     "@prosekit/extensions": ["@prosekit/extensions@0.16.0", "", { "dependencies": { "@ocavue/utils": "^1.6.0", "@prosekit/core": "^0.12.0", "@prosekit/pm": "^0.1.16", "prosemirror-changeset": "^2.4.1", "prosemirror-drop-indicator": "^0.1.3", "prosemirror-dropcursor": "^1.8.2", "prosemirror-enter-rules": "^0.1.5", "prosemirror-flat-list": "^0.5.8", "prosemirror-gapcursor": "^1.4.1", "prosemirror-highlight": "^0.15.1", "prosemirror-math": "^0.2.2", "prosemirror-search": "^1.1.0", "prosemirror-tables": "^1.8.5", "server-dom-shim": "^1.1.0", "shiki": "^3.23.0 || ^4.0.2" }, "peerDependencies": { "loro-crdt": ">= 1.10.0", "loro-prosemirror": ">= 0.4.1", "y-prosemirror": ">= 1.2.9", "yjs": ">= 13.6.18" }, "optionalPeers": ["loro-crdt", "loro-prosemirror", "y-prosemirror", "yjs"] }, "sha512-J6t1jHlYxHGlixqAvQg9GJpyPD79XcNWEOCkaC0/3pl24Irh1IB4tsQ8rb9d8Wj28Tah4u//ARib6H6WQawhFQ=="],
 
-    "@prosekit/lit": ["@prosekit/lit@0.6.0", "", { "dependencies": { "@prosekit/web": "^0.8.0" } }, "sha512-/fZM+NgvLN+JC1J+ZjhRGVNzCe6DIssMW1U5Dq6kJdPtVUxXD9yM9alsgpR91I/9OVoBeRbpPmQ0cvTLMMJNaQ=="],
+    "@prosekit/lit": ["@prosekit/lit@0.6.1", "", { "dependencies": { "@prosekit/web": "^0.8.0" } }, "sha512-/eawyRZB7iSTi39lyhsh8oiLA57c3lAx3UZw6XBh0mShj/DPG0YF2VTLse0RYmmU6twmd79URtb41LGnKl/i4Q=="],
 
     "@prosekit/pm": ["@prosekit/pm@0.1.16", "", { "dependencies": { "prosemirror-commands": "^1.7.1", "prosemirror-history": "^1.5.0", "prosemirror-inputrules": "^1.5.1", "prosemirror-keymap": "^1.2.3", "prosemirror-model": "^1.25.4", "prosemirror-state": "^1.4.4", "prosemirror-transform": "^1.12.0", "prosemirror-view": "^1.41.8" } }, "sha512-E5PVeiF3Va8gzrLRY5cSzmOnfkH0IKSMv/Us/PtBz8CH+IAlGNadVSRNE/pBgWq8Huizan7ABgnbDQkKS2P00g=="],
 
@@ -241,7 +241,7 @@
 
     "property-information": ["property-information@7.1.0", "", {}, "sha512-TwEZ+X+yCJmYfL7TPUOcvBZ4QfoT5YenQiJuX//0th53DE6w0xxLEtfK3iyryQFddXuvkIk51EEgrJQ0WJkOmQ=="],
 
-    "prosekit": ["prosekit@0.20.0", "", { "dependencies": { "@prosekit/basic": "0.9.0", "@prosekit/core": "0.12.0", "@prosekit/extensions": "0.16.0", "@prosekit/lit": "0.6.0", "@prosekit/pm": "0.1.16", "@prosekit/preact": "0.7.0", "@prosekit/react": "0.7.0", "@prosekit/solid": "0.7.0", "@prosekit/svelte": "0.9.0", "@prosekit/vue": "0.7.0", "@prosekit/web": "0.8.0" }, "peerDependencies": { "loro-crdt": ">= 1.10.0", "loro-prosemirror": ">= 0.4.1", "preact": ">= 10.11.0", "react": ">= 18.2.0", "react-dom": ">= 18.2.0", "solid-js": ">= 1.7.0", "svelte": ">= 5.0.0", "vue": ">= 3.0.0", "y-prosemirror": ">= 1.2.9", "yjs": ">= 13.6.18" }, "optionalPeers": ["loro-crdt", "loro-prosemirror", "preact", "react", "react-dom", "solid-js", "svelte", "vue", "y-prosemirror", "yjs"] }, "sha512-ZQdLdgoLI8LEo+DIYudcUEu+XdCBalax4uPHFEzEDplV+RHU0w+gNoCIEX2aJfTN0591kx6B8I7vIQT5IW6AVg=="],
+    "prosekit": ["prosekit@0.20.1", "", { "dependencies": { "@prosekit/basic": "0.9.0", "@prosekit/core": "0.12.0", "@prosekit/extensions": "0.16.0", "@prosekit/lit": "0.6.1", "@prosekit/pm": "0.1.16", "@prosekit/preact": "0.7.0", "@prosekit/react": "0.7.0", "@prosekit/solid": "0.7.0", "@prosekit/svelte": "0.9.0", "@prosekit/vue": "0.7.0", "@prosekit/web": "0.8.0" }, "peerDependencies": { "loro-crdt": ">= 1.10.0", "loro-prosemirror": ">= 0.4.1", "preact": ">= 10.11.0", "react": ">= 18.2.0", "react-dom": ">= 18.2.0", "solid-js": ">= 1.7.0", "svelte": ">= 5.0.0", "vue": ">= 3.0.0", "y-prosemirror": ">= 1.2.9", "yjs": ">= 13.6.18" }, "optionalPeers": ["loro-crdt", "loro-prosemirror", "preact", "react", "react-dom", "solid-js", "svelte", "vue", "y-prosemirror", "yjs"] }, "sha512-n2ZnntpSPOuJYFp/8P0GzAfgrnvY9HImMhK3TKATSvEiFQqHLZcxl3ZOz1BGQ2Ubn+kuALiwNwEagEmZtE//+Q=="],
 
     "prosemirror-changeset": ["prosemirror-changeset@2.4.1", "", { "dependencies": { "prosemirror-transform": "^1.0.0" } }, "sha512-96WBLhOaYhJ+kPhLg3uW359Tz6I/MfcrQfL4EGv4SrcqKEMC1gmoGrXHecPE8eOwTVCJ4IwgfzM8fFad25wNfw=="],
 
