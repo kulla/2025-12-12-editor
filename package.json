@@ -5,13 +5,13 @@
   "license": "Apache-2.0",
   "type": "module",
   "scripts": {
-    "build": "bun src/index.html --outdir dist/",
+    "build": "bun build src/index.html --outdir dist/",
     "check": "bun run check:tsc && bun run check:format",
     "check:format": "biome check --write",
     "check:tsc": "tsc --noEmit",
     "dev": "bun --watch src/index.html",
     "format": "biome format --write",
-    "preview": "bun build"
+    "preview": "bun run build && bun dist/index.html"
   },
   "dependencies": {
     "clsx": "2.1.1",
